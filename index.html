@@ -10,6 +10,7 @@
             --card-bg: #1e293b;
             --primary: #38bdf8;
             --accent: #10b981;
+            --warning: #f59e0b;
             --text: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -21,12 +22,12 @@
             padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         h1 { color: var(--primary); font-size: 1.8rem; margin-bottom: 5px; }
         p.subtitle { color: var(--text-muted); font-size: 0.95rem; }
@@ -38,35 +39,58 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        h2 { font-size: 1.2rem; color: var(--primary); margin-top: 0; }
+        h2 { font-size: 1.2rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
         
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background-color: #0f172a;
+            color: var(--text);
+            box-sizing: border-box;
         }
         button {
-            flex: 1;
             padding: 12px;
             border: none;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
+            width: 100%;
         }
         button:hover { opacity: 0.9; }
-        .btn-team { background-color: var(--accent); color: #000; }
-        .btn-solo { background-color: #475569; color: var(--text); }
-        .btn-action { background-color: var(--primary); color: #000; width: 100%; margin-top: 10px; }
+        .btn-primary { background-color: var(--accent); color: #000; margin-top: 10px; }
 
-        ul { padding-left: 20px; color: var(--text-muted); }
-        li { margin-bottom: 8px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th { color: var(--primary); }
+        .status-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
 
         .stats-box {
             display: flex;
             justify-content: space-between;
             text-align: center;
-            margin-top: 15px;
+            margin-bottom: 15px;
         }
         .stat-item {
             background: rgba(255,255,255,0.05);
@@ -75,8 +99,8 @@
             flex: 1;
             margin: 0 5px;
         }
-        .stat-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+        .stat-value { font-size: 1.3rem; font-weight: bold; color: var(--accent); }
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -84,72 +108,171 @@
 <div class="container">
     <header>
         <h1>Team-Hub</h1>
-        <p class="subtitle">Das ehrliche Fundament für Arbeit & Gemeinschaft</p>
+        <p class="subtitle">Das ehrliche Fundament für Teamarbeit & faire Belohnung</p>
     </header>
 
-    <!-- Modus Auswahl -->
-    <div class="card" id="mode-card">
-        <h2>1. Wie möchtest du heute arbeiten?</h2>
-        <p>Wähle frei nach deinem Gefühl – kein Zwang, volle Transparenz.</p>
-        <div class="btn-group">
-            <button class="btn-team" onclick="setMode('Team')">Im harmonischen Team</button>
-            <button class="btn-solo" onclick="setMode('Solo')">Einen Bereich in Ruhe</button>
-        </div>
-        <p id="current-mode" style="margin-top: 15px; font-weight: bold; color: var(--accent);">Aktueller Modus: Noch nicht gewählt</p>
-    </div>
-
-    <!-- Team Aufgaben & Kennzahlen -->
+    <!-- Punkte & Status Übersicht -->
     <div class="card">
-        <h2>2. Aktueller Team-Fortschritt & Ziele</h2>
-        <p>Gemeinsam stark – saubere Arbeit schützt vor Stress und bringt echte Boni.</p>
-        
+        <h2>Aktueller Team-Stand</h2>
         <div class="stats-box">
             <div class="stat-item">
-                <div class="stat-value" id="stat-order">100%</div>
-                <div class="stat-label">Sauberkeit</div>
+                <div class="stat-value" id="total-points">0</div>
+                <div class="stat-label">Team-Punkte</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="stat-rekl">0</div>
-                <div class="stat-label">Reklamationen</div>
+                <div class="stat-value" id="completed-tasks">0</div>
+                <div class="stat-label">Erledigte Aufgaben</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="stat-score">Level 1</div>
-                <div class="stat-label">Team-Bonus</div>
+                <div class="stat-value" id="current-level">Level 1</div>
+                <div class="stat-label">Stufe</div>
             </div>
         </div>
-
-        <button class="btn-action" onclick="boostTeam()">Fortschritt dokumentieren (+1 Ziel)</button>
     </div>
 
-    <!-- Belohnungen -->
+    <!-- 1. Aufgabe auswählen & eintragen -->
     <div class="card">
-        <h2>3. Freigeschaltete Belohnungen (Gemeinsamer Nenner)</h2>
-        <ul>
-            <li>☕ <strong>Kaffee-Pause Plus:</strong> Freigeschaltet für das gesamte Team.</li>
-            <li>⚽ <strong>Tischkicker-Turnier:</strong> Bereit für die Mittagspause.</li>
-            <li>🕒 <strong>Freitags-Flex:</strong> Früher nach Hause nach erfüllter Woche.</li>
-        </ul>
+        <h2>1. Aufgabe auswählen & Kontrollieren</h2>
+        <div class="form-group">
+            <label>Wer führt die Aufgabe aus?</label>
+            <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
+        </div>
+        <div class="form-group">
+            <label>Aufgabe auswählen:</label>
+            <select id="task-select">
+                <option value="Lagerordnung & Sauberkeit (10 Pkt)">🧹 Lagerordnung & Sauberkeit (10 Pkt)</option>
+                <option value="Reklamationsfreie Zone geprüft (15 Pkt)">📦 Reklamationsfreie Zone geprüft (15 Pkt)</option>
+                <option value="Gemeinsamer Werkzeug-Check (10 Pkt)">🔧 Gemeinsamer Werkzeug-Check (10 Pkt)</option>
+                <option value="Sonderprojekt / Optimierung (20 Pkt)">🚀 Sonderprojekt / Optimierung (20 Pkt)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Wer hat es kontrolliert (4-Augen-Prinzip)?</label>
+            <input type="text" id="controller-name" placeholder="Name des Kontrolleurs (z.B. Kollege / Vorarbeiter)">
+        </div>
+        <button class="btn-primary" onclick="submitTask()">Aufgabe bestätigen & Punkte Gutschreiben</button>
+    </div>
+
+    <!-- 2. Erledigte Aufgaben Log (Tabelle) -->
+    <div class="card">
+        <h2>2. Protokoll (Erledigte Aufgaben & Kontrolle)</h2>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aufgabe</th>
+                        <th>Ausgeführt von</th>
+                        <th>Kontrolliert von</th>
+                        <th>Status</th>
+                    </tr>
+                 dulces
+                <tbody id="task-log">
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Noch keine Aufgaben dokumentiert.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 3. Belohnungs-Tabelle -->
+    <div class="card">
+        <h2>3. Belohnungs-Tabelle (Gemeinsamer Nenner)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Punkte-Ziel</th>
+                    <th>Belohnung für alle</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>20 Pkt</td>
+                    <td>☕ Extra Kaffeepause im Team</td>
+                    <td><span id="reward-1" style="color: var(--text-muted);">Gesperrt</span></td>
+                </tr>
+                <tr>
+                    <td>50 Pkt</td>
+                    <td>⚽ Tischkicker-Turnier in der Mittagspause</td>
+                    <td><span id="reward-2" style="color: var(--text-muted);">Gesperrt</span></td>
+                </tr>
+                <tr>
+                    <td>100 Pkt</td>
+                    <td>🕒 Freitags-Flex (Früher nach Hause)</td>
+                    <td><span id="reward-3" style="color: var(--text-muted);">Gesperrt</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
-    let teamScore = 0;
+    let totalPoints = 0;
+    let taskCount = 0;
+    let tasksLog = [];
 
-    function setMode(mode) {
-        const modeText = document.getElementById('current-mode');
-        if(mode === 'Team') {
-            modeText.innerText = "Aktueller Modus: Im Team (Gemeinsame Aufgaben & Boni aktiv)";
-            modeText.style.color = "var(--accent)";
-        } else {
-            modeText.innerText = "Aktueller Modus: Solo-Bereich (In Ruhe arbeiten)";
-            modeText.style.color = "var(--primary)";
+    function submitTask() {
+        const worker = document.getElementById('worker-name').value.trim();
+        const task = document.getElementById('task-select').value;
+        const controller = document.getElementById('controller-name').value.trim();
+
+        if(!worker || !controller) {
+            alert("Bitte gib sowohl deinen Namen als auch den Namen des Kontrolleurs ein! (Fairness & Kontrolle)");
+            return;
         }
+
+        // Punkte ermitteln
+        let points = 10;
+        if(task.includes('15 Pkt')) points = 15;
+        if(task.includes('20 Pkt')) points = 20;
+
+        totalPoints += points;
+        taskCount += 1;
+
+        // Log eintrag hinzufügen
+        tasksLog.unshift({ task, worker, controller });
+
+        updateUI();
+
+        // Felder zurücksetzen
+        document.getElementById('worker-name').value = '';
+        document.getElementById('controller-name').value = '';
+        alert("Aufgabe erfolgreich dokumentiert und geprüft! Starker Team-Einsatz! 🚀❤️");
     }
 
-    function boostTeam() {
-        teamScore += 1;
-        document.getElementById('stat-score').innerText = "Level " + (1 + Math.floor(teamScore / 3));
-        alert("Super! Team-Erfolg dokumentiert. Der Fortschritt wächst für alle gemeinsam! 🚀❤️");
+    function updateUI() {
+        document.getElementById('total-points').innerText = totalPoints;
+        document.getElementById('completed-tasks').innerText = taskCount;
+        document.getElementById('current-level').innerText = "Level " + (1 + Math.floor(totalPoints / 40));
+
+        // Tabelle aktualisieren
+        const logContainer = document.getElementById('task-log');
+        logContainer.innerHTML = '';
+        tasksLog.forEach(item => {
+            logContainer.innerHTML += `
+                <tr>
+                    <td>${item.task}</td>
+                    <td>${item.worker}</td>
+                    <td>${item.controller}</td>
+                    <td><span class="status-badge">Geprüft ✓</span></td>
+                </tr>
+            `;
+        });
+
+        // Belohnungen freischalten
+        if(totalPoints >= 20) {
+            document.getElementById('reward-1').innerText = "Freigeschaltet! 🎉";
+            document.getElementById('reward-1').style.color = "var(--accent)";
+        }
+        if(totalPoints >= 50) {
+            document.getElementById('reward-2').innerText = "Freigeschaltet! 🎉";
+            document.getElementById('reward-2').style.color = "var(--accent)";
+        }
+        if(totalPoints >= 100) {
+            document.getElementById('reward-3').innerText = "Freigeschaltet! 🎉";
+            document.getElementById('reward-3').style.color = "var(--accent)";
+        }
     }
 </script>
 
