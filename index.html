@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Enterprise Gaming Edition</title>
+    <title>Team-Hub | Enterprise Gaming & Emotion Edition</title>
+    <!-- Konfetti Bibliothek für epische Gewinner-Momente -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --bg-color: #090d16;
@@ -12,6 +14,7 @@
             --accent: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --gold: #fbbf24;
             --text: #f8fafc;
             --text-muted: #94a3b8;
             --border: #1e293b;
@@ -30,12 +33,54 @@
         }
         header {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-        h1 { color: var(--primary); font-size: 1.6rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
-        p.subtitle { color: var(--text-muted); font-size: 0.85rem; }
+        h1 { color: var(--primary); font-size: 1.5rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
+        p.subtitle { color: var(--text-muted); font-size: 0.8rem; }
 
-        /* Navigation Tabs (Wischen / Wechseln) */
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .top-bar select, .top-bar button {
+            padding: 8px;
+            font-size: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .chill-btn {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+        }
+        .chill-btn.active {
+            background: var(--primary);
+            color: #090d16;
+        }
+
+        /* NEU: Die Buddy Note (Persönliche Motivationsbox) */
+        .buddy-note-box {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+        }
+        .buddy-note-avatar { font-size: 1.5rem; }
+        .buddy-note-content { font-size: 0.75rem; line-height: 1.3; color: #e2e8f0; }
+        .buddy-note-title { font-weight: bold; color: var(--primary); margin-bottom: 2px; font-size: 0.8rem; }
+
+        /* Navigation Tabs */
         .tabs {
             display: flex;
             background: var(--card-bg);
@@ -47,8 +92,8 @@
         .tab {
             flex: 1;
             text-align: center;
-            padding: 10px;
-            font-size: 0.8rem;
+            padding: 9px;
+            font-size: 0.75rem;
             font-weight: bold;
             color: var(--text-muted);
             cursor: pointer;
@@ -72,9 +117,9 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             border: 1px solid var(--border);
         }
-        h2 { font-size: 1rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
+        h2 { font-size: 0.95rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
 
-        /* XP & Level Balken */
+        /* XP & Status */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -89,7 +134,7 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
         .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
-        .stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+        .stat-lbl { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
 
         .progress-bar-bg {
             background: rgba(255,255,255,0.05);
@@ -107,7 +152,7 @@
         }
 
         .form-group { margin-bottom: 10px; }
-        label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 3px; }
+        label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 3px; }
         input, select, textarea {
             width: 100%;
             padding: 9px;
@@ -118,7 +163,8 @@
             box-sizing: border-box;
             font-size: 0.85rem;
         }
-        textarea { resize: vertical; height: 50px; }
+        textarea { resize: vertical; height: 45px; }
+        .limit-info { font-size: 0.65rem; color: var(--warning); margin-top: 2px; }
 
         button {
             padding: 10px;
@@ -127,37 +173,65 @@
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: opacity 0.2s;
         }
         button:hover { opacity: 0.9; }
         .btn-primary { background-color: var(--accent); color: #090d16; }
         .btn-warning { background-color: var(--warning); color: #090d16; }
 
-        /* Meilenstein-Shop Karten mit Schlössern */
-        .milestone-item {
+        /* Epic Meilenstein-Karten */
+        .epic-milestone {
+            background: linear-gradient(135deg, rgba(19, 27, 46, 0.9), rgba(30, 41, 59, 0.9));
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: rgba(255,255,255,0.02);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border);
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        .milestone-info font { font-size: 0.85rem; font-weight: bold; }
-        .milestone-status {
-            font-size: 0.75rem;
-            padding: 4px 8px;
+        .epic-milestone.unlocked-card {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(16, 185, 129, 0.1));
+        }
+        .milestone-avatar {
+            font-size: 2.8rem;
+            background: rgba(255,255,255,0.05);
+            padding: 8px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 60px;
+        }
+        .milestone-details { flex: 1; }
+        .milestone-title { font-size: 0.9rem; font-weight: bold; color: var(--gold); margin-bottom: 2px; }
+        .milestone-desc { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; line-height: 1.2; }
+        .milestone-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            padding: 3px 8px;
             border-radius: 6px;
             font-weight: bold;
         }
-        .locked { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
-        .unlocked { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+        .locked-badge { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .unlocked-badge { background: rgba(251, 191, 36, 0.2); color: var(--gold); }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 5px; }
         th, td { padding: 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
         th { color: var(--primary); }
+
+        .badge-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px dashed var(--warning);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -165,20 +239,37 @@
 <div class="container">
     <header>
         <h1>⭐ Team-Hub ⭐</h1>
-        <p class="subtitle">Das ehrliche Spiel für gemeinsamen Erfolg</p>
+        <p class="subtitle">Das ehrliche Spiel für gemeinsamen Erfolg & Lebensfreude</p>
     </header>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <select id="team-location" onchange="changeTeam()">
+            <option value="Werkstatt A">🏢 Team Werkstatt A</option>
+            <option value="Logistik & Lager">📦 Team Logistik & Lager</option>
+            <option value="Montage & Technik">🔧 Team Montage</option>
+        </select>
+        <button class="chill-btn" id="chill-mode-btn" onclick="toggleChillMode()">☕ Chill-Modus (Aus)</button>
+    </div>
+
+    <!-- NEU: Die Tägliche Buddy Note -->
+    <div class="buddy-note-box">
+        <div class="buddy-note-avatar">🤖❤️</div>
+        <div class="buddy-note-content">
+            <div class="buddy-note-title">Tägliche Buddy Note für euch:</div>
+            <span id="daily-quote">„Egal wie schwer der Tag ist, Partner: Ihr rockt das gemeinsam. Passt aufeinander auf und vergesst das Lächeln nicht!“</span>
+        </div>
+    </div>
 
     <!-- Navigation Tabs -->
     <div class="tabs">
         <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
         <div class="tab" onclick="switchTab('feed', this)">📜 Live-Feed</div>
-        <div class="tab" onclick="switchTab('shop', this)">🏆 Meilensteine</div>
+        <div class="tab" onclick="switchTab('shop', this)">🏆 Gewinner-Show</div>
     </div>
 
-    <!-- TAB 1: QUESTS & KONTROLLE -->
+    <!-- TAB 1: QUESTS -->
     <div id="tab-quests" class="tab-content active">
-        
-        <!-- Team Status Box -->
         <div class="card">
             <h2>📊 Team Status & XP</h2>
             <div class="stats-grid">
@@ -195,16 +286,18 @@
                     <div class="stat-lbl">Rang</div>
                 </div>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">
-                <span>Fortschritt zum nächsten Meilenstein</span>
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">
+                <span>Fortschritt zur nächsten Gewinner-Belohnung</span>
                 <span id="xp-progress-label">0 / 30 XP</span>
             </div>
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill" id="xp-bar"></div>
             </div>
+            <div class="badge-box" id="badge-display">
+                🛡️ <strong>Wochen-Ehren-Badge:</strong> Noch unverteilt (Aktivster Helfer)
+            </div>
         </div>
 
-        <!-- Schritt 1: Quest starten -->
         <div class="card" id="step-1-card">
             <h2>1. Quest annehmen & Verpflichtung</h2>
             <div class="form-group">
@@ -223,10 +316,9 @@
             <button class="btn-warning" onclick="claimQuest()">Quest starten (Verpflichtung eingehen)</button>
         </div>
 
-        <!-- Schritt 2: 4-Augen-Check -->
         <div class="card" id="step-2-card" style="display:none; border-color: var(--warning);">
             <h2>2. 4-Augen-Prinzip & Qualitäts-Check</h2>
-            <p style="font-size: 0.8rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-quest-title" style="font-weight:bold;"></span> (von <span id="active-worker"></span>)</p>
+            <p style="font-size: 0.75rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-quest-title" style="font-weight:bold;"></span> (von <span id="active-worker"></span>)</p>
             
             <div class="form-group">
                 <label>Name des Prüfers (Kontrolleur):</label>
@@ -234,11 +326,13 @@
             </div>
             <div class="form-group">
                 <label>Sauberkeit (Max. 12 XP):</label>
-                <input type="number" id="pts-clean" min="0" max="12" value="10">
+                <input type="number" id="pts-clean" min="0" max="12" value="10" oninput="validatePoints(this, 12)">
+                <div class="limit-info">⚠️ Strenges Limit: Max. 12 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
                 <label>Ausführung & Richtigkeit (Max. 13 XP):</label>
-                <input type="number" id="pts-accuracy" min="0" max="13" value="12">
+                <input type="number" id="pts-accuracy" min="0" max="13" value="12" oninput="validatePoints(this, 13)">
+                <div class="limit-info">⚠️ Strenges Limit: Max. 13 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
                 <label>Ehrliches Feedback / Wertschätzung:</label>
@@ -246,7 +340,6 @@
             </div>
             <button class="btn-primary" onclick="completeQuest()">Prüfen, XP vergeben & Sieg sichern ⭐</button>
         </div>
-
     </div>
 
     <!-- TAB 2: LIVE-FEED -->
@@ -272,34 +365,40 @@
         </div>
     </div>
 
-    <!-- TAB 3: MEILENSTEIN-SHOP -->
+    <!-- TAB 3: GEWINNER-SHOW & MEILENSTEINE -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
-            <h2>🏆 Team-Meilensteine & Belohnungen</h2>
-            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom:12px;">Erreiche mit dem Team die XP-Ziele, um die Schlösser zu öffnen und Belohnungen freizuschalten!</p>
+            <h2>🏆 Die epische Gewinner-Meilenstein-Show</h2>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Kämpft als Team zusammen, knackt die XP-Ziele und schaltet pure Lebensfreude und gemeinsame Siege frei!</p>
             
-            <div class="milestone-item">
-                <div class="milestone-info">
-                    <font>☕ Extra Kaffeepause im Team</font><br>
-                    <span style="font-size: 0.7rem; color: var(--text-muted);">Ziel: 30 XP</span>
+            <!-- Meilenstein 1: Kaffeepause -->
+            <div class="epic-milestone" id="box-r1">
+                <div class="milestone-avatar">🐒☕</div>
+                <div class="milestone-details">
+                    <div class="milestone-title">Der Kaffeepause-Affentempel (30 XP)</div>
+                    <div class="milestone-desc">Der Boss-Affe mit Sonnenbrille hat gesprochen: Extra Team-Kaffeepause zum Durchatmen und Schmunzeln!</div>
+                    <div class="milestone-badge locked-badge" id="shop-r1">🔒 Gesperrt (Ziel: 30 XP)</div>
                 </div>
-                <div class="milestone-status locked" id="shop-r1">🔒 Gesperrt</div>
             </div>
 
-            <div class="milestone-item">
-                <div class="milestone-info">
-                    <font>⚽ Tischkicker-Turnier</font><br>
-                    <span style="font-size: 0.7rem; color: var(--text-muted);">Ziel: 70 XP</span>
+            <!-- Meilenstein 2: Tischkicker-Turnier -->
+            <div class="epic-milestone" id="box-r2">
+                <div class="milestone-avatar">🦁⚽</div>
+                <div class="milestone-details">
+                    <div class="milestone-title">Das Löwen-Kicker-Battle (70 XP)</div>
+                    <div class="milestone-desc">Der Löwe fordert euch zum Tischkicker heraus! Zeit, den Arbeitsalltag für ein legendäres Turnier anzuhalten.</div>
+                    <div class="milestone-badge locked-badge" id="shop-r2">🔒 Gesperrt (Ziel: 70 XP)</div>
                 </div>
-                <div class="milestone-status locked" id="shop-r2">🔒 Gesperrt</div>
             </div>
 
-            <div class="milestone-item">
-                <div class="milestone-info">
-                    <font>🕒 Freitags-Flex (Früher nach Hause)</font><br>
-                    <span style="font-size: 0.7rem; color: var(--text-muted);">Ziel: 150 XP</span>
+            <!-- Meilenstein 3: Samstags-Frühstart -->
+            <div class="epic-milestone" id="box-r3">
+                <div class="milestone-avatar">🐼❤️</div>
+                <div class="milestone-details">
+                    <div class="milestone-title">Samstags-Blitz-Feierabend (150 XP)</div>
+                    <div class="milestone-desc">Der Panda und seine Lady machen es vor: Wer bis Samstag hart buckelt, geht heute deutlich früher nach Hause ins wohlverdiente Wochenende!</div>
+                    <div class="milestone-badge locked-badge" id="shop-r3">🔒 Gesperrt (Ziel: 150 XP)</div>
                 </div>
-                <div class="milestone-status locked" id="shop-r3">🔒 Gesperrt</div>
             </div>
         </div>
     </div>
@@ -311,6 +410,19 @@
     let completedCount = 0;
     let activeQuest = null;
     let feedItems = [];
+    let isChillMode = false;
+    let controllerCounts = {};
+
+    // Rotierende Buddy Notes für positive Energie
+    const buddyQuotes = [
+        "„Egal wie schwer der Tag ist, Partner: Ihr rockt das gemeinsam. Passt aufeinander auf und vergesst das Lächeln nicht!“",
+        "„Kein Stress heute. Jeder Schritt zählt, und am Ende des Tages geht ihr gemeinsam nach vorn.“",
+        "„Harte Arbeit verdient echten Respekt. Danke, dass ihr heute wieder alles gebt!“",
+        "„Gemeinsam stark, fair im Team und mit Luft zum Atmen – das ist unser Weg.“"
+    ];
+
+    // Zufällige Note beim Laden auswählen
+    document.getElementById('daily-quote').innerText = buddyQuotes[Math.floor(Math.random() * buddyQuotes.length)];
 
     function switchTab(tabId, element) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -320,14 +432,42 @@
         element.classList.add('active');
     }
 
-    function claimQuest() {
-        const worker = document.getElementById('worker-name').value.trim();
-        const task = document.getElementById('task-select').value;
+    function validatePoints(input, maxLimit) {
+        let val = parseInt(input.value) || 0;
+        if(val > maxLimit) {
+            alert(`Achtung: Maximal sind hier ${maxLimit} Punkte erlaubt!`);
+            input.value = maxLimit;
+        }
+        if(val < 0) { input.value = 0; }
+    }
 
-        if(!worker) {
-            alert("Bitte gib deinen Namen ein!");
+    function toggleChillMode() {
+        isChillMode = !isChillMode;
+        const btn = document.getElementById('chill-mode-btn');
+        if(isChillMode) {
+            btn.classList.add('active');
+            btn.innerText = "☕ Chill-Modus (Aktiv)";
+            alert("Du bist im Chill-Modus. Genieße deine Ruhe!");
+        } else {
+            btn.classList.remove('active');
+            btn.innerText = "☕ Chill-Modus (Aus)";
+            alert("Willkommen zurück im aktiven Team!");
+        }
+    }
+
+    function changeTeam() {
+        const team = document.getElementById('team-location').value;
+        alert(`Standort gewechselt zu: ${team}.`);
+    }
+
+    function claimQuest() {
+        if(isChillMode) {
+            alert("Du bist im Chill-Modus!");
             return;
         }
+        const worker = document.getElementById('worker-name').value.trim();
+        const task = document.getElementById('task-select').value;
+        if(!worker) { alert("Bitte Namen eingeben!"); return; }
 
         activeQuest = { worker, task };
         document.getElementById('active-quest-title').innerText = task;
@@ -335,21 +475,20 @@
         document.getElementById('step-1-card').style.display = 'none';
         document.getElementById('step-2-card').style.display = 'block';
     }
-
-    function completeQuest() {
+function completeQuest() {
         const controller = document.getElementById('controller-name').value.trim();
         const clean = parseInt(document.getElementById('pts-clean').value) || 0;
         const accuracy = parseInt(document.getElementById('pts-accuracy').value) || 0;
         const feedback = document.getElementById('task-feedback').value.trim();
 
-        if(!controller) {
-            alert("Bitte gib den Namen des Kontrolleurs ein (4-Augen-Prinzip)!");
-            return;
-        }
+        if(!controller) { alert("Prüfer-Name fehlt (4-Augen-Prinzip)!"); return; }
 
         const earned = clean + accuracy;
         totalXP += earned;
         completedCount++;
+
+        controllerCounts[controller] = (controllerCounts[controller] || 0) + 1;
+        updateBadgeLeader();
 
         feedItems.unshift({
             task: activeQuest.task,
@@ -361,7 +500,8 @@
 
         updateUI();
 
-        // Reset
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+
         document.getElementById('worker-name').value = '';
         document.getElementById('controller-name').value = '';
         document.getElementById('task-feedback').value = '';
@@ -369,7 +509,21 @@
         document.getElementById('step-1-card').style.display = 'block';
         activeQuest = null;
 
-        alert(`Fantastisch! +${earned} Team-XP erfolgreich verbucht! 🚀`);
+        alert(`Fantastisch! +${earned} Team-XP verbucht! 🚀`);
+    }
+
+    function updateBadgeLeader() {
+        let bestController = "";
+        let maxChecks = 0;
+        for (let name in controllerCounts) {
+            if (controllerCounts[name] > maxChecks) {
+                maxChecks = controllerCounts[name];
+                bestController = name;
+            }
+        }
+        if(bestController) {
+            document.getElementById('badge-display').innerHTML = `🛡️ <strong>Wochen-Ehren-Badge:</strong> ${bestController} (${maxChecks} faire Checks!) ⭐`;
+        }
     }
 
     function updateUI() {
@@ -379,9 +533,7 @@
         let level = 1 + Math.floor(totalXP / 50);
         document.getElementById('current-level').innerText = "Level " + level;
 
-        // Progress bar calculation
-        let target = 30;
-        let prev = 0;
+        let target = 30, prev = 0;
         if(totalXP >= 30) { target = 70; prev = 30; }
         if(totalXP >= 70) { target = 150; prev = 70; }
         if(totalXP >= 150) { target = 300; prev = 150; }
@@ -390,32 +542,40 @@
         document.getElementById('xp-bar').style.width = pct + '%';
         document.getElementById('xp-progress-label').innerText = `${totalXP} / ${target} XP`;
 
-        // Feed Tabelle
         const feedContainer = document.getElementById('feed-log');
         feedContainer.innerHTML = '';
         feedItems.forEach(item => {
             feedContainer.innerHTML += `
                 <tr>
-                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.7rem;">Von: ${item.worker}</span></td>
-                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.65rem;">💬 "${item.feedback || 'Top'}"</span></td>
+                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.65rem;">Von: ${item.worker}</span></td>
+                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.6rem;">💬 "${item.feedback || 'Top'}"</span></td>
                     <td><strong style="color:var(--accent);">+${item.xp} XP</strong></td>
                 </tr>
             `;
         });
 
-        // Meilensteine / Schlösser Shop
-        if(totalXP >= 30) {
-            document.getElementById('shop-r1').className = "milestone-status unlocked";
-            document.getElementById('shop-r1').innerText = "🎉 Freigeschaltet!";
+        if(totalXP >= 30 && document.getElementById('shop-r1').className.indexOf('unlocked-badge') === -1) {
+            document.getElementById('shop-r1').className = "milestone-badge unlocked-badge";
+            document.getElementById('shop-r1').innerText = "🎉 FREIGESCHALTET: Kaffeepause aktiv!";
+            document.getElementById('box-r1').className = "epic-milestone unlocked-card";
+            triggerMegaConfetti();
         }
-        if(totalXP >= 70) {
-            document.getElementById('shop-r2').className = "milestone-status unlocked";
-            document.getElementById('shop-r2').innerText = "🎉 Freigeschaltet!";
+        if(totalXP >= 70 && document.getElementById('shop-r2').className.indexOf('unlocked-badge') === -1) {
+            document.getElementById('shop-r2').className, document.getElementById('shop-r2').className = "milestone-badge unlocked-badge";
+            document.getElementById('shop-r2').innerText = "🎉 FREIGESCHALTET: Kicker-Turnier aktiv!";
+            document.getElementById('box-r2').className = "epic-milestone unlocked-card";
+            triggerMegaConfetti();
         }
-        if(totalXP >= 150) {
-            document.getElementById('shop-r3').className = "milestone-status unlocked";
-            document.getElementById('shop-r3').innerText = "🎉 Freigeschaltet!";
+        if(totalXP >= 150 && document.getElementById('shop-r3').className.indexOf('unlocked-badge') === -1) {
+            document.getElementById('shop-r3').className = "milestone-badge unlocked-badge";
+            document.getElementById('shop-r3').innerText = "🎉 FREIGESCHALTET: Früher Feierabend!";
+            document.getElementById('box-r3').className = "epic-milestone unlocked-card";
+            triggerMegaConfetti();
         }
+    }
+
+    function triggerMegaConfetti() {
+        confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 } });
     }
 </script>
 
