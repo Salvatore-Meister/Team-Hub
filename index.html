@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Enterprise Gaming & Emotion Edition</title>
+    <title>Team-Hub | Enterprise Gaming & Team Spirit Edition</title>
     <!-- Konfetti Bibliothek für epische Gewinner-Momente -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -64,7 +64,7 @@
             color: #090d16;
         }
 
-        /* NEU: Die Buddy Note (Persönliche Motivationsbox) */
+        /* Die Tägliche Buddy Note */
         .buddy-note-box {
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(16, 185, 129, 0.1));
             border: 1px solid var(--primary);
@@ -252,7 +252,7 @@
         <button class="chill-btn" id="chill-mode-btn" onclick="toggleChillMode()">☕ Chill-Modus (Aus)</button>
     </div>
 
-    <!-- NEU: Die Tägliche Buddy Note -->
+    <!-- Tägliche Buddy Note -->
     <div class="buddy-note-box">
         <div class="buddy-note-avatar">🤖❤️</div>
         <div class="buddy-note-content">
@@ -294,30 +294,30 @@
                 <div class="progress-bar-fill" id="xp-bar"></div>
             </div>
             <div class="badge-box" id="badge-display">
-                🛡️ <strong>Wochen-Ehren-Badge:</strong> Noch unverteilt (Aktivster Helfer)
+                🛡️ <strong>Wochen-MVP (Ehren-Badge):</strong> Noch unverteilt (Aktivster Helfer)
             </div>
         </div>
 
         <div class="card" id="step-1-card">
-            <h2>1. Quest annehmen & Verpflichtung</h2>
+            <h2>1. Team-Praxis-Quest annehmen</h2>
             <div class="form-group">
-                <label>Wer übernimmt die Aufgabe?</label>
+                <label>Wer führt die Aufgabe aus?</label>
                 <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
             </div>
             <div class="form-group">
-                <label>Wähle deine Quest:</label>
+                <label>Wähle eure echte Werkstatt-Aufgabe:</label>
                 <select id="task-select">
-                    <option value="🧹 Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
-                    <option value="📦 Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
-                    <option value="🔧 Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
-                    <option value="🚀 Prozess-Optimierung">🚀 Prozess-Optimierung</option>
+                    <option value="📦 6 Frames mit Boxen & Tüten befüllt (+20 XP)">📦 6 Frames mit Boxen & Tüten befüllt (+20 XP)</option>
+                    <option value="🔧 Deckel holen & Material bereitgestellt (+20 XP)">🔧 Deckel holen & Material bereitgestellt (+20 XP)</option>
+                    <option value="🧹 Lagerordnung & Sauberkeit (+15 XP)">🧹 Lagerordnung & Sauberkeit (+15 XP)</option>
+                    <option value="🚀 Reklamationsfreie Zone prüfen (+15 XP)">🚀 Reklamationsfreie Zone prüfen (+15 XP)</option>
                 </select>
             </div>
-            <button class="btn-warning" onclick="claimQuest()">Quest starten (Verpflichtung eingehen)</button>
+            <button class="btn-warning" onclick="claimQuest()">Quest starten & Team-Verpflichtung eingehen</button>
         </div>
 
         <div class="card" id="step-2-card" style="display:none; border-color: var(--warning);">
-            <h2>2. 4-Augen-Prinzip & Qualitäts-Check</h2>
+            <h2>2. 4-Augen-Prinzip & Sportlicher Check</h2>
             <p style="font-size: 0.75rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-quest-title" style="font-weight:bold;"></span> (von <span id="active-worker"></span>)</p>
             
             <div class="form-group">
@@ -325,20 +325,20 @@
                 <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)">
             </div>
             <div class="form-group">
-                <label>Sauberkeit (Max. 12 XP):</label>
-                <input type="number" id="pts-clean" min="0" max="12" value="10" oninput="validatePoints(this, 12)">
-                <div class="limit-info">⚠️ Strenges Limit: Max. 12 Punkte erlaubt!</div>
+                <label>Sauberkeit & Ordnung (Max. 10 XP):</label>
+                <input type="number" id="pts-clean" min="0" max="10" value="10" oninput="validatePoints(this, 10)">
+                <div class="limit-info">⚠️ Strenges Limit: Max. 10 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
-                <label>Ausführung & Richtigkeit (Max. 13 XP):</label>
-                <input type="number" id="pts-accuracy" min="0" max="13" value="12" oninput="validatePoints(this, 13)">
-                <div class="limit-info">⚠️ Strenges Limit: Max. 13 Punkte erlaubt!</div>
+                <label>Vollständigkeit & Tempo (Max. 10 XP):</label>
+                <input type="number" id="pts-accuracy" min="0" max="10" value="10" oninput="validatePoints(this, 10)">
+                <div class="limit-info">⚠️ Strenges Limit: Max. 10 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
-                <label>Ehrliches Feedback / Wertschätzung:</label>
-                <textarea id="task-feedback" placeholder="z.B. Top gearbeitet, Respekt für den Einsatz!"></textarea>
+                <label>Ehrliches Feedback / Respekt:</label>
+                <textarea id="task-feedback" placeholder="z.B. Perfekt erledigt, starker Teamgeist!"></textarea>
             </div>
-            <button class="btn-primary" onclick="completeQuest()">Prüfen, XP vergeben & Sieg sichern ⭐</button>
+            <button class="btn-primary" onclick="completeQuest()">Prüfen, Team-XP sichern & Feiern ⭐</button>
         </div>
     </div>
 
@@ -413,7 +413,6 @@
     let isChillMode = false;
     let controllerCounts = {};
 
-    // Rotierende Buddy Notes für positive Energie
     const buddyQuotes = [
         "„Egal wie schwer der Tag ist, Partner: Ihr rockt das gemeinsam. Passt aufeinander auf und vergesst das Lächeln nicht!“",
         "„Kein Stress heute. Jeder Schritt zählt, und am Ende des Tages geht ihr gemeinsam nach vorn.“",
@@ -421,7 +420,6 @@
         "„Gemeinsam stark, fair im Team und mit Luft zum Atmen – das ist unser Weg.“"
     ];
 
-    // Zufällige Note beim Laden auswählen
     document.getElementById('daily-quote').innerText = buddyQuotes[Math.floor(Math.random() * buddyQuotes.length)];
 
     function switchTab(tabId, element) {
@@ -500,7 +498,7 @@ function completeQuest() {
 
         updateUI();
 
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
 
         document.getElementById('worker-name').value = '';
         document.getElementById('controller-name').value = '';
@@ -509,7 +507,7 @@ function completeQuest() {
         document.getElementById('step-1-card').style.display = 'block';
         activeQuest = null;
 
-        alert(`Fantastisch! +${earned} Team-XP verbucht! 🚀`);
+        alert(`Starke Team-Leistung! +${earned} Team-XP erfolgreich verbucht! 🚀`);
     }
 
     function updateBadgeLeader() {
@@ -522,7 +520,7 @@ function completeQuest() {
             }
         }
         if(bestController) {
-            document.getElementById('badge-display').innerHTML = `🛡️ <strong>Wochen-Ehren-Badge:</strong> ${bestController} (${maxChecks} faire Checks!) ⭐`;
+            document.getElementById('badge-display').innerHTML = `🛡️ <strong>Wochen-MVP (Ehren-Badge):</strong> ${bestController} (${maxChecks} faire Checks & Team-Support!) ⭐`;
         }
     }
 
@@ -561,7 +559,7 @@ function completeQuest() {
             triggerMegaConfetti();
         }
         if(totalXP >= 70 && document.getElementById('shop-r2').className.indexOf('unlocked-badge') === -1) {
-            document.getElementById('shop-r2').className, document.getElementById('shop-r2').className = "milestone-badge unlocked-badge";
+            document.getElementById('shop-r2').className = "milestone-badge unlocked-badge";
             document.getElementById('shop-r2').innerText = "🎉 FREIGESCHALTET: Kicker-Turnier aktiv!";
             document.getElementById('box-r2').className = "epic-milestone unlocked-card";
             triggerMegaConfetti();
