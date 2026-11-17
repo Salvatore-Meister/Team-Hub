@@ -1,397 +1,423 @@
-```html
 <!DOCTYPE html>
-<html lang="de" class="dark">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Enterprise HUD Gamification</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        hud: {
-                            bg: '#090d16',
-                            card: '#111827',
-                            border: '#1f293d',
-                            primary: '#38bdf8',
-                            accent: '#10b981',
-                            warning: '#f59e0b',
-                            purple: '#8b5cf6',
-                            text: '#f8fafc',
-                            muted: '#94a3b8'
-                        }
-                    },
-                    boxShadow: {
-                        'glow': '0 0 20px rgba(56, 189, 248, 0.15)',
-                        'glow-accent': '0 0 25px rgba(16, 185, 129, 0.25)',
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Team-Hub | Enterprise Gaming Edition</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f8fafc; }
-        .hud-border { border: 1px solid rgba(56, 189, 248, 0.2); }
-        .hud-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%); backdrop-filter: blur(12px); }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #090d16; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        :root {
+            --bg-color: #090d16;
+            --card-bg: #131b2e;
+            --primary: #38bdf8;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #1e293b;
+            --glow: rgba(56, 189, 248, 0.2);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            margin: 0;
+            padding: 12px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        h1 { color: var(--primary); font-size: 1.6rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
+        p.subtitle { color: var(--text-muted); font-size: 0.85rem; }
+
+        /* Navigation Tabs (Wischen / Wechseln) */
+        .tabs {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .tab.active {
+            background-color: var(--primary);
+            color: #090d16;
+            box-shadow: 0 0 12px var(--glow);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border: 1px solid var(--border);
+        }
+        h2 { font-size: 1rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
+
+        /* XP & Level Balken */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.02);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
+        .stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+
+        .progress-bar-bg {
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .form-group { margin-bottom: 10px; }
+        label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 3px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 9px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: #090d16;
+            color: var(--text);
+            box-sizing: border-box;
+            font-size: 0.85rem;
+        }
+        textarea { resize: vertical; height: 50px; }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        .btn-primary { background-color: var(--accent); color: #090d16; }
+        .btn-warning { background-color: var(--warning); color: #090d16; }
+
+        /* Meilenstein-Shop Karten mit Schlössern */
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.02);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+        }
+        .milestone-info font { font-size: 0.85rem; font-weight: bold; }
+        .milestone-status {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .locked { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        .unlocked { background: rgba(16, 185, 129, 0.15); color: var(--accent); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 5px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: var(--primary); }
     </style>
 </head>
-<body class="min-h-screen bg-hud-bg text-hud-text pb-12">
+<body>
 
-    <!-- Top Navigation / HUD Bar -->
-    <header class="sticky top-0 z-50 bg-hud-bg/90 backdrop-blur-md border-b border-hud-border">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-emerald-400 flex items-center justify-center shadow-glow">
-                    <svg class="w-6 h-6 text-slate-950 font-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent">TEAM-HUB</h1>
-                    <p class="text-xs text-hud-muted">Echtes Miteinander statt Kontroll-Stress</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-2 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-hud-border">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Live Cloud Sync</span>
-            </div>
-        </div>
+<div class="container">
+    <header>
+        <h1>⭐ Team-Hub ⭐</h1>
+        <p class="subtitle">Das ehrliche Spiel für gemeinsamen Erfolg</p>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6">
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
+        <div class="tab" onclick="switchTab('feed', this)">📜 Live-Feed</div>
+        <div class="tab" onclick="switchTab('shop', this)">🏆 Meilensteine</div>
+    </div>
 
-        <!-- 1. HEADER METRICS & XP BAR -->
-        <section class="hud-card rounded-2xl p-5 hud-border shadow-glow relative overflow-hidden">
-            <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-widest text-sky-400">Gemeinsames Team-Konto</span>
-                    <h2 class="text-2xl font-black mt-0.5 flex items-center gap-2">
-                        <span id="total-xp">0</span> <span class="text-sm font-normal text-hud-muted">XP gesammelt</span>
-                    </h2>
+    <!-- TAB 1: QUESTS & KONTROLLE -->
+    <div id="tab-quests" class="tab-content active">
+        
+        <!-- Team Status Box -->
+        <div class="card">
+            <h2>📊 Team Status & XP</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-val" id="total-xp">0</div>
+                    <div class="stat-lbl">Team-XP</div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="bg-slate-900/80 px-4 py-2 rounded-xl border border-hud-border text-center">
-                        <div id="completed-count" class="text-lg font-bold text-emerald-400">0</div>
-                        <div class="text-[10px] uppercase text-hud-muted tracking-wider">Gelöste Quests</div>
-                    </div>
-                    <div class="bg-slate-900/80 px-4 py-2 rounded-xl border border-hud-border text-center">
-                        <div id="current-level" class="text-lg font-bold text-purple-400">Level 1</div>
-                        <div class="text-[10px] uppercase text-hud-muted tracking-wider">Team Rang</div>
-                    </div>
+                <div class="stat-box">
+                    <div class="stat-val" id="completed-quests">0</div>
+                    <div class="stat-lbl">Erledigt</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-val" id="current-level">Level 1</div>
+                    <div class="stat-lbl">Rang</div>
                 </div>
             </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">
+                <span>Fortschritt zum nächsten Meilenstein</span>
+                <span id="xp-progress-label">0 / 30 XP</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="xp-bar"></div>
+            </div>
+        </div>
+
+        <!-- Schritt 1: Quest starten -->
+        <div class="card" id="step-1-card">
+            <h2>1. Quest annehmen & Verpflichtung</h2>
+            <div class="form-group">
+                <label>Wer übernimmt die Aufgabe?</label>
+                <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
+            </div>
+            <div class="form-group">
+                <label>Wähle deine Quest:</label>
+                <select id="task-select">
+                    <option value="🧹 Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
+                    <option value="📦 Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
+                    <option value="🔧 Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
+                    <option value="🚀 Prozess-Optimierung">🚀 Prozess-Optimierung</option>
+                </select>
+            </div>
+            <button class="btn-warning" onclick="claimQuest()">Quest starten (Verpflichtung eingehen)</button>
+        </div>
+
+        <!-- Schritt 2: 4-Augen-Check -->
+        <div class="card" id="step-2-card" style="display:none; border-color: var(--warning);">
+            <h2>2. 4-Augen-Prinzip & Qualitäts-Check</h2>
+            <p style="font-size: 0.8rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-quest-title" style="font-weight:bold;"></span> (von <span id="active-worker"></span>)</p>
             
-            <!-- XP Progress Bar -->
-            <div class="space-y-1.5">
-                <div class="flex justify-between text-xs font-medium text-hud-muted">
-                    <span id="current-rank-label">Level 1 (Auf dem Weg zur Kaffeepause)</span>
-                    <span id="xp-progress-text">0 / 30 XP</span>
-                </div>
-                <div class="w-full bg-slate-900/90 rounded-full h-3.5 p-0.5 border border-hud-border overflow-hidden">
-                    <div id="xp-bar" class="bg-gradient-to-r from-sky-500 via-purple-500 to-emerald-400 h-full rounded-full transition-all duration-700 shadow-glow-accent" style="width: 0%"></div>
-                </div>
+            <div class="form-group">
+                <label>Name des Prüfers (Kontrolleur):</label>
+                <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)">
             </div>
-        </section>
-
-        <!-- 2. QUEST BOARD & SELBSTVERPFLICHTUNG -->
-        <section class="hud-card rounded-2xl p-5 hud-border">
-            <div class="flex items-center justify-between mb-4 border-b border-hud-border pb-3">
-                <h2 class="text-base font-bold flex items-center gap-2 text-sky-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                    1. Quest-Board & Selbstverpflichtung
-                </h2>
-                <span class="text-xs bg-sky-500/10 text-sky-400 px-2.5 py-1 rounded-full font-medium border border-sky-500/20">Eigeninitiative</span>
+            <div class="form-group">
+                <label>Sauberkeit (Max. 12 XP):</label>
+                <input type="number" id="pts-clean" min="0" max="12" value="10">
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Wer übernimmt die Verantwortung?</label>
-                    <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco / Sara)" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-sky-400 transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Wähle eine Betriebs-Quest:</label>
-                    <select id="task-select" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-sky-400 transition">
-                        <option value="🧹 Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
-                        <option value="📦 Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
-                        <option value="🔧 Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
-                        <option value="🚀 Prozess-Optimierung & Sauberkeit">🚀 Prozess-Optimierung & Sauberkeit</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label>Ausführung & Richtigkeit (Max. 13 XP):</label>
+                <input type="number" id="pts-accuracy" min="0" max="13" value="12">
             </div>
-            <button onclick="claimQuest()" class="mt-4 w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-3 rounded-xl shadow-lg transition transform active:scale-[0.99] text-sm uppercase tracking-wider">
-                Quest starten (Verpflichtung eingehen) ⚡
-            </button>
-        </section>
-
-        <!-- 3. 4-AUGEN-PRINZIP & KONTROLLEUR-ANSICHT (Hidden by default until a quest is claimed) -->
-        <section id="control-section" class="hud-card rounded-2xl p-5 border border-amber-500/40 bg-amber-500/5 hidden">
-            <div class="flex items-center justify-between mb-4 border-b border-amber-500/20 pb-3">
-                <h2 class="text-base font-bold flex items-center gap-2 text-amber-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    2. 4-Augen-Prinzip & Qualitäts-Check
-                </h2>
-                <span class="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full font-bold border border-amber-500/30 animate-pulse">Aktiv zu prüfen</span>
+            <div class="form-group">
+                <label>Ehrliches Feedback / Wertschätzung:</label>
+                <textarea id="task-feedback" placeholder="z.B. Top gearbeitet, Respekt für den Einsatz!"></textarea>
             </div>
+            <button class="btn-primary" onclick="completeQuest()">Prüfen, XP vergeben & Sieg sichern ⭐</button>
+        </div>
 
-            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-hud-border mb-4 text-xs">
-                <span class="text-hud-muted">Aktive Quest:</span> <strong id="active-quest-name" class="text-sky-400"></strong> | 
-                <span class="text-hud-muted">Ausgeführt von:</span> <strong id="active-worker-display" class="text-emerald-400"></strong>
-            </div>
+    </div>
 
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Name des Prüfers (4-Augen-Prinzip):</label>
-                    <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-amber-400 transition">
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-hud-muted mb-1.5">Sauberkeits-Rating (Max. 12 XP): <span id="val-clean" class="text-sky-400 font-bold">10</span></label>
-                        <input type="range" id="pts-clean" min="0" max="12" value="10" oninput="document.getElementById('val-clean').innerText=this.value" class="w-full accent-sky-400 cursor-pointer">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-hud-muted mb-1.5">Ausführungs-Rating (Max. 13 XP): <span id="val-acc" class="text-emerald-400 font-bold">12</span></label>
-                        <input type="range" id="pts-accuracy" min="0" max="13" value="12" oninput="document.getElementById('val-acc').innerText=this.value" class="w-full accent-emerald-400 cursor-pointer">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Ehrliches Feedback & Wertschätzung:</label>
-                    <textarea id="task-feedback" placeholder="z.B. Top gearbeitet, Respekt für die saubere Umsetzung!" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-amber-400 transition h-20 resize-none"></textarea>
-                </div>
-
-                <button onclick="submitQuestReview()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold py-3 rounded-xl shadow-lg transition transform active:scale-[0.99] text-sm uppercase tracking-wider">
-                    Prüfen, XP vergeben & Sieg sichern ✓
-                </button>
-            </div>
-        </section>
-
-        <!-- 4. LIVE TEAM FEED & PROTOKOLL -->
-        <section class="hud-card rounded-2xl p-5 hud-border">
-            <div class="flex items-center justify-between mb-4 border-b border-hud-border pb-3">
-                <h2 class="text-base font-bold flex items-center gap-2 text-sky-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    3. Live Team-Feed & Protokoll
-                </h2>
-                <span class="text-xs text-hud-muted">Echtzeit-Nachweis</span>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
+    <!-- TAB 2: LIVE-FEED -->
+    <div id="tab-feed" class="tab-content">
+        <div class="card">
+            <h2>📜 Live-Protokoll & Team-Feed</h2>
+            <div style="overflow-x: auto;">
+                <table>
                     <thead>
-                        <tr class="border-b border-hud-border text-hud-muted text-xs uppercase tracking-wider">
-                            <th class="py-2.5 px-3">Quest / Wer</th>
-                            <th class="py-2.5 px-3">Prüfer & Feedback</th>
-                            <th class="py-2.5 px-3">Ertrag</th>
-                            <th class="py-2.5 px-3 text-right">Status</th>
+                        <tr>
+                            <th>Quest / Wer</th>
+                            <th>Prüfer & Feedback</th>
+                            <th>XP</th>
                         </tr>
                     </thead>
-                    <tbody id="task-log-body" class="divide-y divide-slate-800/60">
+                    <tbody id="feed-log">
                         <tr>
-                            <td colspan="4" class="py-6 text-center text-hud-muted text-xs italic">Noch keine Quests im Team-Feed verzeichnet. Starte die erste Aufgabe!</td>
+                            <td colspan="3" style="text-align: center; color: var(--text-muted);">Noch keine Quests im Feed.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </section>
-
-        <!-- 5. BELOHNUNGS-LEITER & MEILENSTEINE -->
-        <section class="hud-card rounded-2xl p-5 hud-border">
-            <div class="flex items-center justify-between mb-4 border-b border-hud-border pb-3">
-                <h2 class="text-base font-bold flex items-center gap-2 text-purple-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    4. Gemeinsame Meilensteine & Belohnungen
-                </h2>
-                <span class="text-xs text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full font-medium border border-purple-500/20">Gemeinschaftsziele</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Milestone 1 -->
-                <div id="milestone-1" class="bg-slate-900/80 p-4 rounded-xl border border-hud-border relative overflow-hidden opacity-75">
-                    <div class="text-xs font-bold text-sky-400 mb-1">30 XP Ziel</div>
-                    <div class="font-bold text-sm mb-2">☕ Extra Kaffeepause im Team</div>
-                    <div id="status-1" class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gesperrt 🔒</div>
-                </div>
-                <!-- Milestone 2 -->
-                <div id="milestone-2" class="bg-slate-900/80 p-4 rounded-xl border border-hud-border relative overflow-hidden opacity-75">
-                    <div class="text-xs font-bold text-purple-400 mb-1">70 XP Ziel</div>
-                    <div class="font-bold text-sm mb-2">⚽ Tischkicker-Turnier (Mittag)</div>
-                    <div id="status-2" class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gesperrt 🔒</div>
-                </div>
-                <!-- Milestone 3 -->
-                <div id="milestone-3" class="bg-slate-900/80 p-4 rounded-xl border border-hud-border relative overflow-hidden opacity-75">
-                    <div class="text-xs font-bold text-emerald-400 mb-1">150 XP Ziel</div>
-                    <div class="font-bold text-sm mb-2">🕒 Freitags-Flex (Früher Heim)</div>
-                    <div id="status-3" class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gesperrt 🔒</div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Custom Notification Modal -->
-    <div id="modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="hud-card border border-sky-500/40 rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-glow">
-            <div id="modal-icon" class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-2xl font-black">🎉</div>
-            <h3 id="modal-title" class="text-lg font-bold">Erfolgreich!</h3>
-            <p id="modal-message" class="text-xs text-hud-muted leading-relaxed"></p>
-            <button onclick="closeModal()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider transition">Verstanden</button>
         </div>
     </div>
 
-    <!-- Application Logic -->
-    <script>
-        let totalXP = 0;
-        let completedTasksCount = 0;
-        let tasksLog = [];
-        let activeQuestData = null;
-
-        function claimQuest() {
-            const worker = document.getElementById('worker-name').value.trim();
-            const task = document.getElementById('task-select').value;
-
-            if(!worker) {
-                showModal("Hinweis", "Bitte gib deinen Namen ein, um die Selbstverpflichtung einzugehen!", "⚠️");
-                return;
-            }
-
-            activeQuestData = { worker, task };
-            document.getElementById('active-quest-name').innerText = task;
-            document.getElementById('active-worker-display').innerText = worker;
+    <!-- TAB 3: MEILENSTEIN-SHOP -->
+    <div id="tab-shop" class="tab-content">
+        <div class="card">
+            <h2>🏆 Team-Meilensteine & Belohnungen</h2>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom:12px;">Erreiche mit dem Team die XP-Ziele, um die Schlösser zu öffnen und Belohnungen freizuschalten!</p>
             
-            // Show review section & smooth scroll
-            const controlSection = document.getElementById('control-section');
-            controlSection.classList.remove('hidden');
-            controlSection.scrollIntoView({ behavior: 'smooth' });
+            <div class="milestone-item">
+                <div class="milestone-info">
+                    <font>☕ Extra Kaffeepause im Team</font><br>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Ziel: 30 XP</span>
+                </div>
+                <div class="milestone-status locked" id="shop-r1">🔒 Gesperrt</div>
+            </div>
+
+            <div class="milestone-item">
+                <div class="milestone-info">
+                    <font>⚽ Tischkicker-Turnier</font><br>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Ziel: 70 XP</span>
+                </div>
+                <div class="milestone-status locked" id="shop-r2">🔒 Gesperrt</div>
+            </div>
+
+            <div class="milestone-item">
+                <div class="milestone-info">
+                    <font>🕒 Freitags-Flex (Früher nach Hause)</font><br>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">Ziel: 150 XP</span>
+                </div>
+                <div class="milestone-status locked" id="shop-r3">🔒 Gesperrt</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let totalXP = 0;
+    let completedCount = 0;
+    let activeQuest = null;
+    let feedItems = [];
+
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById('tab-' + tabId).classList.add('active');
+        element.classList.add('active');
+    }
+
+    function claimQuest() {
+        const worker = document.getElementById('worker-name').value.trim();
+        const task = document.getElementById('task-select').value;
+
+        if(!worker) {
+            alert("Bitte gib deinen Namen ein!");
+            return;
         }
 
-        function submitQuestReview() {
-            const controller = document.getElementById('controller-name').value.trim();
-            const cleanPts = parseInt(document.getElementById('pts-clean').value) || 0;
-            const accuracyPts = parseInt(document.getElementById('pts-accuracy').value) || 0;
-            const feedback = document.getElementById('task-feedback').value.trim();
+        activeQuest = { worker, task };
+        document.getElementById('active-quest-title').innerText = task;
+        document.getElementById('active-worker').innerText = worker;
+        document.getElementById('step-1-card').style.display = 'none';
+        document.getElementById('step-2-card').style.display = 'block';
+    }
 
-            if(!controller) {
-                showModal("Hinweis", "Bitte trage den Namen des Prüfers ein (4-Augen-Prinzip)!", "⚠️");
-                return;
-            }
+    function completeQuest() {
+        const controller = document.getElementById('controller-name').value.trim();
+        const clean = parseInt(document.getElementById('pts-clean').value) || 0;
+        const accuracy = parseInt(document.getElementById('pts-accuracy').value) || 0;
+        const feedback = document.getElementById('task-feedback').value.trim();
 
-            const earnedXP = cleanPts + accuracyPts;
-            totalXP += earnedXP;
-            completedTasksCount += 1;
-
-            // Log entry
-            tasksLog.unshift({
-                task: activeQuestData.task,
-                worker: activeQuestData.worker,
-                controller: controller,
-                xp: earnedXP,
-                feedback: feedback || "Sauber und exakt ausgeführt."
-            });
-
-            updateUI();
-
-            // Reset forms
-            document.getElementById('worker-name').value = '';
-            document.getElementById('controller-name').value = '';
-            document.getElementById('task-feedback').value = '';
-            document.getElementById('control-section').classList.add('hidden');
-            activeQuestData = null;
-
-            showModal("Team-Erfolg!", `Starke Leistung! +${earnedXP} XP wurden dem Team-Konto gutgeschrieben. Das 4-Augen-Prinzip wurde erfolgreich dokumentiert. 🚀`, "✨");
+        if(!controller) {
+            alert("Bitte gib den Namen des Kontrolleurs ein (4-Augen-Prinzip)!");
+            return;
         }
 
-        function updateUI() {
-            document.getElementById('total-xp').innerText = totalXP;
-            document.getElementById('completed-count').innerText = completedTasksCount;
-            
-            // Level calculation
-            const currentLevel = 1 + Math.floor(totalXP / 50);
-            document.getElementById('current-level').innerText = "Level " + currentLevel;
+        const earned = clean + accuracy;
+        totalXP += earned;
+        completedCount++;
 
-            // XP Progress Bar
-            let nextGoal = 30;
-            if(totalXP >= 30) nextGoal = 70;
-            if(totalXP >= 70) nextGoal = 150;
-            if(totalXP >= 150) nextGoal = 300;
+        feedItems.unshift({
+            task: activeQuest.task,
+            worker: activeQuest.worker,
+            controller: controller,
+            xp: earned,
+            feedback: feedback
+        });
 
-            let prevGoal = 0;
-            if(totalXP >= 30) prevGoal = 30;
-            if(totalXP >= 70) prevGoal = 70;
-            if(totalXP >= 150) prevGoal = 150;
+        updateUI();
 
-            let progressPercent = Math.min(100, Math.max(0, ((totalXP - prevGoal) / (nextGoal - prevGoal)) * 100));
-            document.getElementById('xp-bar').style.width = progressPercent + '%';
-            document.getElementById('xp-progress-text').innerText = `${totalXP} / ${nextGoal} XP`;
-            document.getElementById('current-rank-label').innerText = `Level ${currentLevel} (Nächstes Ziel: ${nextGoal} XP)`;
+        // Reset
+        document.getElementById('worker-name').value = '';
+        document.getElementById('controller-name').value = '';
+        document.getElementById('task-feedback').value = '';
+        document.getElementById('step-2-card').style.display = 'none';
+        document.getElementById('step-1-card').style.display = 'block';
+        activeQuest = null;
 
-            // Render table log
-            const logBody = document.getElementById('task-log-body');
-            logBody.innerHTML = '';
-            tasksLog.forEach(item => {
-                logBody.innerHTML += `
-                    <tr class="hover:bg-slate-900/40 transition">
-                        <td class="py-3 px-3">
-                            <strong class="text-sky-300 block">${item.task}</strong>
-                            <span class="text-[11px] text-hud-muted">Ausgeführt von: ${item.worker}</span>
-                        </td>
-                        <td class="py-3 px-3">
-                            <span class="text-xs font-semibold text-hud-text">${item.controller}</span>
-                            <p class="text-[11px] text-hud-muted italic truncate max-w-xs" title="${item.feedback}">"${item.feedback}"</p>
-                        </td>
-                        <td class="py-3 px-3 font-extrabold text-emerald-400">+${item.xp} XP</td>
-                        <td class="py-3 px-3 text-right">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Geprüft ✓</span>
-                        </td>
-                    </tr>
-                `;
-            });
+        alert(`Fantastisch! +${earned} Team-XP erfolgreich verbucht! 🚀`);
+    }
 
-            // Milestones check
-            if(totalXP >= 30) {
-                const m1 = document.getElementById('milestone-1');
-                m1.classList.remove('opacity-75');
-                m1.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
-                document.getElementById('status-1').className = "inline-block text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                document.getElementById('status-1').innerText = "Freigeschaltet! 🎉";
-            }
-            if(totalXP >= 70) {
-                const m2 = document.getElementById('milestone-2');
-                m2.classList.remove('opacity-75');
-                m2.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
-                document.getElementById('status-2').className = "inline-block text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                document.getElementById('status-2').innerText = "Freigeschaltet! 🎉";
-            }
-            if(totalXP >= 150) {
-                const m3 = document.getElementById('milestone-3');
-                m3.classList.remove('opacity-75');
-                m3.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
-                document.getElementById('status-3').className = "inline-block text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                document.getElementById('status-3').innerText = "Freigeschaltet! 🎉";
-            }
+    function updateUI() {
+        document.getElementById('total-xp').innerText = totalXP;
+        document.getElementById('completed-quests').innerText = completedCount;
+        
+        let level = 1 + Math.floor(totalXP / 50);
+        document.getElementById('current-level').innerText = "Level " + level;
+
+        // Progress bar calculation
+        let target = 30;
+        let prev = 0;
+        if(totalXP >= 30) { target = 70; prev = 30; }
+        if(totalXP >= 70) { target = 150; prev = 70; }
+        if(totalXP >= 150) { target = 300; prev = 150; }
+
+        let pct = Math.min(100, Math.max(0, ((totalXP - prev) / (target - prev)) * 100));
+        document.getElementById('xp-bar').style.width = pct + '%';
+        document.getElementById('xp-progress-label').innerText = `${totalXP} / ${target} XP`;
+
+        // Feed Tabelle
+        const feedContainer = document.getElementById('feed-log');
+        feedContainer.innerHTML = '';
+        feedItems.forEach(item => {
+            feedContainer.innerHTML += `
+                <tr>
+                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.7rem;">Von: ${item.worker}</span></td>
+                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.65rem;">💬 "${item.feedback || 'Top'}"</span></td>
+                    <td><strong style="color:var(--accent);">+${item.xp} XP</strong></td>
+                </tr>
+            `;
+        });
+
+        // Meilensteine / Schlösser Shop
+        if(totalXP >= 30) {
+            document.getElementById('shop-r1').className = "milestone-status unlocked";
+            document.getElementById('shop-r1').innerText = "🎉 Freigeschaltet!";
         }
-
-        function showModal(title, message, icon) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-message').innerText = message;
-            document.getElementById('modal-icon').innerText = icon || "✨";
-            document.getElementById('modal-overlay').classList.remove('hidden');
+        if(totalXP >= 70) {
+            document.getElementById('shop-r2').className = "milestone-status unlocked";
+            document.getElementById('shop-r2').innerText = "🎉 Freigeschaltet!";
         }
-
-        function closeModal() {
-            document.getElementById('modal-overlay').classList.add('hidden');
+        if(totalXP >= 150) {
+            document.getElementById('shop-r3').className = "milestone-status unlocked";
+            document.getElementById('shop-r3').innerText = "🎉 Freigeschaltet!";
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
-```
