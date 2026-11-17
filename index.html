@@ -1,373 +1,397 @@
+```html
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Das ehrliche Fundament</title>
+    <title>Team-Hub | Enterprise HUD Gamification</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hud: {
+                            bg: '#090d16',
+                            card: '#111827',
+                            border: '#1f293d',
+                            primary: '#38bdf8',
+                            accent: '#10b981',
+                            warning: '#f59e0b',
+                            purple: '#8b5cf6',
+                            text: '#f8fafc',
+                            muted: '#94a3b8'
+                        }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(56, 189, 248, 0.15)',
+                        'glow-accent': '0 0 25px rgba(16, 185, 129, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #38bdf8;
-            --accent: #10b981;
-            --warning: #f59e0b;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #475569;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text);
-            margin: 0;
-            padding: 15px;
-        }
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 { color: var(--primary); font-size: 1.7rem; margin-bottom: 5px; }
-        p.subtitle { color: var(--text-muted); font-size: 0.9rem; }
-        
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        h2 { font-size: 1.1rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-        
-        /* Fortschrittsbalken (Gamification) */
-        .progress-container {
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            height: 14px;
-            width: 100%;
-            margin: 10px 0;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-        .progress-bar {
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-        label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: #0f172a;
-            color: var(--text);
-            box-sizing: border-box;
-            font-size: 0.9rem;
-        }
-        textarea { resize: vertical; height: 60px; }
-        
-        button {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            width: 100%;
-            font-size: 0.95rem;
-        }
-        button:hover { opacity: 0.9; }
-        .btn-primary { background-color: var(--accent); color: #000; margin-top: 5px; }
-        .btn-warning { background-color: var(--warning); color: #000; margin-top: 5px; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.85rem;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        th { color: var(--primary); }
-        
-        .badge {
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        .badge-done { background: rgba(16, 185, 129, 0.2); color: var(--accent); }
-
-        .stats-box {
-            display: flex;
-            justify-content: space-between;
-            text-align: center;
-        }
-        .stat-item {
-            background: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 8px;
-            flex: 1;
-            margin: 0 4px;
-        }
-        .stat-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
-        .stat-label { font-size: 0.7rem; color: var(--text-muted); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #090d16; color: #f8fafc; }
+        .hud-border { border: 1px solid rgba(56, 189, 248, 0.2); }
+        .hud-card { background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%); backdrop-filter: blur(12px); }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #090d16; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
     </style>
 </head>
-<body>
+<body class="min-h-screen bg-hud-bg text-hud-text pb-12">
 
-<div class="container">
-    <header>
-        <h1>Team-Hub</h1>
-        <p class="subtitle">Das ehrliche Fundament für Teamarbeit & gemeinsame Ziele</p>
+    <!-- Top Navigation / HUD Bar -->
+    <header class="sticky top-0 z-50 bg-hud-bg/90 backdrop-blur-md border-b border-hud-border">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-emerald-400 flex items-center justify-center shadow-glow">
+                    <svg class="w-6 h-6 text-slate-950 font-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-sky-400 to-emerald-400 bg-clip-text text-transparent">TEAM-HUB</h1>
+                    <p class="text-xs text-hud-muted">Echtes Miteinander statt Kontroll-Stress</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-hud-border">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Live Cloud Sync</span>
+            </div>
+        </div>
     </header>
 
-    <!-- Punkte & Level Übersicht mit XP-Balken -->
-    <div class="card">
-        <h2>Gemeinsamer Team-Fortschritt</h2>
-        <div class="stats-box">
-            <div class="stat-item">
-                <div class="stat-value" id="total-points">0</div>
-                <div class="stat-label">Team-XP</div>
+    <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6">
+
+        <!-- 1. HEADER METRICS & XP BAR -->
+        <section class="hud-card rounded-2xl p-5 hud-border shadow-glow relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-sky-400">Gemeinsames Team-Konto</span>
+                    <h2 class="text-2xl font-black mt-0.5 flex items-center gap-2">
+                        <span id="total-xp">0</span> <span class="text-sm font-normal text-hud-muted">XP gesammelt</span>
+                    </h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-slate-900/80 px-4 py-2 rounded-xl border border-hud-border text-center">
+                        <div id="completed-count" class="text-lg font-bold text-emerald-400">0</div>
+                        <div class="text-[10px] uppercase text-hud-muted tracking-wider">Gelöste Quests</div>
+                    </div>
+                    <div class="bg-slate-900/80 px-4 py-2 rounded-xl border border-hud-border text-center">
+                        <div id="current-level" class="text-lg font-bold text-purple-400">Level 1</div>
+                        <div class="text-[10px] uppercase text-hud-muted tracking-wider">Team Rang</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="completed-tasks">0</div>
-                <div class="stat-label">Gelöste Quests</div>
+            
+            <!-- XP Progress Bar -->
+            <div class="space-y-1.5">
+                <div class="flex justify-between text-xs font-medium text-hud-muted">
+                    <span id="current-rank-label">Level 1 (Auf dem Weg zur Kaffeepause)</span>
+                    <span id="xp-progress-text">0 / 30 XP</span>
+                </div>
+                <div class="w-full bg-slate-900/90 rounded-full h-3.5 p-0.5 border border-hud-border overflow-hidden">
+                    <div id="xp-bar" class="bg-gradient-to-r from-sky-500 via-purple-500 to-emerald-400 h-full rounded-full transition-all duration-700 shadow-glow-accent" style="width: 0%"></div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="current-level">Level 1</div>
-                <div class="stat-label">Rang</div>
+        </section>
+
+        <!-- 2. QUEST BOARD & SELBSTVERPFLICHTUNG -->
+        <section class="hud-card rounded-2xl p-5 hud-border">
+            <div class="flex items-center justify-between mb-4 border-b border-hud-border pb-3">
+                <h2 class="text-base font-bold flex items-center gap-2 text-sky-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                    1. Quest-Board & Selbstverpflichtung
+                </h2>
+                <span class="text-xs bg-sky-500/10 text-sky-400 px-2.5 py-1 rounded-full font-medium border border-sky-500/20">Eigeninitiative</span>
             </div>
-        </div>
-        <div style="margin-top: 12px;">
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
-                <span>Fortschritt zum nächsten Meilenstein</span>
-                <span id="progress-text">0 / 30 XP</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Wer übernimmt die Verantwortung?</label>
+                    <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco / Sara)" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-sky-400 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Wähle eine Betriebs-Quest:</label>
+                    <select id="task-select" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-sky-400 transition">
+                        <option value="🧹 Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
+                        <option value="📦 Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
+                        <option value="🔧 Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
+                        <option value="🚀 Prozess-Optimierung & Sauberkeit">🚀 Prozess-Optimierung & Sauberkeit</option>
+                    </select>
+                </div>
             </div>
-            <div class="progress-container">
-                <div class="progress-bar" id="xp-bar"></div>
+            <button onclick="claimQuest()" class="mt-4 w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-3 rounded-xl shadow-lg transition transform active:scale-[0.99] text-sm uppercase tracking-wider">
+                Quest starten (Verpflichtung eingehen) ⚡
+            </button>
+        </section>
+
+        <!-- 3. 4-AUGEN-PRINZIP & KONTROLLEUR-ANSICHT (Hidden by default until a quest is claimed) -->
+        <section id="control-section" class="hud-card rounded-2xl p-5 border border-amber-500/40 bg-amber-500/5 hidden">
+            <div class="flex items-center justify-between mb-4 border-b border-amber-500/20 pb-3">
+                <h2 class="text-base font-bold flex items-center gap-2 text-amber-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    2. 4-Augen-Prinzip & Qualitäts-Check
+                </h2>
+                <span class="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full font-bold border border-amber-500/30 animate-pulse">Aktiv zu prüfen</span>
             </div>
+
+            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-hud-border mb-4 text-xs">
+                <span class="text-hud-muted">Aktive Quest:</span> <strong id="active-quest-name" class="text-sky-400"></strong> | 
+                <span class="text-hud-muted">Ausgeführt von:</span> <strong id="active-worker-display" class="text-emerald-400"></strong>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Name des Prüfers (4-Augen-Prinzip):</label>
+                    <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-amber-400 transition">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-hud-muted mb-1.5">Sauberkeits-Rating (Max. 12 XP): <span id="val-clean" class="text-sky-400 font-bold">10</span></label>
+                        <input type="range" id="pts-clean" min="0" max="12" value="10" oninput="document.getElementById('val-clean').innerText=this.value" class="w-full accent-sky-400 cursor-pointer">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-hud-muted mb-1.5">Ausführungs-Rating (Max. 13 XP): <span id="val-acc" class="text-emerald-400 font-bold">12</span></label>
+                        <input type="range" id="pts-accuracy" min="0" max="13" value="12" oninput="document.getElementById('val-acc').innerText=this.value" class="w-full accent-emerald-400 cursor-pointer">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-hud-muted mb-1.5">Ehrliches Feedback & Wertschätzung:</label>
+                    <textarea id="task-feedback" placeholder="z.B. Top gearbeitet, Respekt für die saubere Umsetzung!" class="w-full bg-slate-900/90 border border-hud-border rounded-xl px-3.5 py-2.5 text-sm text-hud-text focus:outline-none focus:border-amber-400 transition h-20 resize-none"></textarea>
+                </div>
+
+                <button onclick="submitQuestReview()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold py-3 rounded-xl shadow-lg transition transform active:scale-[0.99] text-sm uppercase tracking-wider">
+                    Prüfen, XP vergeben & Sieg sichern ✓
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. LIVE TEAM FEED & PROTOKOLL -->
+        <section class="hud-card rounded-2xl p-5 hud-border">
+            <div class="flex items-center justify-between mb-4 border-b border-hud-border pb-3">
+                <h2 class="text-base font-bold flex items-center gap-2 text-sky-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    3. Live Team-Feed & Protokoll
+                </h2>
+                <span class="text-xs text-hud-muted">Echtzeit-Nachweis</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-hud-border text-hud-muted text-xs uppercase tracking-wider">
+                            <th class="py-2.5 px-3">Quest / Wer</th>
+                            <th class="py-2.5 px-3">Prüfer & Feedback</th>
+                            <th class="py-2.5 px-3">Ertrag</th>
+                            <th class="py-2.5 px-3 text-right">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="task-log-body" class="divide-y divide-slate-800/60">
+                        <tr>
+                            <td colspan="4" class="py-6 text-center text-hud-muted text-xs italic">Noch keine Quests im Team-Feed verzeichnet. Starte die erste Aufgabe!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 5. BELOHNUNGS-LEITER & MEILENSTEINE -->
+        <section class="hud-card rounded-2xl p-5 hud-border">
+            <div class="flex items-center justify-between mb-4 border-b border-hud-border pb-3">
+                <h2 class="text-base font-bold flex items-center gap-2 text-purple-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    4. Gemeinsame Meilensteine & Belohnungen
+                </h2>
+                <span class="text-xs text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full font-medium border border-purple-500/20">Gemeinschaftsziele</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Milestone 1 -->
+                <div id="milestone-1" class="bg-slate-900/80 p-4 rounded-xl border border-hud-border relative overflow-hidden opacity-75">
+                    <div class="text-xs font-bold text-sky-400 mb-1">30 XP Ziel</div>
+                    <div class="font-bold text-sm mb-2">☕ Extra Kaffeepause im Team</div>
+                    <div id="status-1" class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gesperrt 🔒</div>
+                </div>
+                <!-- Milestone 2 -->
+                <div id="milestone-2" class="bg-slate-900/80 p-4 rounded-xl border border-hud-border relative overflow-hidden opacity-75">
+                    <div class="text-xs font-bold text-purple-400 mb-1">70 XP Ziel</div>
+                    <div class="font-bold text-sm mb-2">⚽ Tischkicker-Turnier (Mittag)</div>
+                    <div id="status-2" class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gesperrt 🔒</div>
+                </div>
+                <!-- Milestone 3 -->
+                <div id="milestone-3" class="bg-slate-900/80 p-4 rounded-xl border border-hud-border relative overflow-hidden opacity-75">
+                    <div class="text-xs font-bold text-emerald-400 mb-1">150 XP Ziel</div>
+                    <div class="font-bold text-sm mb-2">🕒 Freitags-Flex (Früher Heim)</div>
+                    <div id="status-3" class="inline-block text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">Gesperrt 🔒</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Notification Modal -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="hud-card border border-sky-500/40 rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-glow">
+            <div id="modal-icon" class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-2xl font-black">🎉</div>
+            <h3 id="modal-title" class="text-lg font-bold">Erfolgreich!</h3>
+            <p id="modal-message" class="text-xs text-hud-muted leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider transition">Verstanden</button>
         </div>
     </div>
 
-    <!-- Schritt 1: Quest-Auswahl & Selbstverpflichtung -->
-    <div class="card" id="step-1-card">
-        <h2>1. Quest annehmen & Selbstverpflichtung</h2>
-        <div class="form-group">
-            <label>Wer übernimmt die Verantwortung?</label>
-            <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
-        </div>
-        <div class="form-group">
-            <label>Quest (Aufgabe) auswählen:</label>
-            <select id="task-select">
-                <option value="🧹 Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
-                <option value="📦 Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
-                <option value="🔧 Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
-                <option value="🚀 Prozess-Optimierung & Sauberkeit">🚀 Prozess-Optimierung & Sauberkeit</option>
-            </select>
-        </div>
-        <button class="btn-warning" onclick="claimTask()">Quest starten (Verpflichtung eingehen)</button>
-    </div>
+    <!-- Application Logic -->
+    <script>
+        let totalXP = 0;
+        let completedTasksCount = 0;
+        let tasksLog = [];
+        let activeQuestData = null;
 
-    <!-- Schritt 2: 4-Augen-Prinzip & Kontrolle -->
-    <div class="card" id="step-2-card" style="display:none; border: 1px solid var(--warning);">
-        <h2>2. 4-Augen-Prinzip & Qualitäts-Check</h2>
-        <p style="font-size: 0.85rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-task-name" style="font-weight:bold;"></span> (von <span id="active-worker-name"></span>)</p>
-        
-        <div class="form-group">
-            <label>Name des Kontrolleurs (4-Augen-Prinzip):</label>
-            <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)">
-        </div>
-        <div class="form-group">
-            <label>Punkte für Sauberkeit (Max. 12 Pkt):</label>
-            <input type="number" id="pts-clean" min="0" max="12" value="10">
-        </div>
-        <div class="form-group">
-            <label>Punkte für richtige Ausführung (Max. 13 Pkt):</label>
-            <input type="number" id="pts-accuracy" min="0" max="13" value="12">
-        </div>
-        <div class="form-group">
-            <label>Feedback / Wertschätzung (Ehrlich & direkt):</label>
-            <textarea id="task-feedback" placeholder="z.B. Top gearbeitet, Respekt für die saubere Umsetzung!"></textarea>
-        </div>
-        <button class="btn-primary" onclick="completeAndRateTask()">Prüfen, XP vergeben & Sieg sichern</button>
-    </div>
+        function claimQuest() {
+            const worker = document.getElementById('worker-name').value.trim();
+            const task = document.getElementById('task-select').value;
 
-    <!-- Live-Protokoll -->
-    <div class="card">
-        <h2>3. Team-Feed & Statistik</h2>
-        <div style="overflow-x: auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Quest / Wer</th>
-                        <th>Prüfer & Feedback</th>
-                        <th>XP</th>
-                        <th>Status</th>
+            if(!worker) {
+                showModal("Hinweis", "Bitte gib deinen Namen ein, um die Selbstverpflichtung einzugehen!", "⚠️");
+                return;
+            }
+
+            activeQuestData = { worker, task };
+            document.getElementById('active-quest-name').innerText = task;
+            document.getElementById('active-worker-display').innerText = worker;
+            
+            // Show review section & smooth scroll
+            const controlSection = document.getElementById('control-section');
+            controlSection.classList.remove('hidden');
+            controlSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function submitQuestReview() {
+            const controller = document.getElementById('controller-name').value.trim();
+            const cleanPts = parseInt(document.getElementById('pts-clean').value) || 0;
+            const accuracyPts = parseInt(document.getElementById('pts-accuracy').value) || 0;
+            const feedback = document.getElementById('task-feedback').value.trim();
+
+            if(!controller) {
+                showModal("Hinweis", "Bitte trage den Namen des Prüfers ein (4-Augen-Prinzip)!", "⚠️");
+                return;
+            }
+
+            const earnedXP = cleanPts + accuracyPts;
+            totalXP += earnedXP;
+            completedTasksCount += 1;
+
+            // Log entry
+            tasksLog.unshift({
+                task: activeQuestData.task,
+                worker: activeQuestData.worker,
+                controller: controller,
+                xp: earnedXP,
+                feedback: feedback || "Sauber und exakt ausgeführt."
+            });
+
+            updateUI();
+
+            // Reset forms
+            document.getElementById('worker-name').value = '';
+            document.getElementById('controller-name').value = '';
+            document.getElementById('task-feedback').value = '';
+            document.getElementById('control-section').classList.add('hidden');
+            activeQuestData = null;
+
+            showModal("Team-Erfolg!", `Starke Leistung! +${earnedXP} XP wurden dem Team-Konto gutgeschrieben. Das 4-Augen-Prinzip wurde erfolgreich dokumentiert. 🚀`, "✨");
+        }
+
+        function updateUI() {
+            document.getElementById('total-xp').innerText = totalXP;
+            document.getElementById('completed-count').innerText = completedTasksCount;
+            
+            // Level calculation
+            const currentLevel = 1 + Math.floor(totalXP / 50);
+            document.getElementById('current-level').innerText = "Level " + currentLevel;
+
+            // XP Progress Bar
+            let nextGoal = 30;
+            if(totalXP >= 30) nextGoal = 70;
+            if(totalXP >= 70) nextGoal = 150;
+            if(totalXP >= 150) nextGoal = 300;
+
+            let prevGoal = 0;
+            if(totalXP >= 30) prevGoal = 30;
+            if(totalXP >= 70) prevGoal = 70;
+            if(totalXP >= 150) prevGoal = 150;
+
+            let progressPercent = Math.min(100, Math.max(0, ((totalXP - prevGoal) / (nextGoal - prevGoal)) * 100));
+            document.getElementById('xp-bar').style.width = progressPercent + '%';
+            document.getElementById('xp-progress-text').innerText = `${totalXP} / ${nextGoal} XP`;
+            document.getElementById('current-rank-label').innerText = `Level ${currentLevel} (Nächstes Ziel: ${nextGoal} XP)`;
+
+            // Render table log
+            const logBody = document.getElementById('task-log-body');
+            logBody.innerHTML = '';
+            tasksLog.forEach(item => {
+                logBody.innerHTML += `
+                    <tr class="hover:bg-slate-900/40 transition">
+                        <td class="py-3 px-3">
+                            <strong class="text-sky-300 block">${item.task}</strong>
+                            <span class="text-[11px] text-hud-muted">Ausgeführt von: ${item.worker}</span>
+                        </td>
+                        <td class="py-3 px-3">
+                            <span class="text-xs font-semibold text-hud-text">${item.controller}</span>
+                            <p class="text-[11px] text-hud-muted italic truncate max-w-xs" title="${item.feedback}">"${item.feedback}"</p>
+                        </td>
+                        <td class="py-3 px-3 font-extrabold text-emerald-400">+${item.xp} XP</td>
+                        <td class="py-3 px-3 text-right">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Geprüft ✓</span>
+                        </td>
                     </tr>
-                </thead>
-                <tbody id="task-log">
-                    <tr>
-                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Noch keine Quests im Team-Feed.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                `;
+            });
 
-    <!-- Belohnungs-Tabelle -->
-    <div class="card">
-        <h2>4. Gemeinsame Meilensteine & Belohnungen</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>XP-Ziel</th>
-                    <th>Gemeinsame Belohnung</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>30 XP</td>
-                    <td>☕ Extra Kaffeepause im Team</td>
-                    <td><span id="reward-1" style="color: var(--text-muted);">Gesperrt</span></td>
-                </tr>
-                <tr>
-                    <td>70 XP</td>
-                    <td>⚽ Tischkicker-Turnier in der Mittagspause</td>
-                    <td><span id="reward-2" style="color: var(--text-muted);">Gesperrt</span></td>
-                </tr>
-                <tr>
-                    <td>150 XP</td>
-                    <td>🕒 Freitags-Flex (Früher nach Hause)</td>
-                    <td><span id="reward-3" style="color: var(--text-muted);">Gesperrt</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script>
-    let totalPoints = 0;
-    let taskCount = 0;
-    let tasksLog = [];
-    let currentTask = null;
-
-    function claimTask() {
-        const worker = document.getElementById('worker-name').value.trim();
-        const task = document.getElementById('task-select').value;
-
-        if(!worker) {
-            alert("Bitte gib deinen Namen ein, um die Quest anzunehmen!");
-            return;
+            // Milestones check
+            if(totalXP >= 30) {
+                const m1 = document.getElementById('milestone-1');
+                m1.classList.remove('opacity-75');
+                m1.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
+                document.getElementById('status-1').className = "inline-block text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                document.getElementById('status-1').innerText = "Freigeschaltet! 🎉";
+            }
+            if(totalXP >= 70) {
+                const m2 = document.getElementById('milestone-2');
+                m2.classList.remove('opacity-75');
+                m2.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
+                document.getElementById('status-2').className = "inline-block text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                document.getElementById('status-2').innerText = "Freigeschaltet! 🎉";
+            }
+            if(totalXP >= 150) {
+                const m3 = document.getElementById('milestone-3');
+                m3.classList.remove('opacity-75');
+                m3.classList.add('border-emerald-500/50', 'bg-emerald-500/10');
+                document.getElementById('status-3').className = "inline-block text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                document.getElementById('status-3').innerText = "Freigeschaltet! 🎉";
+            }
         }
 
-        currentTask = { worker, task };
-        
-        document.getElementById('active-task-name').innerText = task;
-        document.getElementById('active-worker-name').innerText = worker;
-        document.getElementById('step-1-card').style.display = 'none';
-        document.getElementById('step-2-card').style.display = 'block';
-    }
-
-    function completeAndRateTask() {
-        const controller = document.getElementById('controller-name').value.trim();
-        const cleanPts = parseInt(document.getElementById('pts-clean').value) || 0;
-        const accuracyPts = parseInt(document.getElementById('pts-accuracy').value) || 0;
-        const feedback = document.getElementById('task-feedback').value.trim();
-
-        if(!controller) {
-            alert("Bitte trage den Namen des Kontrolleurs ein (4-Augen-Prinzip)!");
-            return;
+        function showModal(title, message, icon) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal-icon').innerText = icon || "✨";
+            document.getElementById('modal-overlay').classList.remove('hidden');
         }
 
-        const earnedPoints = cleanPts + accuracyPts;
-        totalPoints += earnedPoints;
-        taskCount += 1;
-
-        tasksLog.unshift({
-            task: currentTask.task,
-            worker: currentTask.worker,
-            controller: controller,
-            points: earnedPoints,
-            feedback: feedback
-        });
-
-        updateUI();
-
-        document.getElementById('worker-name').value = '';
-        document.getElementById('controller-name').value = '';
-        document.getElementById('task-feedback').value = '';
-        document.getElementById('step-2-card').style.display = 'none';
-        document.getElementById('step-1-card').style.display = 'block';
-        currentTask = null;
-
-        alert(`Starke Teamleistung! +${earnedPoints} XP erfolgreich im Team-Feed gespeichert! 🚀`);
-    }
-
-    function updateUI() {
-        document.getElementById('total-points').innerText = totalPoints;
-        document.getElementById('completed-tasks').innerText = taskCount;
-        
-        let currentLevel = 1 + Math.floor(totalPoints / 50);
-        document.getElementById('current-level').innerText = "Level " + currentLevel;
-
-        // XP Progress Bar Berechnung (Ziel bis zum nächsten Meilenstein)
-        let nextGoal = 30;
-        if(totalPoints >= 30) nextGoal = 70;
-        if(totalPoints >= 70) nextGoal = 150;
-        if(totalPoints >= 150) nextGoal = 300;
-
-        let prevGoal = 0;
-        if(totalPoints >= 30) prevGoal = 30;
-        if(totalPoints >= 70) prevGoal = 70;
-        if(totalPoints >= 150) prevGoal = 150;
-
-        let progressPercent = Math.min(100, Math.max(0, ((totalPoints - prevGoal) / (nextGoal - prevGoal)) * 100));
-        document.getElementById('xp-bar').style.width = progressPercent + '%';
-        document.getElementById('progress-text').innerText = `${totalPoints} / ${nextGoal} XP`;
-
-        // Tabelle aktualisieren
-        const logContainer = document.getElementById('task-log');
-        logContainer.innerHTML = '';
-        tasksLog.forEach(item => {
-            logContainer.innerHTML += `
-                <tr>
-                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.75rem;">Ausgeführt von: ${item.worker}</span></td>
-                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.7rem;" title="${item.feedback}">💬 "${item.feedback || 'Top erledigt'}"</span></td>
-                    <td><strong style="color:var(--accent);">+${item.points} XP</strong></td>
-                    <td><span class="badge badge-done">Geprüft ✓</span></td>
-                </tr>
-            `;
-        });
-
-        // Meilensteine freischalten
-        if(totalPoints >= 30) {
-            document.getElementById('reward-1').innerText = "Freigeschaltet! 🎉";
-            document.getElementById('reward-1').style.color = "var(--accent)";
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.add('hidden');
         }
-        if(totalPoints >= 70) {
-            document.getElementById('reward-2').innerText = "Freigeschaltet! 🎉";
-            document.getElementById('reward-2').style.color = "var(--accent)";
-        }
-        if(totalPoints >= 150) {
-            document.getElementById('reward-3').innerText = "Freigeschaltet! 🎉";
-            document.getElementById('reward-3').style.color = "var(--accent)";
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
+```
