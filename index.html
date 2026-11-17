@@ -13,47 +13,51 @@
             --warning: #f59e0b;
             --text: #f8fafc;
             --text-muted: #94a3b8;
+            --border: #475569;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
         }
         .container {
-            max-width: 700px;
+            max-width: 650px;
             margin: 0 auto;
         }
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
-        h1 { color: var(--primary); font-size: 1.8rem; margin-bottom: 5px; }
-        p.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+        h1 { color: var(--primary); font-size: 1.7rem; margin-bottom: 5px; }
+        p.subtitle { color: var(--text-muted); font-size: 0.9rem; }
         
         .card {
             background-color: var(--card-bg);
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 18px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-        h2 { font-size: 1.2rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+        h2 { font-size: 1.1rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
         
         .form-group {
             margin-bottom: 12px;
         }
         label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid #475569;
+            border: 1px solid var(--border);
             background-color: #0f172a;
             color: var(--text);
             box-sizing: border-box;
+            font-size: 0.9rem;
         }
+        textarea { resize: vertical; height: 60px; }
+        
         button {
             padding: 12px;
             border: none;
@@ -62,45 +66,48 @@
             cursor: pointer;
             transition: opacity 0.2s;
             width: 100%;
+            font-size: 0.95rem;
         }
         button:hover { opacity: 0.9; }
-        .btn-primary { background-color: var(--accent); color: #000; margin-top: 10px; }
+        .btn-primary { background-color: var(--accent); color: #000; margin-top: 5px; }
+        .btn-warning { background-color: var(--warning); color: #000; margin-top: 5px; }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         th, td {
-            padding: 10px;
+            padding: 8px;
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         th { color: var(--primary); }
-        .status-badge {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--accent);
-            padding: 4px 8px;
+        
+        .badge {
+            padding: 3px 6px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            font-weight: bold;
         }
+        .badge-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .badge-done { background: rgba(16, 185, 129, 0.2); color: var(--accent); }
 
         .stats-box {
             display: flex;
             justify-content: space-between;
             text-align: center;
-            margin-bottom: 15px;
         }
         .stat-item {
             background: rgba(255,255,255,0.05);
             padding: 10px;
             border-radius: 8px;
             flex: 1;
-            margin: 0 5px;
+            margin: 0 4px;
         }
-        .stat-value { font-size: 1.3rem; font-weight: bold; color: var(--accent); }
-        .stat-label { font-size: 0.75rem; color: var(--text-muted); }
+        .stat-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+        .stat-label { font-size: 0.7rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -130,75 +137,95 @@
         </div>
     </div>
 
-    <!-- 1. Aufgabe auswählen & eintragen -->
-    <div class="card">
-        <h2>1. Aufgabe auswählen & Kontrollieren</h2>
+    <!-- Schritt 1: Aufgabe auswählen & Selbstverpflichtung -->
+    <div class="card" id="step-1-card">
+        <h2>1. Aufgabe wählen & Selbstverpflichtung</h2>
         <div class="form-group">
-            <label>Wer führt die Aufgabe aus?</label>
+            <label>Wer übernimmt die Aufgabe?</label>
             <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
         </div>
         <div class="form-group">
             <label>Aufgabe auswählen:</label>
             <select id="task-select">
-                <option value="Lagerordnung & Sauberkeit (10 Pkt)">🧹 Lagerordnung & Sauberkeit (10 Pkt)</option>
-                <option value="Reklamationsfreie Zone geprüft (15 Pkt)">📦 Reklamationsfreie Zone geprüft (15 Pkt)</option>
-                <option value="Gemeinsamer Werkzeug-Check (10 Pkt)">🔧 Gemeinsamer Werkzeug-Check (10 Pkt)</option>
-                <option value="Sonderprojekt / Optimierung (20 Pkt)">🚀 Sonderprojekt / Optimierung (20 Pkt)</option>
+                <option value="Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
+                <option value="Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
+                <option value="Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
+                <option value="Sonderprojekt / Optimierung">🚀 Sonderprojekt / Optimierung</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Wer hat es kontrolliert (4-Augen-Prinzip)?</label>
-            <input type="text" id="controller-name" placeholder="Name des Kontrolleurs (z.B. Kollege / Vorarbeiter)">
-        </div>
-        <button class="btn-primary" onclick="submitTask()">Aufgabe bestätigen & Punkte Gutschreiben</button>
+        <button class="btn-warning" onclick="claimTask()">Aufgabe übernehmen (Verpflichtung)</button>
     </div>
 
-    <!-- 2. Erledigte Aufgaben Log (Tabelle) -->
+    <!-- Schritt 2: Kontrolle & Punktevergabe (4-Augen-Prinzip) -->
+    <div class="card" id="step-2-card" style="display:none; border: 1px solid var(--warning);">
+        <h2>2. 4-Augen-Prinzip & Kontrolle</h2>
+        <p style="font-size: 0.85rem; color: var(--warning); margin-top:0;">Aktive Aufgabe: <span id="active-task-name" style="font-weight:bold;"></span> (von <span id="active-worker-name"></span>)</p>
+        
+        <div class="form-group">
+            <label>Name des Kontrolleurs:</label>
+            <input type="text" id="controller-name" placeholder="Name des Prüfers (z.B. Klaus)">
+        </div>
+        <div class="form-group">
+            <label>Punkte für Sauberkeit (Max. 12 Pkt):</label>
+            <input type="number" id="pts-clean" min="0" max="12" value="10">
+        </div>
+        <div class="form-group">
+            <label>Punkte für richtige Ausführung (Max. 13 Pkt):</label>
+            <input type="number" id="pts-accuracy" min="0" max="13" value="12">
+        </div>
+        <div class="form-group">
+            <label>Feedback / Kommentar (Kurz & Ehrlich):</label>
+            <textarea id="task-feedback" placeholder="z.B. Sauber gearbeitet, alles super top!"></textarea>
+        </div>
+        <button class="btn-primary" onclick="completeAndRateTask()">Prüfen, Punkte vergeben & Abschließen</button>
+    </div>
+
+    <!-- Protokoll & Statistik -->
     <div class="card">
-        <h2>2. Protokoll (Erledigte Aufgaben & Kontrolle)</h2>
+        <h2>3. Statistik & Aufgaben-Protokoll</h2>
         <div style="overflow-x: auto;">
             <table>
                 <thead>
                     <tr>
-                        <th>Aufgabe</th>
-                        <th>Ausgeführt von</th>
-                        <th>Kontrolliert von</th>
+                        <th>Aufgabe / Wer</th>
+                        <th>Prüfer</th>
+                        <th>Punkte</th>
                         <th>Status</th>
                     </tr>
-                 dulces
+                </thead>
                 <tbody id="task-log">
                     <tr>
-                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Noch keine Aufgaben dokumentiert.</td>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Noch keine Aufgaben im System.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- 3. Belohnungs-Tabelle -->
+    <!-- Belohnungs-Tabelle -->
     <div class="card">
-        <h2>3. Belohnungs-Tabelle (Gemeinsamer Nenner)</h2>
+        <h2>4. Belohnungs-Tabelle (Team-Meilensteine)</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Punkte-Ziel</th>
-                    <th>Belohnung für alle</th>
+                    <th>Ziel</th>
+                    <th>Gemeinsame Belohnung</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>20 Pkt</td>
+                    <td>30 Pkt</td>
                     <td>☕ Extra Kaffeepause im Team</td>
                     <td><span id="reward-1" style="color: var(--text-muted);">Gesperrt</span></td>
                 </tr>
                 <tr>
-                    <td>50 Pkt</td>
+                    <td>70 Pkt</td>
                     <td>⚽ Tischkicker-Turnier in der Mittagspause</td>
                     <td><span id="reward-2" style="color: var(--text-muted);">Gesperrt</span></td>
                 </tr>
                 <tr>
-                    <td>100 Pkt</td>
+                    <td>150 Pkt</td>
                     <td>🕒 Freitags-Flex (Früher nach Hause)</td>
                     <td><span id="reward-3" style="color: var(--text-muted);">Gesperrt</span></td>
                 </tr>
@@ -211,40 +238,67 @@
     let totalPoints = 0;
     let taskCount = 0;
     let tasksLog = [];
+    let currentTask = null;
 
-    function submitTask() {
+    function claimTask() {
         const worker = document.getElementById('worker-name').value.trim();
         const task = document.getElementById('task-select').value;
-        const controller = document.getElementById('controller-name').value.trim();
 
-        if(!worker || !controller) {
-            alert("Bitte gib sowohl deinen Namen als auch den Namen des Kontrolleurs ein! (Fairness & Kontrolle)");
+        if(!worker) {
+            alert("Bitte gib deinen Namen ein, um die Aufgabe zu übernehmen!");
             return;
         }
 
-        // Punkte ermitteln
-        let points = 10;
-        if(task.includes('15 Pkt')) points = 15;
-        if(task.includes('20 Pkt')) points = 20;
+        currentTask = { worker, task };
+        
+        // UI umschalten auf Kontroll-Modus
+        document.getElementById('active-task-name').innerText = task;
+        document.getElementById('active-worker-name').innerText = worker;
+        document.getElementById('step-1-card').style.display = 'none';
+        document.getElementById('step-2-card').style.display = 'block';
+    }
 
-        totalPoints += points;
+    function completeAndRateTask() {
+        const controller = document.getElementById('controller-name').value.trim();
+        const cleanPts = parseInt(document.getElementById('pts-clean').value) || 0;
+        const accuracyPts = parseInt(document.getElementById('pts-accuracy').value) || 0;
+        const feedback = document.getElementById('task-feedback').value.trim();
+
+        if(!controller) {
+            alert("Bitte gib den Namen des Kontrolleurs ein (4-Augen-Prinzip)!");
+            return;
+        }
+
+        const earnedPoints = cleanPts + accuracyPts;
+        totalPoints += earnedPoints;
         taskCount += 1;
 
-        // Log eintrag hinzufügen
-        tasksLog.unshift({ task, worker, controller });
+        // Log eintragen
+        tasksLog.unshift({
+            task: currentTask.task,
+            worker: currentTask.worker,
+            controller: controller,
+            points: earnedPoints,
+            feedback: feedback
+        });
 
         updateUI();
 
-        // Felder zurücksetzen
+        // Zurücksetzen
         document.getElementById('worker-name').value = '';
         document.getElementById('controller-name').value = '';
-        alert("Aufgabe erfolgreich dokumentiert und geprüft! Starker Team-Einsatz! 🚀❤️");
+        document.getElementById('task-feedback').value = '';
+        document.getElementById('step-2-card').style.display = 'none';
+        document.getElementById('step-1-card').style.display = 'block';
+        currentTask = null;
+
+        alert(`Starke Arbeit! ${earnedPoints} Punkte wurden erfolgreich gutgeschrieben und im Protokoll gespeichert! 🚀`);
     }
 
     function updateUI() {
         document.getElementById('total-points').innerText = totalPoints;
         document.getElementById('completed-tasks').innerText = taskCount;
-        document.getElementById('current-level').innerText = "Level " + (1 + Math.floor(totalPoints / 40));
+        document.getElementById('current-level').innerText = "Level " + (1 + Math.floor(totalPoints / 50));
 
         // Tabelle aktualisieren
         const logContainer = document.getElementById('task-log');
@@ -252,24 +306,24 @@
         tasksLog.forEach(item => {
             logContainer.innerHTML += `
                 <tr>
-                    <td>${item.task}</td>
-                    <td>${item.worker}</td>
-                    <td>${item.controller}</td>
-                    <td><span class="status-badge">Geprüft ✓</span></td>
+                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.75rem;">Von: ${item.worker}</span></td>
+                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.7rem;" title="${item.feedback}">💬 "${item.feedback || 'Kein Kommentar'}"</span></td>
+                    <td><strong style="color:var(--accent);">+${item.points} Pkt</strong></td>
+                    <td><span class="badge badge-done">Geprüft ✓</span></td>
                 </tr>
             `;
         });
 
         // Belohnungen freischalten
-        if(totalPoints >= 20) {
+        if(totalPoints >= 30) {
             document.getElementById('reward-1').innerText = "Freigeschaltet! 🎉";
             document.getElementById('reward-1').style.color = "var(--accent)";
         }
-        if(totalPoints >= 50) {
+        if(totalPoints >= 70) {
             document.getElementById('reward-2').innerText = "Freigeschaltet! 🎉";
             document.getElementById('reward-2').style.color = "var(--accent)";
         }
-        if(totalPoints >= 100) {
+        if(totalPoints >= 150) {
             document.getElementById('reward-3').innerText = "Freigeschaltet! 🎉";
             document.getElementById('reward-3').style.color = "var(--accent)";
         }
