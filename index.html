@@ -42,6 +42,23 @@
         }
         h2 { font-size: 1.1rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
         
+        /* Fortschrittsbalken (Gamification) */
+        .progress-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            height: 14px;
+            width: 100%;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
         .form-group {
             margin-bottom: 12px;
         }
@@ -91,7 +108,6 @@
             font-size: 0.75rem;
             font-weight: bold;
         }
-        .badge-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
         .badge-done { background: rgba(16, 185, 129, 0.2); color: var(--accent); }
 
         .stats-box {
@@ -115,55 +131,64 @@
 <div class="container">
     <header>
         <h1>Team-Hub</h1>
-        <p class="subtitle">Das ehrliche Fundament für Teamarbeit & faire Belohnung</p>
+        <p class="subtitle">Das ehrliche Fundament für Teamarbeit & gemeinsame Ziele</p>
     </header>
 
-    <!-- Punkte & Status Übersicht -->
+    <!-- Punkte & Level Übersicht mit XP-Balken -->
     <div class="card">
-        <h2>Aktueller Team-Stand</h2>
+        <h2>Gemeinsamer Team-Fortschritt</h2>
         <div class="stats-box">
             <div class="stat-item">
                 <div class="stat-value" id="total-points">0</div>
-                <div class="stat-label">Team-Punkte</div>
+                <div class="stat-label">Team-XP</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="completed-tasks">0</div>
-                <div class="stat-label">Erledigte Aufgaben</div>
+                <div class="stat-label">Gelöste Quests</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value" id="current-level">Level 1</div>
-                <div class="stat-label">Stufe</div>
+                <div class="stat-label">Rang</div>
+            </div>
+        </div>
+        <div style="margin-top: 12px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
+                <span>Fortschritt zum nächsten Meilenstein</span>
+                <span id="progress-text">0 / 30 XP</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="xp-bar"></div>
             </div>
         </div>
     </div>
 
-    <!-- Schritt 1: Aufgabe auswählen & Selbstverpflichtung -->
+    <!-- Schritt 1: Quest-Auswahl & Selbstverpflichtung -->
     <div class="card" id="step-1-card">
-        <h2>1. Aufgabe wählen & Selbstverpflichtung</h2>
+        <h2>1. Quest annehmen & Selbstverpflichtung</h2>
         <div class="form-group">
-            <label>Wer übernimmt die Aufgabe?</label>
+            <label>Wer übernimmt die Verantwortung?</label>
             <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
         </div>
         <div class="form-group">
-            <label>Aufgabe auswählen:</label>
+            <label>Quest (Aufgabe) auswählen:</label>
             <select id="task-select">
-                <option value="Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
-                <option value="Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
-                <option value="Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
-                <option value="Sonderprojekt / Optimierung">🚀 Sonderprojekt / Optimierung</option>
+                <option value="🧹 Lagerordnung & Sauberkeit">🧹 Lagerordnung & Sauberkeit</option>
+                <option value="📦 Reklamationsfreie Zone prüfen">📦 Reklamationsfreie Zone prüfen</option>
+                <option value="🔧 Gemeinsamer Werkzeug-Check">🔧 Gemeinsamer Werkzeug-Check</option>
+                <option value="🚀 Prozess-Optimierung & Sauberkeit">🚀 Prozess-Optimierung & Sauberkeit</option>
             </select>
         </div>
-        <button class="btn-warning" onclick="claimTask()">Aufgabe übernehmen (Verpflichtung)</button>
+        <button class="btn-warning" onclick="claimTask()">Quest starten (Verpflichtung eingehen)</button>
     </div>
 
-    <!-- Schritt 2: Kontrolle & Punktevergabe (4-Augen-Prinzip) -->
+    <!-- Schritt 2: 4-Augen-Prinzip & Kontrolle -->
     <div class="card" id="step-2-card" style="display:none; border: 1px solid var(--warning);">
-        <h2>2. 4-Augen-Prinzip & Kontrolle</h2>
-        <p style="font-size: 0.85rem; color: var(--warning); margin-top:0;">Aktive Aufgabe: <span id="active-task-name" style="font-weight:bold;"></span> (von <span id="active-worker-name"></span>)</p>
+        <h2>2. 4-Augen-Prinzip & Qualitäts-Check</h2>
+        <p style="font-size: 0.85rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-task-name" style="font-weight:bold;"></span> (von <span id="active-worker-name"></span>)</p>
         
         <div class="form-group">
-            <label>Name des Kontrolleurs:</label>
-            <input type="text" id="controller-name" placeholder="Name des Prüfers (z.B. Klaus)">
+            <label>Name des Kontrolleurs (4-Augen-Prinzip):</label>
+            <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)">
         </div>
         <div class="form-group">
             <label>Punkte für Sauberkeit (Max. 12 Pkt):</label>
@@ -174,28 +199,28 @@
             <input type="number" id="pts-accuracy" min="0" max="13" value="12">
         </div>
         <div class="form-group">
-            <label>Feedback / Kommentar (Kurz & Ehrlich):</label>
-            <textarea id="task-feedback" placeholder="z.B. Sauber gearbeitet, alles super top!"></textarea>
+            <label>Feedback / Wertschätzung (Ehrlich & direkt):</label>
+            <textarea id="task-feedback" placeholder="z.B. Top gearbeitet, Respekt für die saubere Umsetzung!"></textarea>
         </div>
-        <button class="btn-primary" onclick="completeAndRateTask()">Prüfen, Punkte vergeben & Abschließen</button>
+        <button class="btn-primary" onclick="completeAndRateTask()">Prüfen, XP vergeben & Sieg sichern</button>
     </div>
 
-    <!-- Protokoll & Statistik -->
+    <!-- Live-Protokoll -->
     <div class="card">
-        <h2>3. Statistik & Aufgaben-Protokoll</h2>
+        <h2>3. Team-Feed & Statistik</h2>
         <div style="overflow-x: auto;">
             <table>
                 <thead>
                     <tr>
-                        <th>Aufgabe / Wer</th>
-                        <th>Prüfer</th>
-                        <th>Punkte</th>
+                        <th>Quest / Wer</th>
+                        <th>Prüfer & Feedback</th>
+                        <th>XP</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody id="task-log">
                     <tr>
-                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Noch keine Aufgaben im System.</td>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Noch keine Quests im Team-Feed.</td>
                     </tr>
                 </tbody>
             </table>
@@ -204,28 +229,28 @@
 
     <!-- Belohnungs-Tabelle -->
     <div class="card">
-        <h2>4. Belohnungs-Tabelle (Team-Meilensteine)</h2>
+        <h2>4. Gemeinsame Meilensteine & Belohnungen</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Ziel</th>
+                    <th>XP-Ziel</th>
                     <th>Gemeinsame Belohnung</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>30 Pkt</td>
+                    <td>30 XP</td>
                     <td>☕ Extra Kaffeepause im Team</td>
                     <td><span id="reward-1" style="color: var(--text-muted);">Gesperrt</span></td>
                 </tr>
                 <tr>
-                    <td>70 Pkt</td>
+                    <td>70 XP</td>
                     <td>⚽ Tischkicker-Turnier in der Mittagspause</td>
                     <td><span id="reward-2" style="color: var(--text-muted);">Gesperrt</span></td>
                 </tr>
                 <tr>
-                    <td>150 Pkt</td>
+                    <td>150 XP</td>
                     <td>🕒 Freitags-Flex (Früher nach Hause)</td>
                     <td><span id="reward-3" style="color: var(--text-muted);">Gesperrt</span></td>
                 </tr>
@@ -245,13 +270,12 @@
         const task = document.getElementById('task-select').value;
 
         if(!worker) {
-            alert("Bitte gib deinen Namen ein, um die Aufgabe zu übernehmen!");
+            alert("Bitte gib deinen Namen ein, um die Quest anzunehmen!");
             return;
         }
 
         currentTask = { worker, task };
         
-        // UI umschalten auf Kontroll-Modus
         document.getElementById('active-task-name').innerText = task;
         document.getElementById('active-worker-name').innerText = worker;
         document.getElementById('step-1-card').style.display = 'none';
@@ -265,7 +289,7 @@
         const feedback = document.getElementById('task-feedback').value.trim();
 
         if(!controller) {
-            alert("Bitte gib den Namen des Kontrolleurs ein (4-Augen-Prinzip)!");
+            alert("Bitte trage den Namen des Kontrolleurs ein (4-Augen-Prinzip)!");
             return;
         }
 
@@ -273,7 +297,6 @@
         totalPoints += earnedPoints;
         taskCount += 1;
 
-        // Log eintragen
         tasksLog.unshift({
             task: currentTask.task,
             worker: currentTask.worker,
@@ -284,7 +307,6 @@
 
         updateUI();
 
-        // Zurücksetzen
         document.getElementById('worker-name').value = '';
         document.getElementById('controller-name').value = '';
         document.getElementById('task-feedback').value = '';
@@ -292,13 +314,30 @@
         document.getElementById('step-1-card').style.display = 'block';
         currentTask = null;
 
-        alert(`Starke Arbeit! ${earnedPoints} Punkte wurden erfolgreich gutgeschrieben und im Protokoll gespeichert! 🚀`);
+        alert(`Starke Teamleistung! +${earnedPoints} XP erfolgreich im Team-Feed gespeichert! 🚀`);
     }
 
     function updateUI() {
         document.getElementById('total-points').innerText = totalPoints;
         document.getElementById('completed-tasks').innerText = taskCount;
-        document.getElementById('current-level').innerText = "Level " + (1 + Math.floor(totalPoints / 50));
+        
+        let currentLevel = 1 + Math.floor(totalPoints / 50);
+        document.getElementById('current-level').innerText = "Level " + currentLevel;
+
+        // XP Progress Bar Berechnung (Ziel bis zum nächsten Meilenstein)
+        let nextGoal = 30;
+        if(totalPoints >= 30) nextGoal = 70;
+        if(totalPoints >= 70) nextGoal = 150;
+        if(totalPoints >= 150) nextGoal = 300;
+
+        let prevGoal = 0;
+        if(totalPoints >= 30) prevGoal = 30;
+        if(totalPoints >= 70) prevGoal = 70;
+        if(totalPoints >= 150) prevGoal = 150;
+
+        let progressPercent = Math.min(100, Math.max(0, ((totalPoints - prevGoal) / (nextGoal - prevGoal)) * 100));
+        document.getElementById('xp-bar').style.width = progressPercent + '%';
+        document.getElementById('progress-text').innerText = `${totalPoints} / ${nextGoal} XP`;
 
         // Tabelle aktualisieren
         const logContainer = document.getElementById('task-log');
@@ -306,15 +345,15 @@
         tasksLog.forEach(item => {
             logContainer.innerHTML += `
                 <tr>
-                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.75rem;">Von: ${item.worker}</span></td>
-                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.7rem;" title="${item.feedback}">💬 "${item.feedback || 'Kein Kommentar'}"</span></td>
-                    <td><strong style="color:var(--accent);">+${item.points} Pkt</strong></td>
+                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.75rem;">Ausgeführt von: ${item.worker}</span></td>
+                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.7rem;" title="${item.feedback}">💬 "${item.feedback || 'Top erledigt'}"</span></td>
+                    <td><strong style="color:var(--accent);">+${item.points} XP</strong></td>
                     <td><span class="badge badge-done">Geprüft ✓</span></td>
                 </tr>
             `;
         });
 
-        // Belohnungen freischalten
+        // Meilensteine freischalten
         if(totalPoints >= 30) {
             document.getElementById('reward-1').innerText = "Freigeschaltet! 🎉";
             document.getElementById('reward-1').style.color = "var(--accent)";
