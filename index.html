@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Enterprise Gaming & Quality Edition</title>
+    <title>Team-Hub | Enterprise Gaming & Vision Edition</title>
     <!-- Konfetti Bibliothek -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
@@ -33,10 +33,39 @@
         }
         header {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-        h1 { color: var(--primary); font-size: 1.5rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
-        p.subtitle { color: var(--text-muted); font-size: 0.8rem; }
+        h1 { color: var(--primary); font-size: 1.4rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
+        p.subtitle { color: var(--text-muted); font-size: 0.75rem; }
+
+        /* NEU: Integrierte Video-Vorschau (Fester Teaser ohne externe Plattformen) */
+        .video-teaser-card {
+            background: linear-gradient(135deg, rgba(19, 27, 46, 0.95), rgba(30, 41, 59, 0.95));
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 14px;
+            box-shadow: 0 0 15px var(--glow);
+            text-align: center;
+        }
+        .video-teaser-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .native-video-player {
+            width: 100%;
+            max-height: 220px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            outline: none;
+        }
 
         /* Top Bar */
         .top-bar {
@@ -69,18 +98,18 @@
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(16, 185, 129, 0.1));
             border: 1px solid var(--primary);
             border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 14px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
             display: flex;
             align-items: flex-start;
             gap: 10px;
             box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
         }
-        .buddy-note-avatar { font-size: 1.5rem; }
+        .buddy-note-avatar { font-size: 1.4rem; }
         .buddy-note-content { font-size: 0.75rem; line-height: 1.3; color: #e2e8f0; }
-        .buddy-note-title { font-weight: bold; color: var(--primary); margin-bottom: 2px; font-size: 0.8rem; }
+        .buddy-note-title { font-weight: bold; color: var(--primary); margin-bottom: 2px; font-size: 0.75rem; }
 
-        /* Navigation Tabs (Erweitert um Hall of Fame / Bestenliste) */
+        /* Navigation Tabs */
         .tabs {
             display: flex;
             background: var(--card-bg);
@@ -93,7 +122,7 @@
         .tab {
             flex: 1;
             text-align: center;
-            padding: 8px 6px;
+            padding: 8px 4px;
             font-size: 0.7rem;
             font-weight: bold;
             color: var(--text-muted);
@@ -234,7 +263,6 @@
             margin-top: 10px;
         }
 
-        /* Hall of Fame / Bestenlisten-Stile */
         .hof-section {
             background: rgba(251, 191, 36, 0.05);
             border: 1px solid rgba(251, 191, 36, 0.2);
@@ -253,6 +281,16 @@
         <h1>⭐ Team-Hub ⭐</h1>
         <p class="subtitle">Offizielles Qualitäts- & Gewinner-System für faires Teamwork</p>
     </header>
+
+    <!-- NEU: Fester Video-Teaser ganz oben (Direkt im Tool ohne externe Plattformen!) -->
+    <div class="video-teaser-card">
+        <div class="video-teaser-title">🎬 Team-Vision & Live-Einblick</div>
+        <!-- Trage hier einfach den Dateinamen deines Videos ein (z.B. "vision.mp4" im selben Ordner) -->
+        <video class="native-video-player" controls preload="metadata" poster="">
+            <source src="1000020350.mp4" type="video/mp4">
+            Dein Browser unterstützt kein Video-Tag.
+        </video>
+    </div>
 
     <!-- Top Bar -->
     <div class="top-bar">
@@ -273,7 +311,7 @@
         </div>
     </div>
 
-    <!-- Navigation Tabs (Mit Hall of Fame / Bestenliste) -->
+    <!-- Navigation Tabs -->
     <div class="tabs">
         <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
         <div class="tab" onclick="switchTab('feed', this)">📜 Live-Feed</div>
@@ -314,8 +352,8 @@
         <div class="card" id="step-1-card">
             <h2>1. Team-Praxis-Quest annehmen</h2>
             <div class="form-group">
-                <label>Wer führt die Aufgabe aus (z.B. Picker / Team)?</label>
-                <input type="text" id="worker-name" placeholder="Dein Name oder Team (z.B. Marco & Team)">
+                <label>Wer führt die Aufgabe aus?</label>
+                <input type="text" id="worker-name" placeholder="Dein Name oder Team (z.B. Marco)">
             </div>
             <div class="form-group">
                 <label>Wähle eure echte Werkstatt-Aufgabe:</label>
@@ -348,8 +386,8 @@
                 <div class="limit-info">⚠️ Strenges Limit: Max. 15 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
-                <label>Offizielles QC-Feedback / Bericht für die Geschäftsführung:</label>
-                <textarea id="task-feedback" placeholder="z.B. Einwandfreie Boxen-Vorbereitung, Top-Qualität für das gesamte Team!"></textarea>
+                <label>Offizielles QC-Feedback / Bericht:</label>
+                <textarea id="task-feedback" placeholder="z.B. Einwandfreie Boxen-Vorbereitung, Top-Qualität!"></textarea>
             </div>
             <button class="btn-primary" onclick="completeQuest()">QC-Freigabe erteilen & Team-Sieg verbuchen ⭐</button>
         </div>
@@ -382,13 +420,13 @@
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <h2>🏆 Die epische Gewinner-Meilenstein-Show</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Kämpft als Team zusammen, knackt die XP-Ziele und schaltet pure Lebensfreude und gemeinsame Siege frei!</p>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Kämpft als Team zusammen, knackt die XP-Ziele und schaltet pure Lebensfreude frei!</p>
             
             <div class="epic-milestone" id="box-r1">
                 <div class="milestone-avatar">🐒☕</div>
                 <div class="milestone-details">
                     <div class="milestone-title">Der Kaffeepause-Affentempel (30 XP)</div>
-                    <div class="milestone-desc">Der Boss-Affe mit Sonnenbrille hat gesprochen: Extra Team-Kaffeepause zum Durchatmen und Schmunzeln!</div>
+                    <div class="milestone-desc">Der Boss-Affe mit Sonnenbrille hat gesprochen: Extra Team-Kaffeepause zum Durchatmen!</div>
                     <div class="milestone-badge locked-badge" id="shop-r1">🔒 Gesperrt (Ziel: 30 XP)</div>
                 </div>
             </div>
@@ -397,7 +435,7 @@
                 <div class="milestone-avatar">🦁⚽</div>
                 <div class="milestone-details">
                     <div class="milestone-title">Das Löwen-Kicker-Battle (70 XP)</div>
-                    <div class="milestone-desc">Der Löwe fordert euch zum Tischkicker heraus! Zeit, den Arbeitsalltag für ein legendäres Turnier anzuhalten.</div>
+                    <div class="milestone-desc">Der Löwe fordert euch zum Tischkicker heraus! Zeit für ein legendäres Turnier.</div>
                     <div class="milestone-badge locked-badge" id="shop-r2">🔒 Gesperrt (Ziel: 70 XP)</div>
                 </div>
             </div>
@@ -406,34 +444,30 @@
                 <div class="milestone-avatar">🐼❤️</div>
                 <div class="milestone-details">
                     <div class="milestone-title">Samstags-Blitz-Feierabend (150 XP)</div>
-                    <div class="milestone-desc">Der Panda und seine Lady machen es vor: Wer bis Samstag hart buckelt, geht heute deutlich früher nach Hause ins wohlverdiente Wochenende!</div>
+                    <div class="milestone-desc">Der Panda macht es vor: Wer bis Samstag hart buckelt, geht heute deutlich früher nach Hause!</div>
                     <div class="milestone-badge locked-badge" id="shop-r3">🔒 Gesperrt (Ziel: 150 XP)</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- TAB 4: HALL OF FAME (BESTENLISTEN: WOCHE, MONAT, JAHR & KALENDER) -->
+<!-- TAB 4: HALL OF FAME -->
     <div id="tab-hof" class="tab-content">
         <div class="card">
             <h2>⭐ Hall of Fame & Bestenlisten</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Wertschätzende Anerkennung für die besten Helfer – bestätigt durch die offizielle Qualitätskontrolle.</p>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Wertschätzende Anerkennung – bestätigt durch die offizielle QC.</p>
             
-            <!-- Wöchentliche Bestenliste -->
             <div class="hof-section">
                 <div class="hof-title">📅 Bester Helfer dieser Woche</div>
                 <div class="hof-item"><span>1. Marco & Team (Vorbereitung Boxen)</span> <strong style="color:var(--accent);">45 XP</strong></div>
                 <div class="hof-item"><span>2. Klaus (QC-Prüfungen)</span> <strong style="color:var(--text-muted);">30 XP</strong></div>
             </div>
 
-            <!-- Monatliche Bestenliste -->
             <div class="hof-section">
                 <div class="hof-title">🗓️ Bester Helfer dieses Monats</div>
                 <div class="hof-item"><span>1. Team Logistik & Lager</span> <strong style="color:var(--gold);">210 XP</strong></div>
                 <div class="hof-item"><span>2. Team Werkstatt A</span> <strong style="color:var(--text-muted);">185 XP</strong></div>
             </div>
 
-            <!-- Jährliche Bestenliste -->
             <div class="hof-section">
                 <div class="hof-title">🏆 Hall of Fame (Gesamtes Jahr)</div>
                 <div class="hof-item"><span>👑 Gesamtsieger Team-Geist & Qualität</span> <strong style="color:var(--gold);">Meister-Rang</strong></div>
@@ -444,12 +478,14 @@
 </div>
 
 <script>
-    let totalXP = 0;
-    let completedCount = 0;
+    // Automatisches Laden & Speichern über LocalStorage (Kein Zurücksetzen beim Neuladen!)
+    let totalXP = parseInt(localStorage.getItem('team_hub_xp')) || 0;
+    let completedCount = parseInt(localStorage.getItem('team_hub_completed')) || 0;
+    let feedItems = JSON.parse(localStorage.getItem('team_hub_feed')) || [];
+    let controllerCounts = JSON.parse(localStorage.getItem('team_hub_controllers')) || {};
+    
     let activeQuest = null;
-    let feedItems = [];
     let isChillMode = false;
-    let controllerCounts = {};
 
     const buddyQuotes = [
         "„Egal wie schwer der Tag ist, Partner: Ihr rockt das gemeinsam. Passt aufeinander auf und vergesst das Lächeln nicht!“",
@@ -459,6 +495,11 @@
     ];
 
     document.getElementById('daily-quote').innerText = buddyQuotes[Math.floor(Math.random() * buddyQuotes.length)];
+
+    // UI beim Start sofort aktualisieren mit gespeicherten Werten
+    window.onload = function() {
+        updateUI();
+    };
 
     function switchTab(tabId, element) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -525,7 +566,6 @@
         completedCount++;
 
         controllerCounts[controller] = (controllerCounts[controller] || 0) + 1;
-        updateBadgeLeader();
 
         feedItems.unshift({
             task: activeQuest.task,
@@ -534,6 +574,12 @@
             xp: earned,
             feedback: feedback
         });
+
+        // In LocalStorage speichern, damit nichts verloren geht
+        localStorage.setItem('team_hub_xp', totalXP);
+        localStorage.setItem('team_hub_completed', completedCount);
+        localStorage.setItem('team_hub_feed', JSON.stringify(feedItems));
+        localStorage.setItem('team_hub_controllers', JSON.stringify(controllerCounts));
 
         updateUI();
 
@@ -579,40 +625,40 @@
         document.getElementById('xp-bar').style.width = pct + '%';
         document.getElementById('xp-progress-label').innerText = `${totalXP} / ${target} XP`;
 
+        updateBadgeLeader();
+
         const feedContainer = document.getElementById('feed-log');
         feedContainer.innerHTML = '';
-        feedItems.forEach(item => {
-            feedContainer.innerHTML += `
-                <tr>
-                    <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.65rem;">Von: ${item.worker}</span></td>
-                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.6rem;">💬 "${item.feedback || 'Top Qualität'}"</span></td>
-                    <td><strong style="color:var(--accent);">+${item.xp} XP</strong></td>
-                </tr>
-            `;
-        });
+        if(feedItems.length === 0) {
+            feedContainer.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Noch keine Quests im Feed.</td></tr>`;
+        } else {
+            feedItems.forEach(item => {
+                feedContainer.innerHTML += `
+                    <tr>
+                        <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.65rem;">Von: ${item.worker}</span></td>
+                        <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.6rem;">💬 "${item.feedback || 'Top Qualität'}"</span></td>
+                        <td><strong style="color:var(--accent);">+${item.xp} XP</strong></td>
+                    </tr>
+                `;
+            });
+        }
 
-        if(totalXP >= 30 && document.getElementById('shop-r1').className.indexOf('unlocked-badge') === -1) {
+        // Meilensteine prüfen
+        if(totalXP >= 30) {
             document.getElementById('shop-r1').className = "milestone-badge unlocked-badge";
             document.getElementById('shop-r1').innerText = "🎉 FREIGESCHALTET: Kaffeepause aktiv!";
             document.getElementById('box-r1').className = "epic-milestone unlocked-card";
-            triggerMegaConfetti();
         }
-        if(totalXP >= 70 && document.getElementById('shop-r2').className.indexOf('unlocked-badge') === -1) {
+        if(totalXP >= 70) {
             document.getElementById('shop-r2').className = "milestone-badge unlocked-badge";
             document.getElementById('shop-r2').innerText = "🎉 FREIGESCHALTET: Kicker-Turnier aktiv!";
             document.getElementById('box-r2').className = "epic-milestone unlocked-card";
-            triggerMegaConfetti();
         }
-        if(totalXP >= 150 && document.getElementById('shop-r3').className.indexOf('unlocked-badge') === -1) {
+        if(totalXP >= 150) {
             document.getElementById('shop-r3').className = "milestone-badge unlocked-badge";
             document.getElementById('shop-r3').innerText = "🎉 FREIGESCHALTET: Früher Feierabend!";
             document.getElementById('box-r3').className = "epic-milestone unlocked-card";
-            triggerMegaConfetti();
         }
-    }
-
-    function triggerMegaConfetti() {
-        confetti({ particleCount: 200, spread: 120, origin: { y: 0.4 } });
     }
 </script>
 
