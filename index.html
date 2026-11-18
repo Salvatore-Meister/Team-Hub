@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Enterprise Gaming & Team Spirit Edition</title>
-    <!-- Konfetti Bibliothek für epische Gewinner-Momente -->
+    <title>Team-Hub | Enterprise Gaming & Quality Edition</title>
+    <!-- Konfetti Bibliothek -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -64,7 +64,7 @@
             color: #090d16;
         }
 
-        /* Die Tägliche Buddy Note */
+        /* Tägliche Buddy Note */
         .buddy-note-box {
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(16, 185, 129, 0.1));
             border: 1px solid var(--primary);
@@ -80,7 +80,7 @@
         .buddy-note-content { font-size: 0.75rem; line-height: 1.3; color: #e2e8f0; }
         .buddy-note-title { font-weight: bold; color: var(--primary); margin-bottom: 2px; font-size: 0.8rem; }
 
-        /* Navigation Tabs */
+        /* Navigation Tabs (Erweitert um Hall of Fame / Bestenliste) */
         .tabs {
             display: flex;
             background: var(--card-bg);
@@ -88,17 +88,19 @@
             padding: 4px;
             margin-bottom: 15px;
             border: 1px solid var(--border);
+            overflow-x: auto;
         }
         .tab {
             flex: 1;
             text-align: center;
-            padding: 9px;
-            font-size: 0.75rem;
+            padding: 8px 6px;
+            font-size: 0.7rem;
             font-weight: bold;
             color: var(--text-muted);
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
         .tab.active {
             background-color: var(--primary);
@@ -192,7 +194,6 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
         }
         .epic-milestone.unlocked-card {
             border-color: var(--gold);
@@ -232,6 +233,17 @@
             text-align: center;
             margin-top: 10px;
         }
+
+        /* Hall of Fame / Bestenlisten-Stile */
+        .hof-section {
+            background: rgba(251, 191, 36, 0.05);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .hof-title { font-weight: bold; color: var(--gold); font-size: 0.85rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .hof-item { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
     </style>
 </head>
 <body>
@@ -239,7 +251,7 @@
 <div class="container">
     <header>
         <h1>⭐ Team-Hub ⭐</h1>
-        <p class="subtitle">Das ehrliche Spiel für gemeinsamen Erfolg & Lebensfreude</p>
+        <p class="subtitle">Offizielles Qualitäts- & Gewinner-System für faires Teamwork</p>
     </header>
 
     <!-- Top Bar -->
@@ -261,11 +273,12 @@
         </div>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs (Mit Hall of Fame / Bestenliste) -->
     <div class="tabs">
         <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
         <div class="tab" onclick="switchTab('feed', this)">📜 Live-Feed</div>
-        <div class="tab" onclick="switchTab('shop', this)">🏆 Gewinner-Show</div>
+        <div class="tab" onclick="switchTab('shop', this)">🏆 Meilensteine</div>
+        <div class="tab" onclick="switchTab('hof', this)">⭐ Hall of Fame</div>
     </div>
 
     <!-- TAB 1: QUESTS -->
@@ -301,28 +314,28 @@
         <div class="card" id="step-1-card">
             <h2>1. Team-Praxis-Quest annehmen</h2>
             <div class="form-group">
-                <label>Wer führt die Aufgabe aus?</label>
-                <input type="text" id="worker-name" placeholder="Dein Name (z.B. Marco)">
+                <label>Wer führt die Aufgabe aus (z.B. Picker / Team)?</label>
+                <input type="text" id="worker-name" placeholder="Dein Name oder Team (z.B. Marco & Team)">
             </div>
             <div class="form-group">
                 <label>Wähle eure echte Werkstatt-Aufgabe:</label>
                 <select id="task-select">
-                    <option value="📦 6 Frames mit Boxen & Tüten befüllt (+20 XP)">📦 6 Frames mit Boxen & Tüten befüllt (+20 XP)</option>
+                    <option value="📦 10x Boxen für das Team vorbereitet (+25 XP)">📦 10x Boxen für das Team vorbereitet (+25 XP)</option>
                     <option value="🔧 Deckel holen & Material bereitgestellt (+20 XP)">🔧 Deckel holen & Material bereitgestellt (+20 XP)</option>
                     <option value="🧹 Lagerordnung & Sauberkeit (+15 XP)">🧹 Lagerordnung & Sauberkeit (+15 XP)</option>
-                    <option value="🚀 Reklamationsfreie Zone prüfen (+15 XP)">🚀 Reklamationsfreie Zone prüfen (+15 XP)</option>
+                    <option value="🚀 Reklamationsfreie Zone geprüft (+20 XP)">🚀 Reklamationsfreie Zone geprüft (+20 XP)</option>
                 </select>
             </div>
             <button class="btn-warning" onclick="claimQuest()">Quest starten & Team-Verpflichtung eingehen</button>
         </div>
 
         <div class="card" id="step-2-card" style="display:none; border-color: var(--warning);">
-            <h2>2. 4-Augen-Prinzip & Sportlicher Check</h2>
+            <h2>2. Offizielle Qualitätskontrolle (QC-Abnahme)</h2>
             <p style="font-size: 0.75rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-quest-title" style="font-weight:bold;"></span> (von <span id="active-worker"></span>)</p>
             
             <div class="form-group">
-                <label>Name des Prüfers (Kontrolleur):</label>
-                <input type="text" id="controller-name" placeholder="Prüfer (z.B. Klaus / Eva)">
+                <label>Name des Prüfers (Offizielle Qualitätskontrolle / QC):</label>
+                <input type="text" id="controller-name" placeholder="QC-Prüfer (z.B. Klaus aus QC)">
             </div>
             <div class="form-group">
                 <label>Sauberkeit & Ordnung (Max. 10 XP):</label>
@@ -330,28 +343,28 @@
                 <div class="limit-info">⚠️ Strenges Limit: Max. 10 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
-                <label>Vollständigkeit & Tempo (Max. 10 XP):</label>
-                <input type="number" id="pts-accuracy" min="0" max="10" value="10" oninput="validatePoints(this, 10)">
-                <div class="limit-info">⚠️ Strenges Limit: Max. 10 Punkte erlaubt!</div>
+                <label>Vollständigkeit & Präzision (Max. 15 XP):</label>
+                <input type="number" id="pts-accuracy" min="0" max="15" value="15" oninput="validatePoints(this, 15)">
+                <div class="limit-info">⚠️ Strenges Limit: Max. 15 Punkte erlaubt!</div>
             </div>
             <div class="form-group">
-                <label>Ehrliches Feedback / Respekt:</label>
-                <textarea id="task-feedback" placeholder="z.B. Perfekt erledigt, starker Teamgeist!"></textarea>
+                <label>Offizielles QC-Feedback / Bericht für die Geschäftsführung:</label>
+                <textarea id="task-feedback" placeholder="z.B. Einwandfreie Boxen-Vorbereitung, Top-Qualität für das gesamte Team!"></textarea>
             </div>
-            <button class="btn-primary" onclick="completeQuest()">Prüfen, Team-XP sichern & Feiern ⭐</button>
+            <button class="btn-primary" onclick="completeQuest()">QC-Freigabe erteilen & Team-Sieg verbuchen ⭐</button>
         </div>
     </div>
 
     <!-- TAB 2: LIVE-FEED -->
     <div id="tab-feed" class="tab-content">
         <div class="card">
-            <h2>📜 Live-Protokoll & Team-Feed</h2>
+            <h2>📜 Live-Protokoll & QC-Berichte</h2>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
                             <th>Quest / Wer</th>
-                            <th>Prüfer & Feedback</th>
+                            <th>QC-Prüfer & Bericht</th>
                             <th>XP</th>
                         </tr>
                     </thead>
@@ -365,13 +378,12 @@
         </div>
     </div>
 
-    <!-- TAB 3: GEWINNER-SHOW & MEILENSTEINE -->
+    <!-- TAB 3: MEILENSTEINE -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <h2>🏆 Die epische Gewinner-Meilenstein-Show</h2>
             <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Kämpft als Team zusammen, knackt die XP-Ziele und schaltet pure Lebensfreude und gemeinsame Siege frei!</p>
             
-            <!-- Meilenstein 1: Kaffeepause -->
             <div class="epic-milestone" id="box-r1">
                 <div class="milestone-avatar">🐒☕</div>
                 <div class="milestone-details">
@@ -381,7 +393,6 @@
                 </div>
             </div>
 
-            <!-- Meilenstein 2: Tischkicker-Turnier -->
             <div class="epic-milestone" id="box-r2">
                 <div class="milestone-avatar">🦁⚽</div>
                 <div class="milestone-details">
@@ -391,7 +402,6 @@
                 </div>
             </div>
 
-            <!-- Meilenstein 3: Samstags-Frühstart -->
             <div class="epic-milestone" id="box-r3">
                 <div class="milestone-avatar">🐼❤️</div>
                 <div class="milestone-details">
@@ -399,6 +409,34 @@
                     <div class="milestone-desc">Der Panda und seine Lady machen es vor: Wer bis Samstag hart buckelt, geht heute deutlich früher nach Hause ins wohlverdiente Wochenende!</div>
                     <div class="milestone-badge locked-badge" id="shop-r3">🔒 Gesperrt (Ziel: 150 XP)</div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: HALL OF FAME (BESTENLISTEN: WOCHE, MONAT, JAHR & KALENDER) -->
+    <div id="tab-hof" class="tab-content">
+        <div class="card">
+            <h2>⭐ Hall of Fame & Bestenlisten</h2>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Wertschätzende Anerkennung für die besten Helfer – bestätigt durch die offizielle Qualitätskontrolle.</p>
+            
+            <!-- Wöchentliche Bestenliste -->
+            <div class="hof-section">
+                <div class="hof-title">📅 Bester Helfer dieser Woche</div>
+                <div class="hof-item"><span>1. Marco & Team (Vorbereitung Boxen)</span> <strong style="color:var(--accent);">45 XP</strong></div>
+                <div class="hof-item"><span>2. Klaus (QC-Prüfungen)</span> <strong style="color:var(--text-muted);">30 XP</strong></div>
+            </div>
+
+            <!-- Monatliche Bestenliste -->
+            <div class="hof-section">
+                <div class="hof-title">🗓️ Bester Helfer dieses Monats</div>
+                <div class="hof-item"><span>1. Team Logistik & Lager</span> <strong style="color:var(--gold);">210 XP</strong></div>
+                <div class="hof-item"><span>2. Team Werkstatt A</span> <strong style="color:var(--text-muted);">185 XP</strong></div>
+            </div>
+
+            <!-- Jährliche Bestenliste -->
+            <div class="hof-section">
+                <div class="hof-title">🏆 Hall of Fame (Gesamtes Jahr)</div>
+                <div class="hof-item"><span>👑 Gesamtsieger Team-Geist & Qualität</span> <strong style="color:var(--gold);">Meister-Rang</strong></div>
             </div>
         </div>
     </div>
@@ -473,13 +511,14 @@
         document.getElementById('step-1-card').style.display = 'none';
         document.getElementById('step-2-card').style.display = 'block';
     }
-function completeQuest() {
+
+    function completeQuest() {
         const controller = document.getElementById('controller-name').value.trim();
         const clean = parseInt(document.getElementById('pts-clean').value) || 0;
         const accuracy = parseInt(document.getElementById('pts-accuracy').value) || 0;
         const feedback = document.getElementById('task-feedback').value.trim();
 
-        if(!controller) { alert("Prüfer-Name fehlt (4-Augen-Prinzip)!"); return; }
+        if(!controller) { alert("Name des offiziellen QC-Prüfers fehlt!"); return; }
 
         const earned = clean + accuracy;
         totalXP += earned;
@@ -491,7 +530,7 @@ function completeQuest() {
         feedItems.unshift({
             task: activeQuest.task,
             worker: activeQuest.worker,
-            controller: controller,
+            controller: "QC: " + controller,
             xp: earned,
             feedback: feedback
         });
@@ -507,7 +546,7 @@ function completeQuest() {
         document.getElementById('step-1-card').style.display = 'block';
         activeQuest = null;
 
-        alert(`Starke Team-Leistung! +${earned} Team-XP erfolgreich verbucht! 🚀`);
+        alert(`QC-Freigabe erteilt! +${earned} Team-XP erfolgreich verbucht! 🚀`);
     }
 
     function updateBadgeLeader() {
@@ -520,7 +559,7 @@ function completeQuest() {
             }
         }
         if(bestController) {
-            document.getElementById('badge-display').innerHTML = `🛡️ <strong>Wochen-MVP (Ehren-Badge):</strong> ${bestController} (${maxChecks} faire Checks & Team-Support!) ⭐`;
+            document.getElementById('badge-display').innerHTML = `🛡️ <strong>Wochen-MVP (QC-Bestätigt):</strong> ${bestController} (${maxChecks} offizielle Prüfungen!) ⭐`;
         }
     }
 
@@ -546,7 +585,7 @@ function completeQuest() {
             feedContainer.innerHTML += `
                 <tr>
                     <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.65rem;">Von: ${item.worker}</span></td>
-                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.6rem;">💬 "${item.feedback || 'Top'}"</span></td>
+                    <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.6rem;">💬 "${item.feedback || 'Top Qualität'}"</span></td>
                     <td><strong style="color:var(--accent);">+${item.xp} XP</strong></td>
                 </tr>
             `;
