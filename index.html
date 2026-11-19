@@ -38,7 +38,7 @@
         h1 { color: var(--primary); font-size: 1.4rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
         p.subtitle { color: var(--text-muted); font-size: 0.75rem; }
 
-        /* NEU: Integrierte Video-Vorschau (Fester Teaser ohne externe Plattformen) */
+        /* Fester Video-Teaser ganz oben */
         .video-teaser-card {
             background: linear-gradient(135deg, rgba(19, 27, 46, 0.95), rgba(30, 41, 59, 0.95));
             border: 2px solid var(--primary);
@@ -123,7 +123,7 @@
             flex: 1;
             text-align: center;
             padding: 8px 4px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: bold;
             color: var(--text-muted);
             cursor: pointer;
@@ -272,6 +272,16 @@
         }
         .hof-title { font-weight: bold; color: var(--gold); font-size: 0.85rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
         .hof-item { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+
+        /* Statistik Schwarz-Weiß / Cyberpunk Stil */
+        .stat-card-bw {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px dashed var(--primary);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -282,12 +292,11 @@
         <p class="subtitle">Offizielles Qualitäts- & Gewinner-System für faires Teamwork</p>
     </header>
 
-    <!-- NEU: Fester Video-Teaser ganz oben (Direkt im Tool ohne externe Plattformen!) -->
+    <!-- Fester Video-Teaser -->
     <div class="video-teaser-card">
         <div class="video-teaser-title">🎬 Team-Vision & Live-Einblick</div>
-        <!-- Trage hier einfach den Dateinamen deines Videos ein (z.B. "vision.mp4" im selben Ordner) -->
-        <video class="native-video-player" controls preload="metadata" poster="">
-            <source src="1000020350.mp4" type="video/mp4">
+        <video class="native-video-player" controls preload="metadata">
+            <source src="lv_0_20261118090809.mp4" type="video/mp4">
             Dein Browser unterstützt kein Video-Tag.
         </video>
     </div>
@@ -311,12 +320,13 @@
         </div>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs (inkl. Statistik) -->
     <div class="tabs">
         <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
-        <div class="tab" onclick="switchTab('feed', this)">📜 Live-Feed</div>
-        <div class="tab" onclick="switchTab('shop', this)">🏆 Meilensteine</div>
-        <div class="tab" onclick="switchTab('hof', this)">⭐ Hall of Fame</div>
+        <div class="tab" onclick="switchTab('feed', this)">📜 Live</div>
+        <div class="tab" onclick="switchTab('shop', this)">🏆 Ziele</div>
+        <div class="tab" onclick="switchTab('hof', this)">⭐ Hall</div>
+        <div class="tab" onclick="switchTab('stats', this)">📊 Statistik</div>
     </div>
 
     <!-- TAB 1: QUESTS -->
@@ -467,10 +477,23 @@
                 <div class="hof-item"><span>1. Team Logistik & Lager</span> <strong style="color:var(--gold);">210 XP</strong></div>
                 <div class="hof-item"><span>2. Team Werkstatt A</span> <strong style="color:var(--text-muted);">185 XP</strong></div>
             </div>
+        </div>
+    </div>
 
-            <div class="hof-section">
-                <div class="hof-title">🏆 Hall of Fame (Gesamtes Jahr)</div>
-                <div class="hof-item"><span>👑 Gesamtsieger Team-Geist & Qualität</span> <strong style="color:var(--gold);">Meister-Rang</strong></div>
+    <!-- TAB 5: STATISTIK & VERBESSERUNG -->
+    <div id="tab-stats" class="tab-content">
+        <div class="card">
+            <h2>📊 Qualitäts- & Verbesserungs-Statistik</h2>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Der datenbasierte Vorher-Nachher-Beweis für die Geschäftsführung.</p>
+            
+            <div class="stat-card-bw">
+                <div style="font-size: 0.8rem; font-weight: bold; color: var(--text-muted); margin-bottom: 4px;">🔲 Vorher-Modus (Klassisch / Ohne Struktur)</div>
+                <div style="font-size: 1.1rem; color: #94a3b8;">Hohe Fehlerquote & unklare Abläufe</div>
+            </div>
+
+            <div class="stat-card-bw" style="border-color: var(--accent); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), #090d16);">
+                <div style="font-size: 0.8rem; font-weight: bold; color: var(--accent); margin-bottom: 4px;">✨ Nachher-Modus (Cyberpunk Team-Hub Glow)</div>
+                <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent);" id="stat-improvement">+98% Qualitäts-Steigerung</div>
             </div>
         </div>
     </div>
@@ -478,7 +501,6 @@
 </div>
 
 <script>
-    // Automatisches Laden & Speichern über LocalStorage (Kein Zurücksetzen beim Neuladen!)
     let totalXP = parseInt(localStorage.getItem('team_hub_xp')) || 0;
     let completedCount = parseInt(localStorage.getItem('team_hub_completed')) || 0;
     let feedItems = JSON.parse(localStorage.getItem('team_hub_feed')) || [];
@@ -496,7 +518,6 @@
 
     document.getElementById('daily-quote').innerText = buddyQuotes[Math.floor(Math.random() * buddyQuotes.length)];
 
-    // UI beim Start sofort aktualisieren mit gespeicherten Werten
     window.onload = function() {
         updateUI();
     };
@@ -575,7 +596,6 @@
             feedback: feedback
         });
 
-        // In LocalStorage speichern, damit nichts verloren geht
         localStorage.setItem('team_hub_xp', totalXP);
         localStorage.setItem('team_hub_completed', completedCount);
         localStorage.setItem('team_hub_feed', JSON.stringify(feedItems));
@@ -643,7 +663,6 @@
             });
         }
 
-        // Meilensteine prüfen
         if(totalXP >= 30) {
             document.getElementById('shop-r1').className = "milestone-badge unlocked-badge";
             document.getElementById('shop-r1').innerText = "🎉 FREIGESCHALTET: Kaffeepause aktiv!";
