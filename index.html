@@ -194,7 +194,7 @@
             box-sizing: border-box;
             font-size: 0.85rem;
         }
-        textarea { resize: vertical; height: 45px; }
+        textarea { resize: vertical; height: 52px; }
         .limit-info { font-size: 0.65rem; color: var(--warning); margin-top: 2px; }
 
         button {
@@ -210,6 +210,66 @@
         button:hover { opacity: 0.9; }
         .btn-primary { background-color: var(--accent); color: #090d16; }
         .btn-warning { background-color: var(--warning); color: #090d16; }
+        .btn-info { background-color: var(--primary); color: #090d16; }
+
+        /* Checklisten-Stil */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: rgba(9, 13, 22, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .checklist-item.checked {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .checklist-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--accent);
+        }
+        .checklist-text {
+            font-size: 0.75rem;
+            line-height: 1.35;
+            color: var(--text);
+        }
+        .checklist-sub {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Bewerber & Feedback Karten */
+        .eval-item {
+            background: rgba(9, 13, 22, 0.8);
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 0.75rem;
+        }
+        .eval-item.status-warn { border-left-color: var(--warning); }
+        .eval-item.status-danger { border-left-color: var(--danger); }
+        .eval-item.status-ok { border-left-color: var(--accent); }
+
+        .tag-pill {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .tag-ok { background: rgba(16, 185, 129, 0.2); color: var(--accent); }
+        .tag-warn { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .tag-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
 
         /* Epic Meilenstein-Karten */
         .epic-milestone {
@@ -272,7 +332,8 @@
         }
         .hof-title { font-weight: bold; color: var(--gold); font-size: 0.85rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
         .hof-item { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
-/* Statistik Schwarz-Weiß / Cyberpunk Stil */
+
+        /* Statistik Schwarz-Weiß / Cyberpunk Stil */
         .stat-card-bw {
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border: 1px dashed var(--primary);
@@ -319,9 +380,10 @@
         </div>
     </div>
 
-    <!-- Navigation Tabs (inkl. Statistik) -->
+    <!-- Navigation Tabs (inkl. Leitung & Statistik) -->
     <div class="tabs">
         <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
+        <div class="tab" onclick="switchTab('lead', this)">🧭 Leitung</div>
         <div class="tab" onclick="switchTab('feed', this)">📜 Live</div>
         <div class="tab" onclick="switchTab('shop', this)">🏆 Ziele</div>
         <div class="tab" onclick="switchTab('hof', this)">⭐ Hall</div>
@@ -401,8 +463,117 @@
             <button class="btn-primary" onclick="completeQuest()">QC-Freigabe erteilen & Team-Sieg verbuchen ⭐</button>
         </div>
     </div>
+ <!-- TAB 2: LEITUNG & CHECKLISTEN (NEU) -->
+    <div id="tab-lead" class="tab-content">
+        <!-- Modul 1: Schichtleiter Realitäts-Checkliste -->
+        <div class="card">
+            <h2>🧭 1. Schichtleiter-Checkliste (Struktur & Fairness)</h2>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:10px;">Erst Realität prüfen, dann steuern – gegen blindes Antreiben und Überlastung:</p>
 
-    <!-- TAB 2: LIVE-FEED -->
+            <label class="checklist-item" id="chk-box-1">
+                <input type="checkbox" id="sl-chk-1" onchange="saveChecklist()">
+                <div class="checklist-text">
+                    <strong>Besetzung & Ausfälle geprüft</strong>
+                    <span class="checklist-sub">Fehlen Stammkräfte? Ist Ersatz da? Tagesziel realistisch an die echte Teamstärke anpassen.</span>
+                </div>
+            </label>
+
+            <label class="checklist-item" id="chk-box-2">
+                <input type="checkbox" id="sl-chk-2" onchange="saveChecklist()">
+                <div class="checklist-text">
+                    <strong>Körperliche & fachliche Passung beachtet</strong>
+                    <span class="checklist-sub">Keine schweren Frames an überlastete oder ältere Kollegen – Stationen nach Stärke verteilen.</span>
+                </div>
+            </label>
+
+            <label class="checklist-item" id="chk-box-3">
+                <input type="checkbox" id="sl-chk-3" onchange="saveChecklist()">
+                <div class="checklist-text">
+                    <strong>Monats- & Überstunden-Kontext im Blick</strong>
+                    <span class="checklist-sub">Rekordwochen und 6-Tage-Belastung anerkennen statt bei normalen Schwankungen Druck zu machen.</span>
+                </div>
+            </label>
+
+            <label class="checklist-item" id="chk-box-4">
+                <input type="checkbox" id="sl-chk-4" onchange="saveChecklist()">
+                <div class="checklist-text">
+                    <strong>Einarbeitung & Erklär-Videos eingesetzt</strong>
+                    <span class="checklist-sub">Neues Personal sauber eingewiesen (Picken / Verräumen / Boxen), damit keine Reibung entsteht.</span>
+                </div>
+            </label>
+
+            <div style="font-size: 0.7rem; color: var(--accent); font-weight: bold; margin-top: 6px;" id="checklist-status">
+                Status: 0 von 4 Punkten abgehakt
+            </div>
+        </div>
+
+        <!-- Modul 2: Bewerber- & Probezeit-Check -->
+        <div class="card">
+            <h2>🎯 2. Bewerber- & Probezeit-Filter (Eignungs-Check)</h2>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:10px;">Klare Entscheidungshilfe für Vorstellungsgespräch & erste 30 Tage:</p>
+
+            <div class="form-group">
+                <label>Name (Bewerber oder neuer Mitarbeiter):</label>
+                <input type="text" id="cand-name" placeholder="z.B. Max M. (Tag 14 / Probezeit)">
+            </div>
+            <div class="form-group">
+                <label>Geplante / Aktuelle Station:</label>
+                <select id="cand-role">
+                    <option value="Picken & Kommissionierung">📦 Picken & Kommissionierung</option>
+                    <option value="Verräumen & Frames">🏗️ Verräumen & schwere Frames</option>
+                    <option value="Vorbereitung (Boxen / Deckel)">🔧 Vorbereitung (Boxen / Deckel)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Körperliche Belastbarkeit & Tempo-Verständnis:</label>
+                <select id="cand-fit">
+                    <option value="hoch">✅ Hoch – packt an & versteht Abläufe</option>
+                    <option value="mittel">⚠️ Mittel – braucht noch Einarbeitung / Video</option>
+                    <option value="gering">❌ Gering – überfordert oder verweigert Tempo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Motivation & Team-Harmonie:</label>
+                <select id="cand-attitude">
+                    <option value="team">✅ Konstruktiv – fügt sich gut ins Team ein</option>
+                    <option value="unsicher">⚠️ Unsicher – braucht klare Führung</option>
+                    <option value="unruhe">❌ Unruhe / Null Bock – stört Team-Harmonie</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Beobachtung / Notiz für Lagerleiter:</label>
+                <textarea id="cand-note" placeholder="z.B. Passt perfekt ins Team ODER sorgt dauerhaft für Unruhe, Aufhebungsvertrag/Trennung prüfen..."></textarea>
+            </div>
+            <button class="btn-info" onclick="saveCandidateEval()">Eignungs-Check & Empfehlung speichern 📋</button>
+
+            <div id="cand-list" style="margin-top: 12px;"></div>
+        </div>
+
+        <!-- Modul 3: Lagerleiter-Feedback & Schichtübergabe -->
+        <div class="card">
+            <h2>📨 3. Lagerleiter-Feedback & Schichtübergabe</h2>
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:10px;">Sachliche Rückmeldung an Lagerleiter & nächste Schicht – ohne Chaos:</p>
+
+            <div class="form-group">
+                <label>Kategorie der Meldung:</label>
+                <select id="ll-category">
+                    <option value="🚨 Personal- & Aufhebungs-Entscheidung">🚨 Personal- & Aufhebungs-Entscheidung</option>
+                    <option value="⚖️ Belastung & Besetzung (Realitäts-Check)">⚖️ Belastung & Besetzung (Realitäts-Check)</option>
+                    <option value="🔄 Schichtübergabe & offene To-dos">🔄 Schichtübergabe & offene To-dos</option>
+                    <option value="💡 Prozess- & Zonen-Optimierung">💡 Prozess- & Zonen-Optimierung</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Konkrete Situation & Vorschlag für Lagerleiter:</label>
+                <textarea id="ll-message" placeholder="z.B. Stammkraft fehlte, Ersatz körperlich überlastet bei Frames -> bitte Stationen fair zuteilen..."></textarea>
+            </div>
+            <button class="btn-primary" onclick="saveManagerFeedback()">Feedback an Lagerleiter & Übergabe sichern ✅</button>
+
+            <div id="ll-list" style="margin-top: 12px;"></div>
+        </div>
+    </div>
+
+    <!-- TAB 3: LIVE-FEED -->
     <div id="tab-feed" class="tab-content">
         <div class="card">
             <h2>📜 Live-Protokoll & QC-Berichte</h2>
@@ -425,7 +596,7 @@
         </div>
     </div>
 
-    <!-- TAB 3: MEILENSTEINE -->
+    <!-- TAB 4: MEILENSTEINE -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <h2>🏆 Die epische Gewinner-Meilenstein-Show</h2>
@@ -460,7 +631,7 @@
         </div>
     </div>
 
-    <!-- TAB 4: HALL OF FAME -->
+    <!-- TAB 5: HALL OF FAME -->
     <div id="tab-hof" class="tab-content">
         <div class="card">
             <h2>⭐ Hall of Fame & Bestenlisten</h2>
@@ -480,7 +651,7 @@
         </div>
     </div>
 
-    <!-- TAB 5: STATISTIK & VERBESSERUNG -->
+    <!-- TAB 6: STATISTIK & VERBESSERUNG -->
     <div id="tab-stats" class="tab-content">
         <div class="card">
             <h2>📊 Qualitäts- & Verbesserungs-Statistik</h2>
@@ -505,6 +676,9 @@
     let completedCount = parseInt(localStorage.getItem('team_hub_completed')) || 0;
     let feedItems = JSON.parse(localStorage.getItem('team_hub_feed')) || [];
     let controllerCounts = JSON.parse(localStorage.getItem('team_hub_controllers')) || {};
+    let candidateEvals = JSON.parse(localStorage.getItem('team_hub_candidates')) || [];
+    let managerLogs = JSON.parse(localStorage.getItem('team_hub_manager_logs')) || [];
+    let slChecklist = JSON.parse(localStorage.getItem('team_hub_sl_checklist')) || [false, false, false, false];
     
     let activeQuest = null;
     let isChillMode = false;
@@ -519,6 +693,9 @@
     document.getElementById('daily-quote').innerText = buddyQuotes[Math.floor(Math.random() * buddyQuotes.length)];
 
     window.onload = function() {
+        loadChecklist();
+        renderCandidates();
+        renderManagerLogs();
         updateUI();
     };
 
@@ -558,6 +735,112 @@
         alert(`Standort gewechselt zu: ${team}.`);
     }
 
+    /* Checklisten-Logik */
+    function loadChecklist() {
+        let count = 0;
+        for(let i = 1; i <= 4; i++) {
+            const cb = document.getElementById('sl-chk-' + i);
+            const box = document.getElementById('chk-box-' + i);
+            cb.checked = !!slChecklist[i - 1];
+            if(cb.checked) {
+                box.classList.add('checked');
+                count++;
+            } else {
+                box.classList.remove('checked');
+            }
+        }
+        document.getElementById('checklist-status').innerText = `Status: ${count} von 4 Punkten abgehakt`;
+    }
+
+    function saveChecklist() {
+        for(let i = 1; i <= 4; i++) {
+            slChecklist[i - 1] = document.getElementById('sl-chk-' + i).checked;
+        }
+        localStorage.setItem('team_hub_sl_checklist', JSON.stringify(slChecklist));
+        loadChecklist();
+    }
+
+    /* Bewerber & Probezeit Logik */
+    function saveCandidateEval() {
+        const name = document.getElementById('cand-name').value.trim();
+        const role = document.getElementById('cand-role').value;
+        const fit = document.getElementById('cand-fit').value;
+        const attitude = document.getElementById('cand-attitude').value;
+        const note = document.getElementById('cand-note').value.trim();
+
+        if(!name) { alert("Bitte Namen eingeben!"); return; }
+
+        let verdict = "✅ Gut geeignet – weiter fördern";
+        let statusClass = "status-ok";
+        let tagClass = "tag-ok";
+
+        if(fit === "gering" || attitude === "unruhe") {
+            verdict = "🚨 Nicht geeignet / Unruhe – Aufhebungsvertrag oder Trennung empfohlen";
+            statusClass = "status-danger";
+            tagClass = "tag-danger";
+        } else if(fit === "mittel" || attitude === "unsicher") {
+            verdict = "⚠️ Nachschulung & Erklär-Video nötig – eng begleiten";
+            statusClass = "status-warn";
+            tagClass = "tag-warn";
+        }
+
+        candidateEvals.unshift({ name, role, verdict, statusClass, tagClass, note });
+        localStorage.setItem('team_hub_candidates', JSON.stringify(candidateEvals));
+
+        document.getElementById('cand-name').value = '';
+        document.getElementById('cand-note').value = '';
+        renderCandidates();
+        alert("Eignungs-Check gespeichert!");
+    }
+
+    function renderCandidates() {
+        const container = document.getElementById('cand-list');
+        if(candidateEvals.length === 0) {
+            container.innerHTML = `<div style="font-size:0.7rem; color:var(--text-muted); text-align:center;">Noch keine Bewerber- oder Probezeit-Checks erfasst.</div>`;
+            return;
+        }
+        container.innerHTML = candidateEvals.map(c => `
+            <div class="eval-item ${c.statusClass}">
+                <strong>${c.name}</strong> <span style="color:var(--text-muted);">(${c.role})</span><br>
+                <span class="tag-pill ${c.tagClass}">${c.verdict}</span>
+                ${c.note ? `<div style="color:var(--text-muted); font-size:0.68rem; margin-top:4px;">💬 ${c.note}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    /* Lagerleiter Feedback Logik */
+    function saveManagerFeedback() {
+        const category = document.getElementById('ll-category').value;
+        const message = document.getElementById('ll-message').value.trim();
+
+        if(!message) { alert("Bitte eine kurze Nachricht eingeben!"); return; }
+
+        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        managerLogs.unshift({ category, message, time: now });
+        localStorage.setItem('team_hub_manager_logs', JSON.stringify(managerLogs));
+
+        document.getElementById('ll-message').value = '';
+        renderManagerLogs();
+        alert("Meldung für Lagerleiter & Schichtübergabe gesichert!");
+    }
+
+    function renderManagerLogs() {
+        const container = document.getElementById('ll-list');
+        if(managerLogs.length === 0) {
+            container.innerHTML = `<div style="font-size:0.7rem; color:var(--text-muted); text-align:center;">Noch keine Übergabe- oder Lagerleiter-Meldungen.</div>`;
+            return;
+        }
+        container.innerHTML = managerLogs.map(m => `
+            <div class="eval-item">
+                <div style="display:flex; justify-content:space-between;">
+                    <strong style="color:var(--primary);">${m.category}</strong>
+                    <span style="font-size:0.65rem; color:var(--text-muted);">${m.time} Uhr</span>
+                </div>
+                <div style="margin-top:4px; color:var(--text);">${m.message}</div>
+            </div>
+        `).join('');
+    }
+/* Quests & QC */
     function claimQuest() {
         if(isChillMode) {
             alert("Du bist im Chill-Modus!");
