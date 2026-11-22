@@ -3,138 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team-Hub | Enterprise Gaming & Vision Edition</title>
-    <!-- Konfetti Bibliothek -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <title>Team-Hub | Leitungs- & Qualitäts-Cockpit</title>
     <style>
         :root {
-            --bg-color: #090d16;
-            --card-bg: #131b2e;
-            --primary: #38bdf8;
-            --accent: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gold: #fbbf24;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #1e293b;
-            --glow: rgba(56, 189, 248, 0.2);
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #2563eb;
+            --accent: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text);
+            color: var(--text-main);
             margin: 0;
             padding: 12px;
+            line-height: 1.5;
         }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        h1 { color: var(--primary); font-size: 1.4rem; margin-bottom: 2px; text-shadow: 0 0 10px var(--glow); }
-        p.subtitle { color: var(--text-muted); font-size: 0.75rem; }
-
-        /* Fester Video-Teaser ganz oben */
-        .video-teaser-card {
-            background: linear-gradient(135deg, rgba(19, 27, 46, 0.95), rgba(30, 41, 59, 0.95));
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 14px;
-            box-shadow: 0 0 15px var(--glow);
-            text-align: center;
-        }
-        .video-teaser-title {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .native-video-player {
-            width: 100%;
-            max-height: 220px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 1px solid var(--border);
-            outline: none;
-        }
+        .container { max-width: 600px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 16px; }
+        h1 { color: var(--text-main); font-size: 1.5rem; margin: 0 0 4px 0; font-weight: 800; }
+        p.subtitle { color: var(--text-muted); font-size: 0.85rem; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Top Bar */
         .top-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        .top-bar select, .top-bar button {
-            padding: 8px;
-            font-size: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text);
-        }
-        .chill-btn {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-            font-weight: bold;
-            cursor: pointer;
-            flex: 1;
-        }
-        .chill-btn.active {
-            background: var(--primary);
-            color: #090d16;
-        }
-
-        /* Tägliche Buddy Note */
-        .buddy-note-box {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(16, 185, 129, 0.1));
-            border: 1px solid var(--primary);
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+            margin-bottom: 16px;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }
-        .buddy-note-avatar { font-size: 1.4rem; }
-        .buddy-note-content { font-size: 0.75rem; line-height: 1.3; color: #e2e8f0; }
-        .buddy-note-title { font-weight: bold; color: var(--primary); margin-bottom: 2px; font-size: 0.75rem; }
 
         /* Navigation Tabs */
         .tabs {
-            display: flex;
-            background: var(--card-bg);
-            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            background: #e2e8f0;
+            border-radius: var(--radius);
             padding: 4px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-            overflow-x: auto;
+            margin-bottom: 16px;
         }
         .tab {
-            flex: 1;
             text-align: center;
-            padding: 8px 4px;
-            font-size: 0.65rem;
-            font-weight: bold;
+            padding: 10px 4px;
+            font-size: 0.72rem;
+            font-weight: 700;
             color: var(--text-muted);
             cursor: pointer;
             border-radius: 8px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            transition: all 0.2s ease;
+            background: transparent;
         }
         .tab.active {
             background-color: var(--primary);
-            color: #090d16;
-            box-shadow: 0 0 12px var(--glow);
+            color: #ffffff;
+            box-shadow: var(--shadow);
         }
 
         .tab-content { display: none; }
@@ -142,825 +76,664 @@
 
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 16px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }
-        h2 { font-size: 0.95rem; color: var(--primary); margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
-
-        /* XP & Status */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-        .stat-box {
-            background: rgba(255,255,255,0.02);
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
-        .stat-lbl { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; }
-
-        .progress-bar-bg {
-            background: rgba(255,255,255,0.05);
-            border-radius: 6px;
-            height: 12px;
-            width: 100%;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-        .progress-bar-fill {
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .form-group { margin-bottom: 10px; }
-        label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 3px; }
-        input, select, textarea {
-            width: 100%;
-            padding: 9px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: #090d16;
-            color: var(--text);
-            box-sizing: border-box;
-            font-size: 0.85rem;
-        }
-        textarea { resize: vertical; height: 52px; }
-        .limit-info { font-size: 0.65rem; color: var(--warning); margin-top: 2px; }
-
-        button {
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 0.85rem;
-            transition: opacity 0.2s;
-        }
-        button:hover { opacity: 0.9; }
-        .btn-primary { background-color: var(--accent); color: #090d16; }
-        .btn-warning { background-color: var(--warning); color: #090d16; }
-        .btn-info { background-color: var(--primary); color: #090d16; }
-
-        /* Checklisten-Stil */
-        .checklist-item {
+        .card-header {
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: rgba(9, 13, 22, 0.7);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-        }
-        .checklist-item.checked {
-            border-color: var(--accent);
-            background: rgba(16, 185, 129, 0.08);
-        }
-        .checklist-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-top: 2px;
-            accent-color: var(--accent);
-        }
-        .checklist-text {
-            font-size: 0.75rem;
-            line-height: 1.35;
-            color: var(--text);
-        }
-        .checklist-sub {
-            display: block;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Bewerber & Feedback Karten */
-        .eval-item {
-            background: rgba(9, 13, 22, 0.8);
-            border-left: 3px solid var(--primary);
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
-            font-size: 0.75rem;
-        }
-        .eval-item.status-warn { border-left-color: var(--warning); }
-        .eval-item.status-danger { border-left-color: var(--danger); }
-        .eval-item.status-ok { border-left-color: var(--accent); }
-
-        .tag-pill {
-            display: inline-block;
-            padding: 2px 7px;
-            border-radius: 6px;
-            font-size: 0.65rem;
-            font-weight: bold;
-            margin-top: 4px;
-        }
-        .tag-ok { background: rgba(16, 185, 129, 0.2); color: var(--accent); }
-        .tag-warn { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-        .tag-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-
-        /* Epic Meilenstein-Karten */
-        .epic-milestone {
-            background: linear-gradient(135deg, rgba(19, 27, 46, 0.9), rgba(30, 41, 59, 0.9));
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
         }
-        .epic-milestone.unlocked-card {
-            border-color: var(--gold);
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(16, 185, 129, 0.1));
-        }
-        .milestone-avatar {
-            font-size: 2.8rem;
-            background: rgba(255,255,255,0.05);
-            padding: 8px;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 60px;
-        }
-        .milestone-details { flex: 1; }
-        .milestone-title { font-size: 0.9rem; font-weight: bold; color: var(--gold); margin-bottom: 2px; }
-        .milestone-desc { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; line-height: 1.2; }
-        .milestone-badge {
-            display: inline-block;
+        h2 { font-size: 1.1rem; color: var(--text-main); margin: 0; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .prio-badge {
             font-size: 0.65rem;
             padding: 3px 8px;
-            border-radius: 6px;
-            font-weight: bold;
+            border-radius: 20px;
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
         }
-        .locked-badge { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-        .unlocked-badge { background: rgba(251, 191, 36, 0.2); color: var(--gold); }
+        .hint { font-size: 0.78rem; color: var(--text-muted); margin: 0 0 12px 0; }
 
-        table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 5px; }
-        th, td { padding: 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        th { color: var(--primary); }
-
-        .badge-box {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(16, 185, 129, 0.1));
-            border: 1px dashed var(--warning);
-            border-radius: 8px;
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        input, select, textarea {
+            width: 100%;
             padding: 10px;
-            text-align: center;
-            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            color: var(--text-main);
+            box-sizing: border-box;
+            font-size: 0.9rem;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+        }
+        textarea { resize: vertical; height: 60px; }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        button:active { transform: scale(0.99); }
+        .btn-primary { background-color: var(--primary); color: #ffffff; }
+        .btn-accent { background-color: var(--accent); color: #ffffff; }
+        .btn-warning { background-color: var(--warning); color: #ffffff; }
+        .btn-ghost {
+            background: #f1f5f9;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            padding: 8px 12px;
+            width: auto;
         }
 
-        .hof-section {
-            background: rgba(251, 191, 36, 0.05);
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            border-radius: 10px;
+        /* Eintrags-Listen */
+        .list-box { margin-top: 14px; }
+        .entry-item {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
             padding: 12px;
             margin-bottom: 10px;
+            font-size: 0.85rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .hof-title { font-weight: bold; color: var(--gold); font-size: 0.85rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-        .hof-item { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .entry-item.ok { border-left-color: var(--accent); background: #f0fdf4; }
+        .entry-item.warn { border-left-color: var(--warning); background: #fffbeb; }
+        .entry-item.danger { border-left-color: var(--danger); background: #fef2f2; }
 
-        /* Statistik Schwarz-Weiß / Cyberpunk Stil */
-        .stat-card-bw {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px dashed var(--primary);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            text-align: center;
+        .entry-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .pill { display: inline-block; font-size: 0.65rem; padding: 3px 8px; border-radius: 12px; font-weight: 700; text-transform: uppercase; }
+        .pill-ok { background: #dcfce7; color: #166534; }
+        .pill-warn { background: #fef3c7; color: #92400e; }
+        .pill-danger { background: #fee2e2; color: #991b1b; }
+        .pill-info { background: #dbeafe; color: #1e40af; }
+
+        .del-btn {
+            background: #fee2e2;
+            border: none;
+            color: var(--danger);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+        .mini-stat { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 10px; text-align: center; }
+        .mini-stat strong { display: block; font-size: 1.2rem; color: var(--text-main); }
+        .mini-stat span { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+        
+        /* Video Sektion */
+        .video-wrapper { background: var(--card-bg); padding: 12px; border-radius: var(--radius); border: 1px solid var(--border-color); margin-bottom: 16px; }
+        .video-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        video { width: 100%; border-radius: 8px; background: #000; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>⭐ Team-Hub ⭐</h1>
-        <p class="subtitle">Offizielles Qualitäts- & Gewinner-System für faires Teamwork</p>
+        <h1>🧭 Team-Hub</h1>
+        <p class="subtitle">Leitungs- & Qualitäts-Cockpit (Fokus 7 Punkte)</p>
     </header>
 
-    <!-- Fester Video-Teaser -->
-    <div class="video-teaser-card">
-        <div class="video-teaser-title">🎬 Team-Vision & Live-Einblick</div>
-        <video class="native-video-player" controls preload="metadata">
+    <!-- Zentrales Erklär-Video Modul -->
+    <div class="video-wrapper">
+        <div class="video-header">
+            <label style="margin:0;">🎬 QC & Prozess-Schulung</label>
+            <select id="video-select" onchange="switchVideo()" style="width:auto; padding:4px 8px; font-size:0.75rem;">
+                <option value="gemini_generated_video_2393bfe9.mp4">Grundlagen & Team-Ablauf</option>
+                <option value="erkl_picken.mp4">Standard: Picken & Kommissionieren</option>
+                <option value="erkl_verraeumen.mp4">Standard: Verräumen & Frames</option>
+            </select>
+        </div>
+        <video id="main-player" controls preload="metadata">
             <source src="gemini_generated_video_2393bfe9.mp4" type="video/mp4">
             Dein Browser unterstützt kein Video-Tag.
         </video>
     </div>
 
-    <!-- Top Bar -->
+    <!-- Schicht & Verfasser -->
     <div class="top-bar">
-        <select id="team-location" onchange="changeTeam()">
-            <option value="Werkstatt A">🏢 Team Werkstatt A</option>
-            <option value="Logistik & Lager">📦 Team Logistik & Lager</option>
-            <option value="Montage & Technik">🔧 Team Montage</option>
+        <select id="active-role">
+            <option value="Schichtleiter">🧭 Rolle: Schichtleiter</option>
+            <option value="Qualitätskontrolle (QC)">🔍 Rolle: Qualitätskontrolle</option>
+            <option value="Lagerleitung">📌 Rolle: Lagerleitung</option>
         </select>
-        <button class="chill-btn" id="chill-mode-btn" onclick="toggleChillMode()">☕ Chill-Modus (Aus)</button>
+        <input type="text" id="author-name" placeholder="Dein Name / Kürzel">
     </div>
 
-    <!-- Tägliche Buddy Note -->
-    <div class="buddy-note-box">
-        <div class="buddy-note-avatar">🤖❤️</div>
-        <div class="buddy-note-content">
-            <div class="buddy-note-title">Tägliche Buddy Note für euch:</div>
-            <span id="daily-quote">„Egal wie schwer der Tag ist, Partner: Ihr rockt das gemeinsam. Passt aufeinander auf und vergesst das Lächeln nicht!“</span>
-        </div>
-    </div>
-
-    <!-- Navigation Tabs (inkl. Leitung & Statistik) -->
+    <!-- 4 Kompakte Navigation-Tabs -->
     <div class="tabs">
-        <div class="tab active" onclick="switchTab('quests', this)">🎯 Quests</div>
-        <div class="tab" onclick="switchTab('lead', this)">🧭 Leitung</div>
-        <div class="tab" onclick="switchTab('feed', this)">📜 Live</div>
-        <div class="tab" onclick="switchTab('shop', this)">🏆 Ziele</div>
-        <div class="tab" onclick="switchTab('hof', this)">⭐ Hall</div>
-        <div class="tab" onclick="switchTab('stats', this)">📊 Statistik</div>
+        <div class="tab active" onclick="switchTab('t1', this)">1–2 Übergabe & Zonen</div>
+        <div class="tab" onclick="switchTab('t2', this)">3–4 QC & Bewertung</div>
+        <div class="tab" onclick="switchTab('t3', this)">5–7 Leitung & Schutz</div>
+        <div class="tab" onclick="switchTab('t4', this)">📋 Kompakt-Liste</div>
     </div>
 
-    <!-- TAB 1: QUESTS -->
-    <div id="tab-quests" class="tab-content active">
+    <!-- ========================================================= -->
+    <!-- TAB 1: PUNKT 1 & PUNKT 2 -->
+    <!-- ========================================================= -->
+    <div id="tab-t1" class="tab-content active">
+        <!-- PUNKT 1 -->
         <div class="card">
-            <h2>📊 Team Status & XP</h2>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-val" id="total-xp">0</div>
-                    <div class="stat-lbl">Team-XP</div>
+            <div class="card-header">
+                <h2>1. Schichtübergabe & To-Dos</h2>
+                <span class="prio-badge" style="background:#dbeafe; color:#1e40af;">Prio 1</span>
+            </div>
+            <p class="hint">Kritische offene Aufgaben, erster Ansatzpunkt & empfohlene Besetzung.</p>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Bereich / Zone:</label>
+                    <select id="p1-zone">
+                        <option value="Zone Frische">Zone Frische</option>
+                        <option value="Zone LD (Trocken)">Zone LD (Trocken)</option>
+                        <option value="Zone SD (Tiefkühl)">Zone SD (Tiefkühl)</option>
+                        <option value="Warenausgang / Verladung">Warenausgang / Verladung</option>
+                    </select>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-val" id="completed-quests">0</div>
-                    <div class="stat-lbl">Erledigt</div>
+                <div class="form-group">
+                    <label>Ziel / Empfänger:</label>
+                    <select id="p1-target">
+                        <option value="Nächster Schichtleiter">Nächster Schichtleiter</option>
+                        <option value="Lagerleiter">Lagerleiter</option>
+                        <option value="Andere Abteilung">Andere Abteilung</option>
+                    </select>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-val" id="current-level">Level 1</div>
-                    <div class="stat-lbl">Rang</div>
-                </div>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-muted); margin-bottom:4px;">
-                <span>Fortschritt zur nächsten Gewinner-Belohnung</span>
-                <span id="xp-progress-label">0 / 30 XP</span>
+            <div class="form-group">
+                <label>Kritisches To-Do & Besetzungs-Tipp:</label>
+                <textarea id="p1-text" placeholder="z.B. Zone Frische muss fertig kommissioniert werden -> kräftigen Mitarbeiter für Hubwagen einteilen."></textarea>
             </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="xp-bar"></div>
-            </div>
-            <div class="badge-box" id="badge-display">
-                🛡️ <strong>Wochen-MVP (Ehren-Badge):</strong> Noch unverteilt (Aktivster Helfer)
-            </div>
+            <button class="btn-primary" onclick="addP1()">+ Übergabe-Punkt speichern</button>
+            <div class="list-box" id="list-p1"></div>
         </div>
 
-        <div class="card" id="step-1-card">
-            <h2>1. Team-Praxis-Quest annehmen</h2>
-            <div class="form-group">
-                <label>Wer führt die Aufgabe aus?</label>
-                <input type="text" id="worker-name" placeholder="Dein Name oder Team (z.B. Marco)">
+        <!-- PUNKT 2 -->
+        <div class="card">
+            <div class="card-header">
+                <h2>2. Zonenqualität & Statistik</h2>
+                <span class="prio-badge" style="background:#dbeafe; color:#1e40af;">Prio 2</span>
+            </div>
+            <p class="hint">Einsatzfrequenz & Qualität erfassen – für faire Zonenwechsel (gegen strategische Inkompetenz).</p>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Mitarbeiter:</label>
+                    <input type="text" id="p2-worker" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label>Zone:</label>
+                    <select id="p2-zone">
+                        <option value="Zone Frische">Zone Frische</option>
+                        <option value="Zone LD">Zone LD</option>
+                        <option value="Zone SD">Zone SD</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label>Wähle eure echte Werkstatt-Aufgabe:</label>
-                <select id="task-select">
-                    <option value="📦 10x Boxen für das Team vorbereitet (+25 XP)">📦 10x Boxen für das Team vorbereitet (+25 XP)</option>
-                    <option value="🔧 Deckel holen & Material bereitgestellt (+20 XP)">🔧 Deckel holen & Material bereitgestellt (+20 XP)</option>
-                    <option value="🧹 Lagerordnung & Sauberkeit (+15 XP)">🧹 Lagerordnung & Sauberkeit (+15 XP)</option>
-                    <option value="🚀 Reklamationsfreie Zone geprüft (+20 XP)">🚀 Reklamationsfreie Zone geprüft (+20 XP)</option>
+                <label>Qualitäts-Einschätzung:</label>
+                <select id="p2-rating">
+                    <option value="stark">✅ Einwandfrei / Sehr sauber</option>
+                    <option value="schwach">⚠️ Fehlerhaft / Nachschulung nötig</option>
+                    <option value="kritisch">❌ Schlecht / Dauerhaft meiden</option>
                 </select>
             </div>
-            <button class="btn-warning" onclick="claimQuest()">Quest starten & Team-Verpflichtung eingehen</button>
-        </div>
-
-        <div class="card" id="step-2-card" style="display:none; border-color: var(--warning);">
-            <h2>2. Offizielle Qualitätskontrolle (QC-Abnahme)</h2>
-            <p style="font-size: 0.75rem; color: var(--warning); margin-top:0;">Aktive Quest: <span id="active-quest-title" style="font-weight:bold;"></span> (von <span id="active-worker"></span>)</p>
-            
-            <div class="form-group">
-                <label>Name des Prüfers (Offizielle Qualitätskontrolle / QC):</label>
-                <input type="text" id="controller-name" placeholder="QC-Prüfer (z.B. Klaus aus QC)">
-            </div>
-            <div class="form-group">
-                <label>Sauberkeit & Ordnung (Max. 10 XP):</label>
-                <input type="number" id="pts-clean" min="0" max="10" value="10" oninput="validatePoints(this, 10)">
-                <div class="limit-info">⚠️ Strenges Limit: Max. 10 Punkte erlaubt!</div>
-            </div>
-            <div class="form-group">
-                <label>Vollständigkeit & Präzision (Max. 15 XP):</label>
-                <input type="number" id="pts-accuracy" min="0" max="15" value="15" oninput="validatePoints(this, 15)">
-                <div class="limit-info">⚠️ Strenges Limit: Max. 15 Punkte erlaubt!</div>
-            </div>
-            <div class="form-group">
-                <label>Offizielles QC-Feedback / Bericht:</label>
-                <textarea id="task-feedback" placeholder="z.B. Einwandfreie Boxen-Vorbereitung, Top-Qualität!"></textarea>
-            </div>
-            <button class="btn-primary" onclick="completeQuest()">QC-Freigabe erteilen & Team-Sieg verbuchen ⭐</button>
+            <button class="btn-primary" onclick="addP2()">+ Zonen-Einsatz buchen</button>
+            <div class="list-box" id="list-p2"></div>
         </div>
     </div>
- <!-- TAB 2: LEITUNG & CHECKLISTEN (NEU) -->
-    <div id="tab-lead" class="tab-content">
-        <!-- Modul 1: Schichtleiter Realitäts-Checkliste -->
+
+    <!-- ========================================================= -->
+    <!-- TAB 2: PUNKT 3 & PUNKT 4 -->
+    <!-- ========================================================= -->
+    <div id="tab-t2" class="tab-content">
+        <!-- PUNKT 3 -->
         <div class="card">
-            <h2>🧭 1. Schichtleiter-Checkliste (Struktur & Fairness)</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:10px;">Erst Realität prüfen, dann steuern – gegen blindes Antreiben und Überlastung:</p>
-
-            <label class="checklist-item" id="chk-box-1">
-                <input type="checkbox" id="sl-chk-1" onchange="saveChecklist()">
-                <div class="checklist-text">
-                    <strong>Besetzung & Ausfälle geprüft</strong>
-                    <span class="checklist-sub">Fehlen Stammkräfte? Ist Ersatz da? Tagesziel realistisch an die echte Teamstärke anpassen.</span>
-                </div>
-            </label>
-
-            <label class="checklist-item" id="chk-box-2">
-                <input type="checkbox" id="sl-chk-2" onchange="saveChecklist()">
-                <div class="checklist-text">
-                    <strong>Körperliche & fachliche Passung beachtet</strong>
-                    <span class="checklist-sub">Keine schweren Frames an überlastete oder ältere Kollegen – Stationen nach Stärke verteilen.</span>
-                </div>
-            </label>
-
-            <label class="checklist-item" id="chk-box-3">
-                <input type="checkbox" id="sl-chk-3" onchange="saveChecklist()">
-                <div class="checklist-text">
-                    <strong>Monats- & Überstunden-Kontext im Blick</strong>
-                    <span class="checklist-sub">Rekordwochen und 6-Tage-Belastung anerkennen statt bei normalen Schwankungen Druck zu machen.</span>
-                </div>
-            </label>
-
-            <label class="checklist-item" id="chk-box-4">
-                <input type="checkbox" id="sl-chk-4" onchange="saveChecklist()">
-                <div class="checklist-text">
-                    <strong>Einarbeitung & Erklär-Videos eingesetzt</strong>
-                    <span class="checklist-sub">Neues Personal sauber eingewiesen (Picken / Verräumen / Boxen), damit keine Reibung entsteht.</span>
-                </div>
-            </label>
-
-            <div style="font-size: 0.7rem; color: var(--accent); font-weight: bold; margin-top: 6px;" id="checklist-status">
-                Status: 0 von 4 Punkten abgehakt
+            <div class="card-header">
+                <h2>3. QC-Fehlerschwerpunkte & Videos</h2>
+                <span class="prio-badge" style="background:#fef3c7; color:#92400e;">Prio 3</span>
             </div>
+            <p class="hint">Zonenübergreifende Mängel dokumentieren & Kontrollinstanz (Vorrume) ernennen.</p>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Betroffene Zone:</label>
+                    <select id="p3-zone">
+                        <option value="Zone Frische">Zone Frische</option>
+                        <option value="Zone LD (Trocken)">Zone LD (Trocken)</option>
+                        <option value="Zone SD (Tiefkühl)">Zone SD (Tiefkühl)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Kontroll-Instanz (Vorrumer):</label>
+                    <input type="text" id="p3-controller" placeholder="Name Kontrolleur">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>QC-Mängelbeseitigung & Maßnahmen:</label>
+                <textarea id="p3-text" placeholder="z.B. Falsch abgestellte Paletten in LD durch Vorrumer korrigiert -> Video 'Palettensicherung' in Schichtbeginn zeigen."></textarea>
+            </div>
+            <button class="btn-warning" onclick="addP3()">+ QC-Bericht & Video verknüpfen</button>
+            <div class="list-box" id="list-p3"></div>
         </div>
 
-        <!-- Modul 2: Bewerber- & Probezeit-Check -->
+        <!-- PUNKT 4 -->
         <div class="card">
-            <h2>🎯 2. Bewerber- & Probezeit-Filter (Eignungs-Check)</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:10px;">Klare Entscheidungshilfe für Vorstellungsgespräch & erste 30 Tage:</p>
+            <div class="card-header">
+                <h2>4. Sachliche Mitarbeiterbewertung</h2>
+                <span class="prio-badge" style="background:#fef3c7; color:#92400e;">Prio 4</span>
+            </div>
+            <p class="hint">Probezeit (6 Monate) steuern: Monatliche/zweimonatliche Feedbackgespräche & Entwicklung.</p>
 
-            <div class="form-group">
-                <label>Name (Bewerber oder neuer Mitarbeiter):</label>
-                <input type="text" id="cand-name" placeholder="z.B. Max M. (Tag 14 / Probezeit)">
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Mitarbeiter:</label>
+                    <input type="text" id="p4-worker" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label>Monat der Probezeit:</label>
+                    <select id="p4-period">
+                        <option value="Monat 1">Monat 1</option>
+                        <option value="Monat 2">Monat 2</option>
+                        <option value="Monat 3">Monat 3</option>
+                        <option value="Monat 4">Monat 4</option>
+                        <option value="Monat 5">Monat 5</option>
+                        <option value="Monat 6">Monat 6 (Entscheidung)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Entwicklungstrend:</label>
+                    <select id="p4-trend">
+                        <option value="positiv">📈 Positiv – Übernahme empfohlen</option>
+                        <option value="neutral">⚖️ Stabil / Braucht Begleitung</option>
+                        <option value="negativ">⚠️ Kritisch – Letzte Chance / Trennung</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gespräch geführt?</label>
+                    <select id="p4-talk">
+                        <option value="ja">Ja</option>
+                        <option value="nein">Nein</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label>Geplante / Aktuelle Station:</label>
-                <select id="cand-role">
-                    <option value="Picken & Kommissionierung">📦 Picken & Kommissionierung</option>
-                    <option value="Verräumen & Frames">🏗️ Verräumen & schwere Frames</option>
-                    <option value="Vorbereitung (Boxen / Deckel)">🔧 Vorbereitung (Boxen / Deckel)</option>
+                <label>Notizbuch (Beobachtungen / Fehler):</label>
+                <textarea id="p4-text" placeholder="z.B. Versteht Abläufe gut, packt sauber. Noch zu langsam beim Picken in Zone Frische."></textarea>
+            </div>
+            <button class="btn-primary" onclick="addP4()">+ Bewertung speichern</button>
+            <div class="list-box" id="list-p4"></div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TAB 3: PUNKT 5, PUNKT 6 & PUNKT 7 -->
+    <!-- ========================================================= -->
+    <div id="tab-t3" class="tab-content">
+        <!-- PUNKT 5 -->
+        <div class="card">
+            <div class="card-header">
+                <h2>5. Rückmeldung an Lagerleitung</h2>
+                <span class="prio-badge" style="background:#dcfce7; color:#166534;">Prio 5</span>
+            </div>
+            <p class="hint">Zusammenfassung für den Lagerleiter: Personalentscheidungen, Mängel & allgemeine Stimmung.</p>
+
+            <div class="form-group">
+                <label>Thema der Rückmeldung:</label>
+                <select id="p5-topic">
+                    <option value="Personalentscheidung (Übernahme / Trennung)">👤 Personalentscheidung</option>
+                    <option value="Strukturelle Mängel & Prozessverbesserung">⚙️ Strukturelle Mängel</option>
+                    <option value="Wöchentlicher Leistungs- & Stimmungsbericht">📋 Wochenbericht</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Körperliche Belastbarkeit & Tempo-Verständnis:</label>
-                <select id="cand-fit">
-                    <option value="hoch">✅ Hoch – packt an & versteht Abläufe</option>
-                    <option value="mittel">⚠️ Mittel – braucht noch Einarbeitung / Video</option>
-                    <option value="gering">❌ Gering – überfordert oder verweigert Tempo</option>
+                <label>Kompakte Fakten für Lagerleiter:</label>
+                <textarea id="p5-text" placeholder="z.B. Hohe Arbeitslast diese Woche gut bewältigt. Mitarbeiter X hat sich super entwickelt. Bitte Instandhaltung für Hubwagen in Zone LD rufen."></textarea>
+            </div>
+            <button class="btn-primary" onclick="addP5()">+ Für Lagerleitung speichern</button>
+            <div class="list-box" id="list-p5"></div>
+        </div>
+
+        <!-- PUNKT 6 -->
+        <div class="card">
+            <div class="card-header">
+                <h2>6. Abteilungsübergreifendes Feedback</h2>
+                <span class="prio-badge" style="background:#dcfce7; color:#166534;">Prio 6</span>
+            </div>
+            <p class="hint">Mängel, Materialbedarf & defekte Betriebsmittel an Schnittstellen melden.</p>
+
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Ziel-Abteilung:</label>
+                    <select id="p6-dept">
+                        <option value="Instandhaltung / Technik">Instandhaltung / Technik</option>
+                        <option value="Wareneingang">Wareneingang</option>
+                        <option value="Disposition / Einkauf">Disposition / Einkauf</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Art des Bedarfs / Mangels:</label>
+                    <select id="p6-type">
+                        <option value="Material fehlt">📦 Material fehlt</option>
+                        <option value="Betriebsmittel defekt">🔧 Betriebsmittel defekt</option>
+                        <option value="Prozessschnittstelle hakt">🔄 Prozessschnittstelle hakt</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Details & Standort:</label>
+                <input type="text" id="p6-text" placeholder="z.B. Hubwagen Nr. 4 in Zone Frische Hydraulik defekt">
+            </div>
+            <button class="btn-warning" onclick="addP6()">+ Schnittstellen-Meldung speichern</button>
+            <div class="list-box" id="list-p6"></div>
+        </div>
+
+        <!-- PUNKT 7 -->
+        <div class="card">
+            <div class="card-header">
+                <h2>7. Erschöpfungsvorsorge</h2>
+                <span class="prio-badge" style="background:#dcfce7; color:#166534;">Prio 7</span>
+            </div>
+            <p class="hint">Erschöpfungswerte erfassen, um durch gezielte Entlastung Überlastung & Krankheitsausfälle zu verhindern.</p>
+
+            <div class="form-group">
+                <label>Mitarbeiter / Team:</label>
+                <input type="text" id="p7-worker" placeholder="Name / Gruppe">
+            </div>
+            <div class="form-group">
+                <label>Erschöpfungsstatus:</label>
+                <select id="p7-status">
+                    <option value="kritisch">🔴 Kritisch erschöpft - Dringend entlasten</option>
+                    <option value="mittel">🟡 Erschöpft nach hoher Leistung</option>
+                    <option value="normal">🟢 Im grünen Bereich</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Motivation & Team-Harmonie:</label>
-                <select id="cand-attitude">
-                    <option value="team">✅ Konstruktiv – fügt sich gut ins Team ein</option>
-                    <option value="unsicher">⚠️ Unsicher – braucht klare Führung</option>
-                    <option value="unruhe">❌ Unruhe / Null Bock – stört Team-Harmonie</option>
-                </select>
+                <label>Entlastungs-Maßnahme:</label>
+                <input type="text" id="p7-text" placeholder="z.B. Morgen leichtere Aufgabe (Inventur/Kontrolle) zuteilen">
             </div>
-            <div class="form-group">
-                <label>Beobachtung / Notiz für Lagerleiter:</label>
-                <textarea id="cand-note" placeholder="z.B. Passt perfekt ins Team ODER sorgt dauerhaft für Unruhe, Aufhebungsvertrag/Trennung prüfen..."></textarea>
-            </div>
-            <button class="btn-info" onclick="saveCandidateEval()">Eignungs-Check & Empfehlung speichern 📋</button>
-
-            <div id="cand-list" style="margin-top: 12px;"></div>
-        </div>
-
-        <!-- Modul 3: Lagerleiter-Feedback & Schichtübergabe -->
-        <div class="card">
-            <h2>📨 3. Lagerleiter-Feedback & Schichtübergabe</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:10px;">Sachliche Rückmeldung an Lagerleiter & nächste Schicht – ohne Chaos:</p>
-
-            <div class="form-group">
-                <label>Kategorie der Meldung:</label>
-                <select id="ll-category">
-                    <option value="🚨 Personal- & Aufhebungs-Entscheidung">🚨 Personal- & Aufhebungs-Entscheidung</option>
-                    <option value="⚖️ Belastung & Besetzung (Realitäts-Check)">⚖️ Belastung & Besetzung (Realitäts-Check)</option>
-                    <option value="🔄 Schichtübergabe & offene To-dos">🔄 Schichtübergabe & offene To-dos</option>
-                    <option value="💡 Prozess- & Zonen-Optimierung">💡 Prozess- & Zonen-Optimierung</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Konkrete Situation & Vorschlag für Lagerleiter:</label>
-                <textarea id="ll-message" placeholder="z.B. Stammkraft fehlte, Ersatz körperlich überlastet bei Frames -> bitte Stationen fair zuteilen..."></textarea>
-            </div>
-            <button class="btn-primary" onclick="saveManagerFeedback()">Feedback an Lagerleiter & Übergabe sichern ✅</button>
-
-            <div id="ll-list" style="margin-top: 12px;"></div>
+            <button class="btn-accent" onclick="addP7()">+ Vorsorge-Hinweis speichern</button>
+            <div class="list-box" id="list-p7"></div>
         </div>
     </div>
 
-    <!-- TAB 3: LIVE-FEED -->
-    <div id="tab-feed" class="tab-content">
+    <!-- ========================================================= -->
+    <!-- TAB 4: KOMPAKT-LISTE & WEITERLEITUNG -->
+    <!-- ========================================================= -->
+    <div id="tab-t4" class="tab-content">
         <div class="card">
-            <h2>📜 Live-Protokoll & QC-Berichte</h2>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Quest / Wer</th>
-                            <th>QC-Prüfer & Bericht</th>
-                            <th>XP</th>
-                        </tr>
-                    </thead>
-                    <tbody id="feed-log">
-                        <tr>
-                            <td colspan="3" style="text-align: center; color: var(--text-muted);">Noch keine Quests im Feed.</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="card-header">
+                <h2>📋 Kompakte Gesamtliste</h2>
+                <span class="prio-badge">Export</span>
             </div>
-        </div>
-    </div>
+            <p class="hint">Alle erfassten Punkte kompakt nach Empfänger filterbar & bereit zum Verschicken.</p>
 
-    <!-- TAB 4: MEILENSTEINE -->
-    <div id="tab-shop" class="tab-content">
-        <div class="card">
-            <h2>🏆 Die epische Gewinner-Meilenstein-Show</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Kämpft als Team zusammen, knackt die XP-Ziele und schaltet pure Lebensfreude frei!</p>
-            
-            <div class="epic-milestone" id="box-r1">
-                <div class="milestone-avatar">🐒☕</div>
-                <div class="milestone-details">
-                    <div class="milestone-title">Der Kaffeepause-Affentempel (30 XP)</div>
-                    <div class="milestone-desc">Der Boss-Affe mit Sonnenbrille hat gesprochen: Extra Team-Kaffeepause zum Durchatmen!</div>
-                    <div class="milestone-badge locked-badge" id="shop-r1">🔒 Gesperrt (Ziel: 30 XP)</div>
-                </div>
+            <div class="stat-grid">
+                <div class="mini-stat"><strong id="cnt-all">0</strong><span>Gesamt</span></div>
+                <div class="mini-stat"><strong id="cnt-ll">0</strong><span>Lagerleitung</span></div>
+                <div class="mini-stat"><strong id="cnt-sl">0</strong><span>Übergabe/Abt.</span></div>
             </div>
 
-            <div class="epic-milestone" id="box-r2">
-                <div class="milestone-avatar">🦁⚽</div>
-                <div class="milestone-details">
-                    <div class="milestone-title">Das Löwen-Kicker-Battle (70 XP)</div>
-                    <div class="milestone-desc">Der Löwe fordert euch zum Tischkicker heraus! Zeit für ein legendäres Turnier.</div>
-                    <div class="milestone-badge locked-badge" id="shop-r2">🔒 Gesperrt (Ziel: 70 XP)</div>
-                </div>
+            <div class="filter-bar">
+                <button class="btn-ghost" onclick="setFilter('ALLE')">Alle</button>
+                <button class="btn-ghost" onclick="setFilter('Nächster Schichtleiter')">🔄 Schichtübergabe</button>
+                <button class="btn-ghost" onclick="setFilter('Lagerleiter')">📌 Lagerleiter</button>
+                <button class="btn-ghost" onclick="setFilter('Andere Abteilung')">🔗 Schnittstellen</button>
             </div>
 
-            <div class="epic-milestone" id="box-r3">
-                <div class="milestone-avatar">🐼❤️</div>
-                <div class="milestone-details">
-                    <div class="milestone-title">Samstags-Blitz-Feierabend (150 XP)</div>
-                    <div class="milestone-desc">Der Panda macht es vor: Wer bis Samstag hart buckelt, geht heute deutlich früher nach Hause!</div>
-                    <div class="milestone-badge locked-badge" id="shop-r3">🔒 Gesperrt (Ziel: 150 XP)</div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <button class="btn-primary" onclick="copyCompactReport()" style="margin-bottom: 14px;">📋 Bericht kopieren & verschicken</button>
 
-    <!-- TAB 5: HALL OF FAME -->
-    <div id="tab-hof" class="tab-content">
-        <div class="card">
-            <h2>⭐ Hall of Fame & Bestenlisten</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Wertschätzende Anerkennung – bestätigt durch die offizielle QC.</p>
-            
-            <div class="hof-section">
-                <div class="hof-title">📅 Bester Helfer dieser Woche</div>
-                <div class="hof-item"><span>1. Marco & Team (Vorbereitung Boxen)</span> <strong style="color:var(--accent);">45 XP</strong></div>
-                <div class="hof-item"><span>2. Klaus (QC-Prüfungen)</span> <strong style="color:var(--text-muted);">30 XP</strong></div>
-            </div>
-
-            <div class="hof-section">
-                <div class="hof-title">🗓️ Bester Helfer dieses Monats</div>
-                <div class="hof-item"><span>1. Team Logistik & Lager</span> <strong style="color:var(--gold);">210 XP</strong></div>
-                <div class="hof-item"><span>2. Team Werkstatt A</span> <strong style="color:var(--text-muted);">185 XP</strong></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TAB 6: STATISTIK & VERBESSERUNG -->
-    <div id="tab-stats" class="tab-content">
-        <div class="card">
-            <h2>📊 Qualitäts- & Verbesserungs-Statistik</h2>
-            <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom:14px;">Der datenbasierte Vorher-Nachher-Beweis für die Geschäftsführung.</p>
-            
-            <div class="stat-card-bw">
-                <div style="font-size: 0.8rem; font-weight: bold; color: var(--text-muted); margin-bottom: 4px;">🔲 Vorher-Modus (Klassisch / Ohne Struktur)</div>
-                <div style="font-size: 1.1rem; color: #94a3b8;">Hohe Fehlerquote & unklare Abläufe</div>
-            </div>
-
-            <div class="stat-card-bw" style="border-color: var(--accent); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), #090d16);">
-                <div style="font-size: 0.8rem; font-weight: bold; color: var(--accent); margin-bottom: 4px;">✨ Nachher-Modus (Cyberpunk Team-Hub Glow)</div>
-                <div style="font-size: 1.2rem; font-weight: bold; color: var(--accent);" id="stat-improvement">+98% Qualitäts-Steigerung</div>
-            </div>
+            <div class="list-box" id="compact-master-list"></div>
         </div>
     </div>
 
 </div>
 
 <script>
-    let totalXP = parseInt(localStorage.getItem('team_hub_xp')) || 0;
-    let completedCount = parseInt(localStorage.getItem('team_hub_completed')) || 0;
-    let feedItems = JSON.parse(localStorage.getItem('team_hub_feed')) || [];
-    let controllerCounts = JSON.parse(localStorage.getItem('team_hub_controllers')) || {};
-    let candidateEvals = JSON.parse(localStorage.getItem('team_hub_candidates')) || [];
-    let managerLogs = JSON.parse(localStorage.getItem('team_hub_manager_logs')) || [];
-    let slChecklist = JSON.parse(localStorage.getItem('team_hub_sl_checklist')) || [false, false, false, false];
-    
-    let activeQuest = null;
-    let isChillMode = false;
-
-    const buddyQuotes = [
-        "„Egal wie schwer der Tag ist, Partner: Ihr rockt das gemeinsam. Passt aufeinander auf und vergesst das Lächeln nicht!“",
-        "„Kein Stress heute. Jeder Schritt zählt, und am Ende des Tages geht ihr gemeinsam nach vorn.“",
-        "„Harte Arbeit verdient echten Respekt. Danke, dass ihr heute wieder alles gebt!“",
-        "„Gemeinsam stark, fair im Team und mit Luft zum Atmen – das ist unser Weg.“"
-    ];
-
-    document.getElementById('daily-quote').innerText = buddyQuotes[Math.floor(Math.random() * buddyQuotes.length)];
+    let items = JSON.parse(localStorage.getItem('team_hub_v3_items')) || [];
+    let currentFilter = 'ALLE';
 
     window.onload = function() {
-        loadChecklist();
-        renderCandidates();
-        renderManagerLogs();
-        updateUI();
+        renderAll();
     };
 
-    function switchTab(tabId, element) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-        
+    function switchTab(tabId, el) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById('tab-' + tabId).classList.add('active');
-        element.classList.add('active');
+        el.classList.add('active');
     }
 
-    function validatePoints(input, maxLimit) {
-        let val = parseInt(input.value) || 0;
-        if(val > maxLimit) {
-            alert(`Achtung: Maximal sind hier ${maxLimit} Punkte erlaubt!`);
-            input.value = maxLimit;
-        }
-        if(val < 0) { input.value = 0; }
+    function switchVideo() {
+        const player = document.getElementById('main-player');
+        player.src = document.getElementById('video-select').value;
+        player.load();
     }
 
-    function toggleChillMode() {
-        isChillMode = !isChillMode;
-        const btn = document.getElementById('chill-mode-btn');
-        if(isChillMode) {
-            btn.classList.add('active');
-            btn.innerText = "☕ Chill-Modus (Aktiv)";
-            alert("Du bist im Chill-Modus. Genieße deine Ruhe!");
-        } else {
-            btn.classList.remove('active');
-            btn.innerText = "☕ Chill-Modus (Aus)";
-            alert("Willkommen zurück im aktiven Team!");
-        }
+    function getMeta() {
+        const role = document.getElementById('active-role').value;
+        const author = document.getElementById('author-name').value.trim() || role;
+        const now = new Date();
+        const stamp = now.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }) + ' ' +
+                      now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }).slice(0,5);
+        return { author, stamp };
     }
 
-    function changeTeam() {
-        const team = document.getElementById('team-location').value;
-        alert(`Standort gewechselt zu: ${team}.`);
+    function saveItem(entry) {
+        const meta = getMeta();
+        entry.id = Date.now() + Math.random();
+        entry.author = meta.author;
+        entry.stamp = meta.stamp;
+        items.unshift(entry);
+        localStorage.setItem('team_hub_v3_items', JSON.stringify(items));
+        renderAll();
     }
 
-    /* Checklisten-Logik */
-    function loadChecklist() {
-        let count = 0;
-        for(let i = 1; i <= 4; i++) {
-            const cb = document.getElementById('sl-chk-' + i);
-            const box = document.getElementById('chk-box-' + i);
-            cb.checked = !!slChecklist[i - 1];
-            if(cb.checked) {
-                box.classList.add('checked');
-                count++;
-            } else {
-                box.classList.remove('checked');
-            }
-        }
-        document.getElementById('checklist-status').innerText = `Status: ${count} von 4 Punkten abgehakt`;
+    function deleteItem(id) {
+        items = items.filter(i => i.id !== id);
+        localStorage.setItem('team_hub_v3_items', JSON.stringify(items));
+        renderAll();
     }
 
-    function saveChecklist() {
-        for(let i = 1; i <= 4; i++) {
-            slChecklist[i - 1] = document.getElementById('sl-chk-' + i).checked;
-        }
-        localStorage.setItem('team_hub_sl_checklist', JSON.stringify(slChecklist));
-        loadChecklist();
-    }
-
-    /* Bewerber & Probezeit Logik */
-    function saveCandidateEval() {
-        const name = document.getElementById('cand-name').value.trim();
-        const role = document.getElementById('cand-role').value;
-        const fit = document.getElementById('cand-fit').value;
-        const attitude = document.getElementById('cand-attitude').value;
-        const note = document.getElementById('cand-note').value.trim();
-
-        if(!name) { alert("Bitte Namen eingeben!"); return; }
-
-        let verdict = "✅ Gut geeignet – weiter fördern";
-        let statusClass = "status-ok";
-        let tagClass = "tag-ok";
-
-        if(fit === "gering" || attitude === "unruhe") {
-            verdict = "🚨 Nicht geeignet / Unruhe – Aufhebungsvertrag oder Trennung empfohlen";
-            statusClass = "status-danger";
-            tagClass = "tag-danger";
-        } else if(fit === "mittel" || attitude === "unsicher") {
-            verdict = "⚠️ Nachschulung & Erklär-Video nötig – eng begleiten";
-            statusClass = "status-warn";
-            tagClass = "tag-warn";
-        }
-
-        candidateEvals.unshift({ name, role, verdict, statusClass, tagClass, note });
-        localStorage.setItem('team_hub_candidates', JSON.stringify(candidateEvals));
-
-        document.getElementById('cand-name').value = '';
-        document.getElementById('cand-note').value = '';
-        renderCandidates();
-        alert("Eignungs-Check gespeichert!");
-    }
-
-    function renderCandidates() {
-        const container = document.getElementById('cand-list');
-        if(candidateEvals.length === 0) {
-            container.innerHTML = `<div style="font-size:0.7rem; color:var(--text-muted); text-align:center;">Noch keine Bewerber- oder Probezeit-Checks erfasst.</div>`;
-            return;
-        }
-        container.innerHTML = candidateEvals.map(c => `
-            <div class="eval-item ${c.statusClass}">
-                <strong>${c.name}</strong> <span style="color:var(--text-muted);">(${c.role})</span><br>
-                <span class="tag-pill ${c.tagClass}">${c.verdict}</span>
-                ${c.note ? `<div style="color:var(--text-muted); font-size:0.68rem; margin-top:4px;">💬 ${c.note}</div>` : ''}
-            </div>
-        `).join('');
-    }
-
-    /* Lagerleiter Feedback Logik */
-    function saveManagerFeedback() {
-        const category = document.getElementById('ll-category').value;
-        const message = document.getElementById('ll-message').value.trim();
-
-        if(!message) { alert("Bitte eine kurze Nachricht eingeben!"); return; }
-
-        const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        managerLogs.unshift({ category, message, time: now });
-        localStorage.setItem('team_hub_manager_logs', JSON.stringify(managerLogs));
-
-        document.getElementById('ll-message').value = '';
-        renderManagerLogs();
-        alert("Meldung für Lagerleiter & Schichtübergabe gesichert!");
-    }
-
-    function renderManagerLogs() {
-        const container = document.getElementById('ll-list');
-        if(managerLogs.length === 0) {
-            container.innerHTML = `<div style="font-size:0.7rem; color:var(--text-muted); text-align:center;">Noch keine Übergabe- oder Lagerleiter-Meldungen.</div>`;
-            return;
-        }
-        container.innerHTML = managerLogs.map(m => `
-            <div class="eval-item">
-                <div style="display:flex; justify-content:space-between;">
-                    <strong style="color:var(--primary);">${m.category}</strong>
-                    <span style="font-size:0.65rem; color:var(--text-muted);">${m.time} Uhr</span>
-                </div>
-                <div style="margin-top:4px; color:var(--text);">${m.message}</div>
-            </div>
-        `).join('');
-    }
-/* Quests & QC */
-    function claimQuest() {
-        if(isChillMode) {
-            alert("Du bist im Chill-Modus!");
-            return;
-        }
-        const worker = document.getElementById('worker-name').value.trim();
-        const task = document.getElementById('task-select').value;
-        if(!worker) { alert("Bitte Namen eingeben!"); return; }
-
-        activeQuest = { worker, task };
-        document.getElementById('active-quest-title').innerText = task;
-        document.getElementById('active-worker').innerText = worker;
-        document.getElementById('step-1-card').style.display = 'none';
-        document.getElementById('step-2-card').style.display = 'block';
-    }
-
-    function completeQuest() {
-        const controller = document.getElementById('controller-name').value.trim();
-        const clean = parseInt(document.getElementById('pts-clean').value) || 0;
-        const accuracy = parseInt(document.getElementById('pts-accuracy').value) || 0;
-        const feedback = document.getElementById('task-feedback').value.trim();
-
-        if(!controller) { alert("Name des offiziellen QC-Prüfers fehlt!"); return; }
-
-        const earned = clean + accuracy;
-        totalXP += earned;
-        completedCount++;
-
-        controllerCounts[controller] = (controllerCounts[controller] || 0) + 1;
-
-        feedItems.unshift({
-            task: activeQuest.task,
-            worker: activeQuest.worker,
-            controller: "QC: " + controller,
-            xp: earned,
-            feedback: feedback
+    /* Punkt 1 */
+    function addP1() {
+        const zone = document.getElementById('p1-zone').value;
+        const target = document.getElementById('p1-target').value;
+        const text = document.getElementById('p1-text').value.trim();
+        if(!text) { alert('Bitte To-Do eintragen.'); return; }
+        saveItem({
+            point: 1, label: '1. Schichtübergabe', target: target,
+            title: zone, detail: text, level: 'info'
         });
-
-        localStorage.setItem('team_hub_xp', totalXP);
-        localStorage.setItem('team_hub_completed', completedCount);
-        localStorage.setItem('team_hub_feed', JSON.stringify(feedItems));
-        localStorage.setItem('team_hub_controllers', JSON.stringify(controllerCounts));
-
-        updateUI();
-
-        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
-
-        document.getElementById('worker-name').value = '';
-        document.getElementById('controller-name').value = '';
-        document.getElementById('task-feedback').value = '';
-        document.getElementById('step-2-card').style.display = 'none';
-        document.getElementById('step-1-card').style.display = 'block';
-        activeQuest = null;
-
-        alert(`QC-Freigabe erteilt! +${earned} Team-XP erfolgreich verbucht! 🚀`);
+        document.getElementById('p1-text').value = '';
     }
 
-    function updateBadgeLeader() {
-        let bestController = "";
-        let maxChecks = 0;
-        for (let name in controllerCounts) {
-            if (controllerCounts[name] > maxChecks) {
-                maxChecks = controllerCounts[name];
-                bestController = name;
-            }
-        }
-        if(bestController) {
-            document.getElementById('badge-display').innerHTML = `🛡️ <strong>Wochen-MVP (QC-Bestätigt):</strong> ${bestController} (${maxChecks} offizielle Prüfungen!) ⭐`;
-        }
+    /* Punkt 2 */
+    function addP2() {
+        const worker = document.getElementById('p2-worker').value.trim();
+        const zone = document.getElementById('p2-zone').value;
+        const rating = document.getElementById('p2-rating').value;
+        if(!worker) { alert('Bitte Mitarbeiternamen eingeben.'); return; }
+
+        let level = 'ok';
+        if(rating === 'schwach') level = 'warn';
+        if(rating === 'kritisch') level = 'danger';
+
+        saveItem({
+            point: 2, label: '2. Zonenqualität', target: 'Nächster Schichtleiter',
+            title: `${worker} → ${zone}`, detail: `Qualität: ${rating.toUpperCase()}`, level: level
+        });
+        document.getElementById('p2-worker').value = '';
     }
 
-    function updateUI() {
-        document.getElementById('total-xp').innerText = totalXP;
-        document.getElementById('completed-quests').innerText = completedCount;
-        
-        let level = 1 + Math.floor(totalXP / 50);
-        document.getElementById('current-level').innerText = "Level " + level;
+    /* Punkt 3 */
+    function addP3() {
+        const zone = document.getElementById('p3-zone').value;
+        const controller = document.getElementById('p3-controller').value.trim();
+        const text = document.getElementById('p3-text').value.trim();
+        if(!text || !controller) { alert('Bitte Kontroll-Instanz und Maßnahmen angeben.'); return; }
+        saveItem({
+            point: 3, label: '3. QC & Video', target: 'Andere Abteilung',
+            title: `QC: ${zone} (Kontrolle: ${controller})`, detail: text, level: 'warn'
+        });
+        document.getElementById('p3-text').value = '';
+        document.getElementById('p3-controller').value = '';
+    }
 
-        let target = 30, prev = 0;
-        if(totalXP >= 30) { target = 70; prev = 30; }
-        if(totalXP >= 70) { target = 150; prev = 70; }
-        if(totalXP >= 150) { target = 300; prev = 150; }
+    /* Punkt 4 */
+    function addP4() {
+        const worker = document.getElementById('p4-worker').value.trim();
+        const period = document.getElementById('p4-period').value;
+        const trend = document.getElementById('p4-trend').value;
+        const talk = document.getElementById('p4-talk').value;
+        const text = document.getElementById('p4-text').value.trim();
+        if(!worker) { alert('Bitte Mitarbeiternamen eingeben.'); return; }
 
-        let pct = Math.min(100, Math.max(0, ((totalXP - prev) / (target - prev)) * 100));
-        document.getElementById('xp-bar').style.width = pct + '%';
-        document.getElementById('xp-progress-label').innerText = `${totalXP} / ${target} XP`;
+        let level = 'ok';
+        if(trend === 'neutral') level = 'warn';
+        if(trend === 'negativ') level = 'danger';
 
-        updateBadgeLeader();
+        saveItem({
+            point: 4, label: '4. Bewertung', target: 'Lagerleiter',
+            title: `${worker} (${period}) → Trend: ${trend.toUpperCase()}`,
+            detail: `Gespräch geführt: ${talk.toUpperCase()} | Notiz: ${text || 'Keine'}`, level: level
+        });
+        document.getElementById('p4-worker').value = '';
+        document.getElementById('p4-text').value = '';
+    }
 
-        const feedContainer = document.getElementById('feed-log');
-        feedContainer.innerHTML = '';
-        if(feedItems.length === 0) {
-            feedContainer.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Noch keine Quests im Feed.</td></tr>`;
-        } else {
-            feedItems.forEach(item => {
-                feedContainer.innerHTML += `
-                    <tr>
-                        <td><strong>${item.task}</strong><br><span style="color:var(--text-muted); font-size:0.65rem;">Von: ${item.worker}</span></td>
-                        <td>${item.controller}<br><span style="color:var(--text-muted); font-size:0.6rem;">💬 "${item.feedback || 'Top Qualität'}"</span></td>
-                        <td><strong style="color:var(--accent);">+${item.xp} XP</strong></td>
-                    </tr>
-                `;
-            });
+    /* Punkt 5 */
+    function addP5() {
+        const topic = document.getElementById('p5-topic').value;
+        const text = document.getElementById('p5-text').value.trim();
+        if(!text) { alert('Bitte Rückmeldung eingeben.'); return; }
+        saveItem({
+            point: 5, label: '5. Lagerleitung', target: 'Lagerleiter',
+            title: topic, detail: text, level: 'info'
+        });
+        document.getElementById('p5-text').value = '';
+    }
+
+    /* Punkt 6 */
+    function addP6() {
+        const dept = document.getElementById('p6-dept').value;
+        const type = document.getElementById('p6-type').value;
+        const text = document.getElementById('p6-text').value.trim();
+        if(!text) { alert('Bitte Details angeben.'); return; }
+        saveItem({
+            point: 6, label: '6. Schnittstellen', target: 'Andere Abteilung',
+            title: `${dept} (${type})`, detail: text, level: 'warn'
+        });
+        document.getElementById('p6-text').value = '';
+    }
+
+    /* Punkt 7 */
+    function addP7() {
+        const worker = document.getElementById('p7-worker').value.trim();
+        const status = document.getElementById('p7-status').value;
+        const text = document.getElementById('p7-text').value.trim();
+        if(!worker) { alert('Bitte Namen eingeben.'); return; }
+
+        let level = 'ok';
+        if(status === 'mittel') level = 'warn';
+        if(status === 'kritisch') level = 'danger';
+
+        saveItem({
+            point: 7, label: '7. Erschöpfungsschutz', target: 'Nächster Schichtleiter',
+            title: `${worker} → Status: ${status.toUpperCase()}`, detail: `Maßnahme: ${text || 'Keine'}`, level: level
+        });
+        document.getElementById('p7-worker').value = '';
+        document.getElementById('p7-text').value = '';
+    }
+
+    function renderEntryHTML(item, showPointBadge) {
+        const pillClass = item.level === 'ok' ? 'pill-ok' :
+                          item.level === 'warn' ? 'pill-warn' :
+                          item.level === 'danger' ? 'pill-danger' : 'pill-info';
+        return `
+            <div class="entry-item ${item.level}">
+                <div class="entry-top">
+                    <div>
+                        ${showPointBadge ? `<span class="pill ${pillClass}">${item.label}</span> ` : ''}
+                        <span class="pill pill-info">→ ${item.target}</span>
+                    </div>
+                    <div>
+                        <span style="font-size:0.75rem; color:var(--text-muted); margin-right:6px;">${item.stamp} (${item.author})</span>
+                        <button class="del-btn" onclick="deleteItem(${item.id})">×</button>
+                    </div>
+                </div>
+                <div style="font-weight:700; margin-bottom:4px; font-size:0.9rem;">${item.title}</div>
+                <div style="color:var(--text-main); opacity:0.9; font-size:0.85rem;">${item.detail}</div>
+            </div>
+        `;
+    }
+
+    function renderAll() {
+        for(let p = 1; p <= 7; p++) {
+            const box = document.getElementById('list-p' + p);
+            const filtered = items.filter(i => i.point === p);
+            box.innerHTML = filtered.length
+                ? filtered.map(i => renderEntryHTML(i, false)).join('')
+                : `<div style="font-size:0.75rem; color:var(--text-muted); text-align:center; padding:8px;">Leer</div>`;
         }
 
-        if(totalXP >= 30) {
-            document.getElementById('shop-r1').className = "milestone-badge unlocked-badge";
-            document.getElementById('shop-r1').innerText = "🎉 FREIGESCHALTET: Kaffeepause aktiv!";
-            document.getElementById('box-r1').className = "epic-milestone unlocked-card";
-        }
-        if(totalXP >= 70) {
-            document.getElementById('shop-r2').className = "milestone-badge unlocked-badge";
-            document.getElementById('shop-r2').innerText = "🎉 FREIGESCHALTET: Kicker-Turnier aktiv!";
-            document.getElementById('box-r2').className = "epic-milestone unlocked-card";
-        }
-        if(totalXP >= 150) {
-            document.getElementById('shop-r3').className = "milestone-badge unlocked-badge";
-            document.getElementById('shop-r3').innerText = "🎉 FREIGESCHALTET: Früher Feierabend!";
-            document.getElementById('box-r3').className = "epic-milestone unlocked-card";
-        }
+        document.getElementById('cnt-all').innerText = items.length;
+        document.getElementById('cnt-ll').innerText = items.filter(i => i.target === 'Lagerleiter').length;
+        document.getElementById('cnt-sl').innerText = items.filter(i => i.target !== 'Lagerleiter').length;
+
+        const masterBox = document.getElementById('compact-master-list');
+        const list = currentFilter === 'ALLE' ? items : items.filter(i => i.target === currentFilter);
+        masterBox.innerHTML = list.length
+            ? list.map(i => renderEntryHTML(i, true)).join('')
+            : `<div style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:20px;">Keine Einträge für diesen Filter.</div>`;
+    }
+
+    function setFilter(f) {
+        currentFilter = f;
+        renderAll();
+    }
+
+    function copyCompactReport() {
+        const list = currentFilter === 'ALLE' ? items : items.filter(i => i.target === currentFilter);
+        if(!list.length) { alert('Keine Einträge zum Kopieren.'); return; }
+
+        const lines = list.map(i => `[${i.label} | → ${i.target}] ${i.title}: ${i.detail}`);
+        const fullText = `=== TEAM-HUB LÄUFT ===\nBericht: ${currentFilter}\nStand: ${new Date().toLocaleDateString('de-DE')}\n\n` + lines.join('\n\n');
+
+        navigator.clipboard.writeText(fullText).then(() => {
+            alert('Kompakt-Liste in Zwischenablage kopiert!');
+        }).catch(() => {
+            alert(fullText);
+        });
     }
 </script>
 
